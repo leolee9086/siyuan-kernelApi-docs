@@ -95,11 +95,15 @@ function generateIndexHtmlContent(category, apiPaths) {
         const parts = apiPath.split('/');
         // 假设路径是 /api/category/endpoint 或 /ws/category/endpoint
         let endpointName = 'unknown';
+        // /api/category/endpoint... 或 /ws/category/endpoint...
         if (parts.length >= 4) {
             endpointName = parts[parts.length - 1];
+        // 特殊处理 /ws/main, /ws/sub 等
         } else if (parts.length === 3 && parts[1] === 'ws') {
-            // 处理 /ws/main 这种情况
             endpointName = parts[2];
+        // 特殊处理 /api/transactions 等
+        } else if (parts.length === 3 && parts[1] === 'api') {
+            endpointName = parts[2]; // endpointName 就是第三部分
         } else {
              console.warn(`   ⚠️ 无法从路径 ${apiPath} 确定 endpoint 名称以生成链接。`);
              // 可以提供一个默认链接或直接显示路径
