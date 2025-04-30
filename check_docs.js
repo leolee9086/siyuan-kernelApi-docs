@@ -90,26 +90,34 @@ async function getDefinedApis(filePath) {
             const match = line.match(apiRegex);
             if (match && match[1]) {
                 const rawApiPath = match[1];
-                if (!rawApiPath.startsWith('/ws/')) { // 忽略 WebSocket
-                    const cleanedPath = cleanApiPath(rawApiPath);
-                    if(cleanedPath) {
-                        allApiPaths.add(cleanedPath);
+                // 不再忽略 WebSocket 路径
+                const cleanedPath = cleanApiPath(rawApiPath);
+                if(cleanedPath) {
+                    allApiPaths.add(cleanedPath);
 
-                        // 按分类存储
-                        const parts = cleanedPath.split('/');
-                        if (parts.length > 2 && parts[1] === 'api') {
-                            const category = parts[2];
-                            if (!apiPathsByCategory[category]) {
-                                apiPathsByCategory[category] = new Set();
-                            }
-                            apiPathsByCategory[category].add(cleanedPath);
+                    // 按分类存储 (需要考虑 /ws/ 路径的分类方式)
+                    const parts = cleanedPath.split('/');
+                    if (parts.length > 2 && (parts[1] === 'api' || parts[1] === 'ws')) {
+                        const category = parts[2]; // 例如 /ws/main -> category 'main'
+                        if (!apiPathsByCategory[category]) {
+                            apiPathsByCategory[category] = new Set();
                         }
-                        // 可以考虑为没有明确分类的 API (如 /api/xxx) 设置一个默认分类
+                        apiPathsByCategory[category].add(cleanedPath);
+                    } else if (parts.length === 3 && parts[1] === 'ws') {
+                        // 处理根 WebSocket 路径，如 /ws/
+                        const category = 'websocket'; // 或者其他合适的默认分类名
+                        if (!apiPathsByCategory[category]) {
+                            apiPathsByCategory[category] = new Set();
+                        }
+                        apiPathsByCategory[category].add(cleanedPath);
+                    } else {
+                         // 可以考虑为 /api/xxx 这种无明确分类的设置默认分类
+                         // console.warn(`   ⚠️ 未能确定 API 路径 ${cleanedPath} 的分类`);
                     }
                 }
             }
         }
-        console.log(`\n🔍 从 ${sourceDesc} 中找到 ${allApiPaths.size} 个 API 定义，分布在 ${Object.keys(apiPathsByCategory).length} 个分类中。`);
+        console.log(`\n🔍 从 ${sourceDesc} 中找到 ${allApiPaths.size} 个 API/WS 定义，分布在 ${Object.keys(apiPathsByCategory).length} 个分类中。`);
         return { allDefinedApis: allApiPaths, definedApisByCategory: apiPathsByCategory };
     } catch (err) {
         if (err.code === 'ENOENT') {
