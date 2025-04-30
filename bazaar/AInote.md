@@ -4,6 +4,9 @@
 
 ## 2025-05-01 (织)
 
+*   **新增**: 创建了 `getBazaarWidget.html` API 文档。
+    *   根据 `kernel/api/bazaar.go` 和 `router.go` 源码补充了文档内容（获取集市挂件包列表）。
+    *   添加了对新手友好的说明、非官方声明、赞助链接、在线测试功能和复制代码按钮。
 *   **新增**: 创建了 `getBazaarTheme.html` API 文档。
     *   根据 `kernel/api/bazaar.go` 和 `router.go` 源码补充了文档内容（获取集市主题包列表）。
     *   添加了对新手友好的说明、非官方声明、赞助链接、在线测试功能，以及**复制代码按钮**。
@@ -17,6 +20,9 @@
 *   **新增**: 创建了 `getBazaarIcon.html` API 文档。
     *   根据 `kernel/api/bazaar.go` 和 `router.go` 源码补充了文档内容（获取集市图标包列表）。
     *   添加了非官方声明、赞助链接和在线测试功能。
+*   **新增**: 创建了 `getInstalledIcon.html` API 文档。
+    *   根据 `kernel/api/bazaar.go` 和 `router.go` 源码补充了文档内容（获取已安装图标包列表）。
+    *   添加了对新手友好的说明、非官方声明、赞助链接、在线测试功能、复制代码按钮，以及**“实际应用案例”区域**。
 *   **修改**: 更新了 `batchUpdatePackage.html` 和 `AInote.md` 中的日期为 `2025-05-01`。
 
 ## 2025-05-01 (织) - batchUpdatePackage
