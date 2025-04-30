@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bazaar API Index - 思源笔记 API 文档</title>
@@ -12,33 +10,38 @@
         <a href="../index.html">返回总目录</a>
     </nav>
     <h2>API/WS 列表</h2>
-    <ul>
-            <li><a href="batchUpdatePackage.html">/api/bazaar/batchUpdatePackage</a></li>
-            <li><a href="getBazaarIcon.html">/api/bazaar/getBazaarIcon</a></li>
-            <li><a href="getBazaarPackageREAME.html">/api/bazaar/getBazaarPackageREAME</a></li>
-            <li><a href="getBazaarPlugin.html">/api/bazaar/getBazaarPlugin</a></li>
-            <li><a href="getBazaarTemplate.html">/api/bazaar/getBazaarTemplate</a></li>
-            <li><a href="getBazaarTheme.html">/api/bazaar/getBazaarTheme</a></li>
-            <li><a href="getBazaarWidget.html">/api/bazaar/getBazaarWidget</a></li>
-            <li><a href="getInstalledIcon.html">/api/bazaar/getInstalledIcon</a></li>
-            <li><a href="getInstalledPlugin.html">/api/bazaar/getInstalledPlugin</a></li>
-            <li><a href="getInstalledTemplate.html">/api/bazaar/getInstalledTemplate</a></li>
-            <li><a href="getInstalledTheme.html">/api/bazaar/getInstalledTheme</a></li>
-            <li><a href="getInstalledWidget.html">/api/bazaar/getInstalledWidget</a></li>
-            <li><a href="getUpdatedPackage.html">/api/bazaar/getUpdatedPackage</a></li>
-            <li><a href="installBazaarIcon.html">/api/bazaar/installBazaarIcon</a></li>
-            <li><a href="installBazaarPlugin.html">/api/bazaar/installBazaarPlugin</a></li>
-            <li><a href="installBazaarTemplate.html">/api/bazaar/installBazaarTemplate</a></li>
-            <li><a href="installBazaarTheme.html">/api/bazaar/installBazaarTheme</a></li>
-            <li><a href="installBazaarWidget.html">/api/bazaar/installBazaarWidget</a></li>
-            <li><a href="uninstallBazaarIcon.html">/api/bazaar/uninstallBazaarIcon</a></li>
-            <li><a href="uninstallBazaarPlugin.html">/api/bazaar/uninstallBazaarPlugin</a></li>
-            <li><a href="uninstallBazaarTemplate.html">/api/bazaar/uninstallBazaarTemplate</a></li>
-            <li><a href="uninstallBazaarTheme.html">/api/bazaar/uninstallBazaarTheme</a></li>
-            <li><a href="uninstallBazaarWidget.html">/api/bazaar/uninstallBazaarWidget</a></li>
+    <div class="search-container">
+        <input type="search" id="api-search-input" placeholder="搜索 API 名称或描述 (支持拼音)..." style="width: 90%; margin-bottom: 1em; padding: 0.5em;">
+    </div>
+    <ul id="api-list">
+            <li data-api-path="/api/bazaar/batchUpdatePackage"><a href="batchUpdatePackage.html">/api/bazaar/batchUpdatePackage</a> <span class="api-description">- 批量更新指定前端的集市包信息（例如，从远程仓库拉取最新的包列表，检查已安装包的更新等）。这是一个后台操作，API 调用本身只负责触发任务。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarIcon"><a href="getBazaarIcon.html">/api/bazaar/getBazaarIcon</a> <span class="api-description">- 获取集市中可用的图标包列表。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarPackageREAME"><a href="getBazaarPackageREAME.html">/api/bazaar/getBazaarPackageREAME</a> <span class="api-description">- 获取指定集市包（如插件、主题、图标包等）的 README 文件内容。思源笔记会将其转换为 HTML 格式返回，方便在界面上直接展示包的详细说明。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarPlugin"><a href="getBazaarPlugin.html">/api/bazaar/getBazaarPlugin</a> <span class="api-description">- 从官方集市获取可用的插件列表。可以通过关键词进行筛选。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarTemplate"><a href="getBazaarTemplate.html">/api/bazaar/getBazaarTemplate</a> <span class="api-description">- 获取集市中可用的模板包列表。模板包就是你在思源笔记中新建文档时可以选择套用的那些模板。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarTheme"><a href="getBazaarTheme.html">/api/bazaar/getBazaarTheme</a> <span class="api-description">- 获取集市中可用的主题包列表。主题决定了思源笔记的整体外观风格。</span></li>
+            <li data-api-path="/api/bazaar/getBazaarWidget"><a href="getBazaarWidget.html">/api/bazaar/getBazaarWidget</a> <span class="api-description">- 获取集市中可用的挂件包 (Widget) 列表。挂件是可以嵌入到文档中的小应用或信息展示块，例如时钟、日历、天气等。</span></li>
+            <li data-api-path="/api/bazaar/getInstalledIcon"><a href="getInstalledIcon.html">/api/bazaar/getInstalledIcon</a> <span class="api-description">- 获取当前工作空间中**已安装**的图标包列表。</span></li>
+            <li data-api-path="/api/bazaar/getInstalledPlugin"><a href="getInstalledPlugin.html">/api/bazaar/getInstalledPlugin</a> <span class="api-description">- 获取当前工作空间中已安装的插件列表。可以通过关键词进行筛选。</span></li>
+            <li data-api-path="/api/bazaar/getInstalledTemplate"><a href="getInstalledTemplate.html">/api/bazaar/getInstalledTemplate</a> <span class="api-description">- 获取当前工作空间中**已安装**的模板包列表。</span></li>
+            <li data-api-path="/api/bazaar/getInstalledTheme"><a href="getInstalledTheme.html">/api/bazaar/getInstalledTheme</a> <span class="api-description">- 获取当前工作空间中**已安装**的主题包列表。</span></li>
+            <li data-api-path="/api/bazaar/getInstalledWidget"><a href="getInstalledWidget.html">/api/bazaar/getInstalledWidget</a> <span class="api-description">- 获取当前工作空间中**已安装**的挂件包列表。</span></li>
+            <li data-api-path="/api/bazaar/getUpdatedPackage"><a href="getUpdatedPackage.html">/api/bazaar/getUpdatedPackage</a> <span class="api-description">- 获取所有已安装的集市包（插件、挂件、图标、主题、模板）中需要更新的列表。</span></li>
+            <li data-api-path="/api/bazaar/installBazaarIcon"><a href="installBazaarIcon.html">/api/bazaar/installBazaarIcon</a> <span class="api-description">- 从集市下载并安装指定的图标包。</span></li>
+            <li data-api-path="/api/bazaar/installBazaarPlugin"><a href="installBazaarPlugin.html">/api/bazaar/installBazaarPlugin</a> <span class="api-description">- 从集市下载并安装指定的插件。</span></li>
+            <li data-api-path="/api/bazaar/installBazaarTemplate"><a href="installBazaarTemplate.html">/api/bazaar/installBazaarTemplate</a> <span class="api-description">- 从集市下载并安装指定的模板。</span></li>
+            <li data-api-path="/api/bazaar/installBazaarTheme"><a href="installBazaarTheme.html">/api/bazaar/installBazaarTheme</a> <span class="api-description">- 从集市下载并安装指定的主题。</span></li>
+            <li data-api-path="/api/bazaar/installBazaarWidget"><a href="installBazaarWidget.html">/api/bazaar/installBazaarWidget</a></li>
+            <li data-api-path="/api/bazaar/uninstallBazaarIcon"><a href="uninstallBazaarIcon.html">/api/bazaar/uninstallBazaarIcon</a></li>
+            <li data-api-path="/api/bazaar/uninstallBazaarPlugin"><a href="uninstallBazaarPlugin.html">/api/bazaar/uninstallBazaarPlugin</a></li>
+            <li data-api-path="/api/bazaar/uninstallBazaarTemplate"><a href="uninstallBazaarTemplate.html">/api/bazaar/uninstallBazaarTemplate</a></li>
+            <li data-api-path="/api/bazaar/uninstallBazaarTheme"><a href="uninstallBazaarTheme.html">/api/bazaar/uninstallBazaarTheme</a></li>
+            <li data-api-path="/api/bazaar/uninstallBazaarWidget"><a href="uninstallBazaarWidget.html">/api/bazaar/uninstallBazaarWidget</a></li>
     </ul>
     <footer>
         <p>Generated by script on 2025-04-30T17:11:28.799Z</p>
     </footer>
-</body>
-</html>
+
+    <!-- 引入公共搜索脚本 -->
+    <script src="../common/search.js" type="module" defer></script>
+</body></html>
