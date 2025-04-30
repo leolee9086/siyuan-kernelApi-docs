@@ -56,53 +56,61 @@ const indexHtmlPath = path.join(apiDocBasePath, 'index.html');
 const pagesDir = path.join(apiDocBasePath, 'pages');
 // ---------------
 
-// --- 新增：定义需要扫描的API文档子目录 ---
-const apiSubDirs = [
-    'pages', 'av', 'file', 'export', 'template', 'attr', 'asset', 'archive', 
-    'ai', 'account', 'ref', 'search', 'history', 'cloud', 'format', 'lute', 
-    'filetree', 'storage', 'tag', 'bookmark', 'outline', 'block', 'notebook', 
-    'system', 'query', 'repo', 'riff', 'graph', 'sqlite', 'transactions', 'rpc', // <-- 增加了 sqlite, transactions, rpc
-    'import', 'notification', 'extension',
-    'bazaar', 'broadcast', 'clipboard', 'convert', 'setting',
-    'network', 'petal', 'snippet', 'sqlite', 'sync', 'transactions' // <-- 重复添加 sqlite, transactions, 已移动到前面
-    // 如果有新增的分类目录，记得添加到这里
-];
-// ---------------
+// --- API文档子目录将从 router.go 动态确定 --- 
 
-// --- 修改 getDefinedApis 函数，强制读取本地文件 ---
-async function getDefinedApis(filePath) { // 参数名改为 filePath 更清晰
+// --- 新增：API 路径清理函数 ---
+function cleanApiPath(apiPath) {
+    if (!apiPath) return '';
+    // 移除路径参数 :param 和通配符 *path (修正了 * 的转义)
+    let cleanedPath = apiPath.trim().replace(/\/:[^/]+/g, '').replace(/\/\*[^/]+/g, ''); // Corrected regex for *path
+    // 如果路径以 / 结尾且长度大于1，移除结尾的 /
+    if (cleanedPath.endsWith('/') && cleanedPath.length > 1) {
+       cleanedPath = cleanedPath.slice(0, -1);
+    }
+    return cleanedPath;
+}
+// ---------------------------
+
+// --- 修改 getDefinedApis 函数，强制读取本地文件，并增加按分类返回 ---
+async function getDefinedApis(filePath) {
     let content = '';
     let sourceDesc = `本地文件 ${path.basename(filePath)}`;
     try {
-        // 直接读取本地文件
         content = await fs.readFile(filePath, 'utf-8');
 
         const lines = content.split('\n');
-        const apiPaths = new Set();
-        // 稍微调整正则，更精确匹配 API 定义行
-        const apiRegex = /^\s*ginServer\.(?:Handle|Any|GET|POST|PUT|DELETE|PATCH)\(\s*"[^"+]+",\s*"(\/api\/[^"+,]+)"/;
+        const allApiPaths = new Set();        // 所有清理后的 API 路径
+        const apiPathsByCategory = {}; // 按分类存储 API 路径
+        const apiRegex = /^\s*ginServer\.(?:Handle|Any|GET|POST|PUT|DELETE|PATCH)\(\s*"[^"]+",\s*"(\/api\/[^"+,]+)"/;
 
         for (const line of lines) {
-            // 跳过注释和空行
             if (line.trim().startsWith('//') || line.trim() === '') {
                 continue;
             }
             const match = line.match(apiRegex);
             if (match && match[1]) {
-                // 移除路径参数 :param 和通配符 *path
-                let apiPath = match[1].replace(/\/:[^/]+/g, '').replace(/\/\*[^/]+/g, '');
-                // 如果路径以 / 结尾且长度大于1，移除结尾的 /
-                if (apiPath.endsWith('/') && apiPath.length > 1) {
-                   apiPath = apiPath.slice(0, -1);
-                }
-                // 特殊处理 /ws/ 路径
-                if (!apiPath.startsWith('/ws/')) {
-                    apiPaths.add(apiPath);
+                const rawApiPath = match[1];
+                if (!rawApiPath.startsWith('/ws/')) { // 忽略 WebSocket
+                    const cleanedPath = cleanApiPath(rawApiPath);
+                    if(cleanedPath) {
+                        allApiPaths.add(cleanedPath);
+
+                        // 按分类存储
+                        const parts = cleanedPath.split('/');
+                        if (parts.length > 2 && parts[1] === 'api') {
+                            const category = parts[2];
+                            if (!apiPathsByCategory[category]) {
+                                apiPathsByCategory[category] = new Set();
+                            }
+                            apiPathsByCategory[category].add(cleanedPath);
+                        }
+                        // 可以考虑为没有明确分类的 API (如 /api/xxx) 设置一个默认分类
+                    }
                 }
             }
         }
-        console.log(`\n🔍 从 ${sourceDesc} 中找到 ${apiPaths.size} 个 API 定义。`);
-        return apiPaths;
+        console.log(`\n🔍 从 ${sourceDesc} 中找到 ${allApiPaths.size} 个 API 定义，分布在 ${Object.keys(apiPathsByCategory).length} 个分类中。`);
+        return { allDefinedApis: allApiPaths, definedApisByCategory: apiPathsByCategory };
     } catch (err) {
         if (err.code === 'ENOENT') {
              console.error(`❌ 错误：无法在指定路径找到 router.go 文件: ${filePath}`);
@@ -110,7 +118,7 @@ async function getDefinedApis(filePath) { // 参数名改为 filePath 更清晰
         } else {
             console.error(`❌ 读取或解析 ${sourceDesc} 出错:`, err);
         }
-        return new Set(); // 返回空集合，避免后续出错
+        return { allDefinedApis: new Set(), definedApisByCategory: {} }; // 返回空集合，避免后续出错
     }
 }
 
@@ -118,11 +126,10 @@ async function getDocumentedApis(basePath, indexFile) {
     const documentedApis = new Set();
     const pageFiles = new Set(); // Keep for logging or potential future use
 
-    // Regex for fallback (kept for compatibility)
-    const apiPathRegexFallback = /(?:(?:GET|POST|PUT|DELETE|PATCH)?\s+)?(?:<code>)?(?:POST\s+)?(\/api\/[a-zA-Z0-9\/-]+)(?:<\/code>)?/g;
+    // Regex for fallback (kept for compatibility) - Corrected regex and lookahead
+    const apiPathRegexFallback = /(?:(?:GET|POST|PUT|DELETE|PATCH)?\s+)?(?:<code>)?(?:POST\s+)?(\/api\/[a-zA-Z0-9\/-]+)(?:<\/code>)?(?=[\s<"']|$)/g;
     // Regex to find the new meta tag - Making it more robust
-    // Old: /<meta\s+name=["']siyuan-api-endpoint["']\s+content=["'](\/api\/[^"']+)["']\s*\/?>/i;
-    const metaTagRegex = /<meta[^>]*name\s*=\s*["']siyuan-api-endpoint["'][^>]*content\s*=\s*["'](\/api\/[^"']+)["'][^>]*>/i;
+    const metaTagRegex = /<meta[^>]*name\s*=\s*["']siyuan-api-endpoint["'][^>]*content\s*=\s*["'](\/api\/[^"']+)["'][^>]*>/i; // Corrected regex
 
 
     try {
@@ -161,10 +168,12 @@ async function getDocumentedApis(basePath, indexFile) {
                             // --- Priority: Check for meta tag ---
                             const metaMatch = fileContent.match(metaTagRegex);
                             if (metaMatch && metaMatch[1]) {
-                                const apiPath = metaMatch[1].trim();
-                                // if (isTargetFile) console.log(`  [DEBUG Meta Found] API Path: ${apiPath}`); // DEBUG META FOUND - Removed
-                                documentedApis.add(apiPath);
-                                foundApi = true;
+                                const apiPath = cleanApiPath(metaMatch[1]); // <--- 使用清理函数
+                                // if (isTargetFile) console.log(`  [DEBUG Meta Found] Cleaned API Path: ${apiPath}`); // DEBUG META FOUND - Modified
+                                if (apiPath) { // 确保清理后路径有效
+                                   documentedApis.add(apiPath);
+                                   foundApi = true;
+                                }
                             } else {
                                 // if (isTargetFile) { // DEBUG META NOT FOUND - Removed
                                 //      console.log("  [DEBUG Meta Not Found]"); 
@@ -178,8 +187,10 @@ async function getDocumentedApis(basePath, indexFile) {
                                 let apiMatchFallback;
                                 while ((apiMatchFallback = apiPathRegexFallback.exec(fileContent)) !== null) {
                                     if (apiMatchFallback[1]) {
-                                        const apiPath = apiMatchFallback[1].trim();
-                                        documentedApis.add(apiPath);
+                                        const apiPath = cleanApiPath(apiMatchFallback[1]); // <--- 使用清理函数
+                                        if (apiPath) { // 确保清理后路径有效
+                                            documentedApis.add(apiPath);
+                                        }
                                     }
                                 }
                             }
@@ -209,21 +220,179 @@ async function getDocumentedApis(basePath, indexFile) {
     }
 }
 
-async function findUndocumentedApis() {
-    // --- 新增：在检查前先更新本地思源仓库 ---
-    console.log(`
-🔄 正在尝试更新本地思源仓库: ${siyuanRepoPath}`);
+// --- 检查 API 文件结构 (一对一) ---
+// (改为扫描所有物理目录检查孤立文件，并基于定义检查缺失文件)
+async function checkApiFileStructure(definedApisSet, basePath) {
+    console.log('\n📂 开始检查 API 文件结构 (一对一匹配)...');
+    const orphanedDocs = [];
+    const missingDocs = [];
+    const foundDocFilePaths = new Set(); // 存储找到的实际文档文件绝对路径
+    let scannedFilesCount = 0;
+
+    // --- 第一遍：扫描物理目录，查找孤立文件并记录实际文件路径 ---
+    let physicalDirs = [];
     try {
-        // 检查思源仓库目录是否存在
+        physicalDirs = (await fs.readdir(basePath, { withFileTypes: true }))
+            .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('.')); // 过滤掉隐藏目录等
+    } catch (err) {
+        console.error(`   ❌ 无法读取基础目录 ${basePath}:`, err.message);
+        return; // 无法继续检查
+    }
+
+    for (const physDir of physicalDirs) {
+        const dirPath = path.join(basePath, physDir.name);
+        let filesInDir = [];
+        try {
+            filesInDir = await fs.readdir(dirPath);
+        } catch (dirErr) {
+            if (dirErr.code !== 'ENOENT') {
+                console.error(`   ❌ 读取目录 ${dirPath} 出错:`, dirErr.message);
+            }
+            continue; // 跳过无法读取的目录
+        }
+
+        for (const file of filesInDir) {
+            if (file.endsWith('.html') && file !== 'index.html') {
+                scannedFilesCount++;
+                const actualFilePath = path.resolve(dirPath, file); // 使用绝对路径
+                foundDocFilePaths.add(actualFilePath);
+
+                // 推断 API 并检查是否孤立
+                const fileNameWithoutExt = path.basename(file, '.html');
+                const expectedApiPath = cleanApiPath(`/api/${physDir.name}/${fileNameWithoutExt}`);
+
+                if (expectedApiPath && !definedApisSet.has(expectedApiPath)) {
+                     // 检查推断出的 API 是否在定义中
+                     orphanedDocs.push({ path: expectedApiPath, file: path.join(physDir.name, file) });
+                }
+            }
+        }
+    }
+
+    // --- 第二遍：基于 API 定义检查缺失的文件 ---
+    for (const definedApi of definedApisSet) {
+        const parts = definedApi.split('/');
+        // 假设 API 路径格式为 /api/category/endpoint 或更长
+        if (parts.length >= 4 && parts[1] === 'api') {
+            const category = parts[2];
+            const endpointName = parts[parts.length - 1]; 
+            // 构建预期的绝对文件路径
+            const expectedFilePath = path.resolve(basePath, category, `${endpointName}.html`);
+
+            if (!foundDocFilePaths.has(expectedFilePath)) {
+                missingDocs.push(definedApi);
+            }
+        } else {
+            // 可以选择报告格式不规范的 API 定义
+            // console.warn(`   ⚠️ 无法为 API ${definedApi} 推断预期的文件路径，格式不符合 /api/category/endpoint`);
+        }
+    }
+
+    // --- 报告结果 ---
+    console.log(`   扫描了 ${physicalDirs.length} 个物理子目录中的 ${scannedFilesCount} 个非索引 HTML 文件.`);
+    if (missingDocs.length === 0) {
+        console.log('   ✅ 文件结构检查：所有定义的 API 都有对应的文档文件。');
+    } else {
+        console.log(`   🚨 文件结构检查：发现 ${missingDocs.length} 个 API 缺少对应的文档文件:`);
+        missingDocs.sort().forEach(api => console.log(`     - ${api}`));
+    }
+
+    if (orphanedDocs.length === 0) {
+        console.log('   ✅ 文件结构检查：未发现孤立的文档文件。');
+    } else {
+        console.log(`   ⚠️ 文件结构检查：发现 ${orphanedDocs.length} 个孤立的文档文件 (定义不存在或路径/名称错误):`);
+        orphanedDocs.sort((a, b) => a.path.localeCompare(b.path)).forEach(doc => console.log(`     - ${doc.path} (来自文件: ${doc.file})`));
+    }
+}
+
+// --- 检查分组索引文件 (index.html) ---
+async function checkGroupIndices(definedApisByCategory, basePath) {
+    console.log('\n📄 开始检查分组索引文件 (index.html)... ');
+    const indexLinkRegex = /<a\s+[^>]*href\s*=\s*["'][^"']+\.html["'][^>]*>(\/api\/[^<]+)<\/a>/gi; // 提取链接文本中的 API
+    const categoriesFromCode = Object.keys(definedApisByCategory); // 从代码确定分类
+
+    for (const category of categoriesFromCode) {
+        const indexPath = path.join(basePath, category, 'index.html');
+        const definedApisInThisCategory = definedApisByCategory[category] || new Set();
+        let apisInIndexHtml = new Set();
+        let indexExists = false;
+
+        try {
+            const indexContent = await fs.readFile(indexPath, 'utf-8');
+            indexExists = true;
+            let match;
+            while ((match = indexLinkRegex.exec(indexContent)) !== null) {
+                if (match[1]) {
+                    const cleanedPath = cleanApiPath(match[1]);
+                    if (cleanedPath && cleanedPath.startsWith(`/api/${category}/`)) { // 确保 API 属于当前分类
+                        apisInIndexHtml.add(cleanedPath);
+                    } else if (cleanedPath) {
+                        // console.warn(`   ⚠️ 在 ${category}/index.html 中发现不属于该分类的链接: ${cleanedPath}`);
+                    }
+                }
+            }
+        } catch (readErr) {
+            if (readErr.code !== 'ENOENT') {
+                console.error(`   ❌ 读取索引文件 ${path.join(category, 'index.html')} 出错:`, readErr.message);
+            } else {
+                // 文件不存在
+            }
+        }
+
+        // === 报告逻辑 (基于代码中定义的分类进行检查) ===
+        if (definedApisInThisCategory.size > 0) {
+            // 分类中有 API 定义 (理论上这个条件总是满足，因为是按 categoriesFromCode 遍历的)
+            if (!indexExists) {
+                console.log(`   🚨 索引检查 [${category}]: 分组在代码中存在 API 定义，但缺少 index.html 文件!`);
+            } else {
+                // index.html 存在，进行比较
+                const missingInIndex = [];
+                for (const definedApi of definedApisInThisCategory) {
+                    if (!apisInIndexHtml.has(definedApi)) {
+                        missingInIndex.push(definedApi);
+                    }
+                }
+
+                const extraneousInIndex = [];
+                for (const indexApi of apisInIndexHtml) {
+                    if (!definedApisInThisCategory.has(indexApi)) {
+                        extraneousInIndex.push(indexApi);
+                    }
+                }
+
+                if (missingInIndex.length === 0 && extraneousInIndex.length === 0) {
+                    console.log(`   ✅ 索引检查 [${category}]: index.html 内容与 API 定义一致 (${definedApisInThisCategory.size} 个)。`);
+                } else {
+                    if (missingInIndex.length > 0) {
+                        console.log(`   🚨 索引检查 [${category}]: index.html 中缺少 ${missingInIndex.length} 个 API 列表项:`);
+                        missingInIndex.sort().forEach(api => console.log(`     - ${api}`));
+                    }
+                    if (extraneousInIndex.length > 0) {
+                        console.log(`   ⚠️ 索引检查 [${category}]: index.html 中包含 ${extraneousInIndex.length} 个多余/错误的 API 列表项:`);
+                        extraneousInIndex.sort().forEach(api => console.log(`     - ${api}`));
+                    }
+                }
+            }
+        } else {
+            // 分类中没有 API 定义 (理论上不应该进入这个分支了)
+            // 这里可以添加逻辑来处理代码中没有 API 但存在 index.html 的情况，但这需要先扫描文件系统获取所有目录
+            // console.warn(`   [DEBUG] Category ${category} has no defined APIs in code, skipping index check based on code.`);
+        }
+        // === 结束报告逻辑 ===
+    }
+    // (可以考虑增加逻辑：扫描 basePath 下所有目录，找出那些存在 index.html 但未在 categoriesFromCode 中的目录，报告为可能的孤立索引)
+}
+
+// 主函数 - 重构以执行双重校验
+async function findUndocumentedApis() {
+    // --- 更新本地思源仓库 ---
+    console.log(`\n🔄 正在尝试更新本地思源仓库: ${siyuanRepoPath}`);
+    try {
         await fs.access(siyuanRepoPath);
-
-        // 检查 .git 目录是否存在，确认是 Git 仓库
         await fs.access(path.join(siyuanRepoPath, '.git'));
-
         console.log(`   切换到目录: ${siyuanRepoPath}`);
-        const pullOutput = execSync('git pull', { cwd: siyuanRepoPath, encoding: 'utf-8', stdio: 'pipe' }); // 使用 stdio: 'pipe' 捕获输出和错误
+        const pullOutput = execSync('git pull', { cwd: siyuanRepoPath, encoding: 'utf-8', stdio: 'pipe' });
         console.log('✅ 本地思源仓库更新成功:');
-        // 只打印简洁的输出，避免过多无关信息
         const lines = pullOutput.split('\n').filter(line => line.trim() !== '' && !line.startsWith('From '));
         console.log(lines.join('\n'));
     } catch (error) {
@@ -243,34 +412,27 @@ async function findUndocumentedApis() {
     }
     // --- 更新结束 ---
 
-    console.log(`
-ℹ️ 将从本地路径读取 router.go: ${routerGoPath}`); // 把日志移到这里
-    console.log('🚀 开始检查 API 文档覆盖情况 (基于本地 router.go)...'); // 更新日志
-
-    // 直接传递本地路径给 getDefinedApis
-    const definedApisRaw = await getDefinedApis(routerGoPath);
-    if (definedApisRaw.size === 0) {
-        // 之前的错误消息已在 getDefinedApis 中打印，这里只简单提示
+    // --- 读取和解析 router.go ---
+    console.log(`\nℹ️ 将从本地路径读取 router.go: ${routerGoPath}`);
+    const { allDefinedApis, definedApisByCategory } = await getDefinedApis(routerGoPath);
+    if (allDefinedApis.size === 0) {
         console.log('🤷‍♀️ 未能在本地 router.go 中找到任何 API 定义或读取文件失败，检查结束。');
         return;
     }
+    console.log('🚀 开始双重校验 API 文档覆盖情况...');
 
+    // --- 执行校验 ---
+    // 1. 检查文件结构 (一对一)
+    await checkApiFileStructure(allDefinedApis, apiDocBasePath);
+
+    // 2. 检查分组索引 (index.html)
+    await checkGroupIndices(definedApisByCategory, apiDocBasePath);
+
+    // --- (移除旧的比较逻辑) ---
+    /*
     const documentedApisRaw = await getDocumentedApis(apiDocBasePath, indexHtmlPath);
-
-    // 清理 API 路径：去除首尾空格/换行符
-    const definedApis = new Set([...definedApisRaw].map(api => api.trim()));
+    const definedApis = new Set([...allDefinedApis].map(api => api.trim())); // 使用 allDefinedApis
     const documentedApis = new Set([...documentedApisRaw].map(api => api.trim()));
-
-    // --- DEBUG: Print the contents of both Sets before comparison ---
-    // console.log('\n--- Defined APIs (from router.go) --- Check Count:', definedApis.size); // DEBUG - Removed
-    // const sortedDefinedApis = [...definedApis].sort();
-    // console.log(JSON.stringify(sortedDefinedApis, null, 2));
-
-    // console.log('\n--- Documented APIs (from HTML meta/regex) --- Check Count:', documentedApis.size); // DEBUG - Removed
-    // const sortedDocumentedApis = [...documentedApis].sort();
-    // console.log(JSON.stringify(sortedDocumentedApis, null, 2));
-    // console.log('--- End Debug Print ---\n');
-    // --- End DEBUG ---
 
     const undocumentedApis = [];
     for (const api of definedApis) {
@@ -279,14 +441,12 @@ async function findUndocumentedApis() {
         }
     }
 
-    // --- 新增：查找多余的 API 引用 ---
     const extraneousApis = [];
     for (const api of documentedApis) {
         if (!definedApis.has(api)) {
             extraneousApis.push(api);
         }
     }
-    // --- 结束新增 ---
 
     if (undocumentedApis.length === 0) {
         console.log('\n🎉 太棒了！所有在 router.go 中定义的 API 都已在文档中找到引用。');
@@ -297,15 +457,15 @@ async function findUndocumentedApis() {
         );
     }
 
-    // --- 新增：报告多余的 API 引用 ---
     if (extraneousApis.length > 0) {
         console.log(`\n⚠️ 警告：发现 ${extraneousApis.length} 个 API 引用存在于文档中，但在 router.go 中未定义：`);
         extraneousApis.sort().forEach(api => console.log(`   - ${api}`));
         console.log('\n   请检查这些文档是否已过时、meta 标签是否错误，或是否是脚本解析 fallback 导致的误报。');
     }
-    // --- 结束新增 ---
+    */
+    // --- 结束移除旧逻辑 ---
 
-    console.log('\n🏁 检查完成。');
+    console.log('\n🏁 双重校验完成。请查看上面的详细报告。 ');
 }
 
 findUndocumentedApis(); 
