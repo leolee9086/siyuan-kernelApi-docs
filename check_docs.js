@@ -306,81 +306,121 @@ async function checkApiFileStructure(definedApisSet, basePath) {
 }
 
 // --- 检查分组索引文件 (index.html) ---
+// (改为扫描所有物理目录的 index.html, 再与代码定义对比)
 async function checkGroupIndices(definedApisByCategory, basePath) {
     console.log('\n📄 开始检查分组索引文件 (index.html)... ');
     const indexLinkRegex = /<a\s+[^>]*href\s*=\s*["'][^"']+\.html["'][^>]*>(\/api\/[^<]+)<\/a>/gi; // 提取链接文本中的 API
     const categoriesFromCode = Object.keys(definedApisByCategory); // 从代码确定分类
+    
+    const foundIndexFilesByCategory = {}; // 存储找到的 index.html 内容: { category: Set<apiPath> }
+    const categoriesWithExistingIndex = new Set(); // 记录哪些分类实际找到了 index.html
 
-    for (const category of categoriesFromCode) {
-        const indexPath = path.join(basePath, category, 'index.html');
-        const definedApisInThisCategory = definedApisByCategory[category] || new Set();
+    // --- 第一步：扫描物理目录，查找并解析所有存在的 index.html ---
+    let physicalDirs = [];
+    try {
+        physicalDirs = (await fs.readdir(basePath, { withFileTypes: true }))
+            .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('.'));
+    } catch (err) {
+        console.error(`   ❌ 无法读取基础目录 ${basePath}:`, err.message);
+        return; // 无法继续检查
+    }
+
+    for (const physDir of physicalDirs) {
+        const categoryName = physDir.name;
+        const indexPath = path.join(basePath, categoryName, 'index.html');
         let apisInIndexHtml = new Set();
-        let indexExists = false;
 
         try {
             const indexContent = await fs.readFile(indexPath, 'utf-8');
-            indexExists = true;
+            categoriesWithExistingIndex.add(categoryName); // 标记找到了 index.html
             let match;
             while ((match = indexLinkRegex.exec(indexContent)) !== null) {
                 if (match[1]) {
                     const cleanedPath = cleanApiPath(match[1]);
-                    if (cleanedPath && cleanedPath.startsWith(`/api/${category}/`)) { // 确保 API 属于当前分类
-                        apisInIndexHtml.add(cleanedPath);
-                    } else if (cleanedPath) {
-                        // console.warn(`   ⚠️ 在 ${category}/index.html 中发现不属于该分类的链接: ${cleanedPath}`);
+                    // 暂时不过滤是否属于本分类，后续比较时处理
+                    if (cleanedPath) {
+                         apisInIndexHtml.add(cleanedPath);
                     }
                 }
             }
+            foundIndexFilesByCategory[categoryName] = apisInIndexHtml;
         } catch (readErr) {
-            if (readErr.code !== 'ENOENT') {
-                console.error(`   ❌ 读取索引文件 ${path.join(category, 'index.html')} 出错:`, readErr.message);
-            } else {
-                // 文件不存在
+            if (readErr.code !== 'ENOENT') { // 只忽略文件不存在错误
+                console.error(`   ❌ 读取索引文件 ${path.join(categoryName, 'index.html')} 出错:`, readErr.message);
             }
+            // 如果文件不存在， categoriesWithExistingIndex 就不会包含这个 categoryName
         }
+    }
 
-        // === 报告逻辑 (基于代码中定义的分类进行检查) ===
-        if (definedApisInThisCategory.size > 0) {
-            // 分类中有 API 定义 (理论上这个条件总是满足，因为是按 categoriesFromCode 遍历的)
-            if (!indexExists) {
-                console.log(`   🚨 索引检查 [${category}]: 分组在代码中存在 API 定义，但缺少 index.html 文件!`);
+    // --- 第二步：对比并报告 --- 
+    
+    // 2.1 检查代码中定义的分类
+    console.log('   --- 对比代码定义与索引文件 ---');
+    for (const codeCategory of categoriesFromCode) {
+        const definedApisInThisCategory = definedApisByCategory[codeCategory];
+
+        if (categoriesWithExistingIndex.has(codeCategory)) {
+            // 代码定义的分类，且找到了 index.html
+            const apisInIndexHtml = foundIndexFilesByCategory[codeCategory];
+            const missingInIndex = [];
+            const extraneousInIndex = [];
+            const actuallyInCategoryInIndex = new Set(); // 存储 index.html 中真正属于本分类的 API
+
+            // 筛选 index.html 中真正属于本分类的 API
+            for(const api of apisInIndexHtml){
+                if(api.startsWith(`/api/${codeCategory}/`)){
+                    actuallyInCategoryInIndex.add(api);
+                }
+                // (可以考虑报告那些不属于本分类的链接)
+            }
+
+            // 比较
+            for (const definedApi of definedApisInThisCategory) {
+                if (!actuallyInCategoryInIndex.has(definedApi)) {
+                    missingInIndex.push(definedApi);
+                }
+            }
+            for (const indexApi of actuallyInCategoryInIndex) {
+                if (!definedApisInThisCategory.has(indexApi)) {
+                    extraneousInIndex.push(indexApi);
+                }
+            }
+
+            if (missingInIndex.length === 0 && extraneousInIndex.length === 0) {
+                console.log(`   ✅ 索引检查 [${codeCategory}]: index.html 内容与 API 定义一致 (${definedApisInThisCategory.size} 个)。`);
             } else {
-                // index.html 存在，进行比较
-                const missingInIndex = [];
-                for (const definedApi of definedApisInThisCategory) {
-                    if (!apisInIndexHtml.has(definedApi)) {
-                        missingInIndex.push(definedApi);
-                    }
+                if (missingInIndex.length > 0) {
+                    console.log(`   🚨 索引检查 [${codeCategory}]: index.html 中缺少 ${missingInIndex.length} 个 API 列表项:`);
+                    missingInIndex.sort().forEach(api => console.log(`     - ${api}`));
                 }
-
-                const extraneousInIndex = [];
-                for (const indexApi of apisInIndexHtml) {
-                    if (!definedApisInThisCategory.has(indexApi)) {
-                        extraneousInIndex.push(indexApi);
-                    }
-                }
-
-                if (missingInIndex.length === 0 && extraneousInIndex.length === 0) {
-                    console.log(`   ✅ 索引检查 [${category}]: index.html 内容与 API 定义一致 (${definedApisInThisCategory.size} 个)。`);
-                } else {
-                    if (missingInIndex.length > 0) {
-                        console.log(`   🚨 索引检查 [${category}]: index.html 中缺少 ${missingInIndex.length} 个 API 列表项:`);
-                        missingInIndex.sort().forEach(api => console.log(`     - ${api}`));
-                    }
-                    if (extraneousInIndex.length > 0) {
-                        console.log(`   ⚠️ 索引检查 [${category}]: index.html 中包含 ${extraneousInIndex.length} 个多余/错误的 API 列表项:`);
-                        extraneousInIndex.sort().forEach(api => console.log(`     - ${api}`));
-                    }
+                if (extraneousInIndex.length > 0) {
+                    console.log(`   ⚠️ 索引检查 [${codeCategory}]: index.html 中包含 ${extraneousInIndex.length} 个多余/错误的 API 列表项:`);
+                    extraneousInIndex.sort().forEach(api => console.log(`     - ${api}`));
                 }
             }
         } else {
-            // 分类中没有 API 定义 (理论上不应该进入这个分支了)
-            // 这里可以添加逻辑来处理代码中没有 API 但存在 index.html 的情况，但这需要先扫描文件系统获取所有目录
-            // console.warn(`   [DEBUG] Category ${category} has no defined APIs in code, skipping index check based on code.`);
+            // 代码定义的分类，但没有找到 index.html
+            console.log(`   🚨 索引检查 [${codeCategory}]: 分组在代码中存在 API 定义，但缺少 index.html 文件!`);
         }
-        // === 结束报告逻辑 ===
     }
-    // (可以考虑增加逻辑：扫描 basePath 下所有目录，找出那些存在 index.html 但未在 categoriesFromCode 中的目录，报告为可能的孤立索引)
+
+    // 2.2 检查实际找到但代码中未定义的索引文件 (孤立索引)
+    console.log('   --- 检查孤立的索引文件 ---');
+    let foundOrphanedIndex = false;
+    for (const indexCategory of categoriesWithExistingIndex) {
+        if (!definedApisByCategory.hasOwnProperty(indexCategory)) {
+            foundOrphanedIndex = true;
+            const apisInIndexHtml = foundIndexFilesByCategory[indexCategory];
+            console.log(`   ⚠️ 索引检查 [${indexCategory}]: index.html 存在但分组无对应 API 定义 (可能已过时或指代特殊路由)。`);
+            if (apisInIndexHtml.size > 0) {
+                console.log(`      > 该 index.html 文件中包含 ${apisInIndexHtml.size} 个无法验证的 API 列表项:`);
+                [...apisInIndexHtml].sort().forEach(api => console.log(`        - ${api}`));
+            }
+        }
+    }
+    if (!foundOrphanedIndex) {
+        console.log('   ✅ 未发现孤立的 index.html 文件。');
+    }
 }
 
 // 主函数 - 重构以执行双重校验
