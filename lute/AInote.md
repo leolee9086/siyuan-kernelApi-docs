@@ -1,4 +1,13 @@
 # 这个区段由开发者编写,未经允许禁止AI修改
+
+# 修改记录
+
+## 2024-XX-XX (织)
+*   **新增**: 创建了 `copyStdMarkdown.html` API 文档。
+    *   根据 `kernel/api/lute.go` 和 `router.go` 源码补充了文档内容（获取块的标准 Markdown）。
+    *   添加了非官方声明、赞助链接和在线测试功能。
+    *   参考了同目录下其他文档和模板。
+
 <Lute文本处理API文档生成>
 
 ## Lute API说明
