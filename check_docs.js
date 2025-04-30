@@ -1,8 +1,10 @@
 'use strict';
 
-const fs = require('fs').promises;
+// const fs = require('fs').promises; // 旧的导入方式
+const fs = require('fs'); // <-- 导入整个 fs 模块
+const fsPromises = require('fs').promises; // <-- 单独导入 promises 版本给异步操作用
 const path = require('path');
-const https = require('https'); // <-- 引入 https 模块
+const https = require('https'); // 这个可能不再需要了
 const { execSync } = require('child_process'); // <-- 引入 execSync 用于执行 shell 命令
 
 // --- Git 仓库路径 ---
@@ -12,7 +14,7 @@ const siyuanRepoPath = path.resolve(__dirname, '../siyuan');
 // --- 自动拉取最新思源代码 --- (新增函数)
 function pullLatestSiyuanCode(repoPath) {
     console.log(`\n🔄 正在尝试拉取最新的思源主代码: ${repoPath}`);
-    if (!fs.existsSync(repoPath)) {
+    if (!fs.existsSync(repoPath)) { // 现在可以用了
         console.warn(`   ⚠️ 警告：指定的思源仓库目录不存在: ${repoPath}`);
         console.warn('   ⚠️ 跳过 git pull 操作。脚本将使用现有的 router.go (如果存在)。');
         return false;
@@ -46,7 +48,6 @@ console.log(`ℹ️ 将从本地路径读取 router.go: ${routerGoPath}`); // �
 // ---------------
 
 // --- 配置路径 ---
-// const routerGoPath = path.resolve(__dirname, '../kernel/api/router.go'); // <--- 注释掉本地路径
 const apiDocBasePath = __dirname;
 const indexHtmlPath = path.join(apiDocBasePath, 'index.html');
 const pagesDir = path.join(apiDocBasePath, 'pages');
@@ -57,10 +58,11 @@ const apiSubDirs = [
     'pages', 'av', 'file', 'export', 'template', 'attr', 'asset', 'archive', 
     'ai', 'account', 'ref', 'search', 'history', 'cloud', 'format', 'lute', 
     'filetree', 'storage', 'tag', 'bookmark', 'outline', 'block', 'notebook', 
-    'system', 'query', 'repo', 'riff', 'graph', 'sqlite', 'transactions', 'rpc', // <-- 增加了 sqlite, transactions, rpc
+    'system', 'query', 'repo', 'riff', 'graph', 'sqlite', 'transactions', 'rpc', 
     'import', 'notification', 'extension',
     'bazaar', 'broadcast', 'clipboard', 'convert', 'setting',
-    'network', 'petal', 'snippet', 'sqlite', 'sync', 'transactions' // <-- 重复添加 sqlite, transactions, 已移动到前面
+    'network', 'petal', 'snippet', 'sync', // <-- 添加了 sync 目录
+    'icon', 'ui' // <-- 添加了 icon 和 ui 目录
     // 如果有新增的分类目录，记得添加到这里
 ];
 // ---------------
@@ -71,12 +73,12 @@ async function getDefinedApis(filePath) { // 参数名改为 filePath 更清晰
     let sourceDesc = `本地文件 ${path.basename(filePath)}`;
     try {
         // 直接读取本地文件
-        content = await fs.readFile(filePath, 'utf-8');
+        content = await fsPromises.readFile(filePath, 'utf-8'); // <-- 使用 promises 版本
 
         const lines = content.split('\n');
         const apiPaths = new Set();
         // 稍微调整正则，更精确匹配 API 定义行
-        const apiRegex = /^\s*ginServer\.(?:Handle|Any|GET|POST|PUT|DELETE|PATCH)\(\s*"[^"+]+",\s*"(\/api\/[^"+,]+)"/;
+        const apiRegex = /^\s*ginServer\.(?:Handle|Any|GET|POST|PUT|DELETE|PATCH)\(s*"[^"+]+",\s*"(\/api\/[^"+,]+)"/;
 
         for (const line of lines) {
             // 跳过注释和空行
@@ -117,13 +119,12 @@ async function getDocumentedApis(basePath, indexFile) {
     // Regex for fallback (kept for compatibility)
     const apiPathRegexFallback = /(?:(?:GET|POST|PUT|DELETE|PATCH)?\s+)?(?:<code>)?(?:POST\s+)?(\/api\/[a-zA-Z0-9\/-]+)(?:<\/code>)?/g;
     // Regex to find the new meta tag - Making it more robust
-    // Old: /<meta\s+name=["']siyuan-api-endpoint["']\s+content=["'](\/api\/[^"']+)["']\s*\/?>/i;
     const metaTagRegex = /<meta[^>]*name\s*=\s*["']siyuan-api-endpoint["'][^>]*content\s*=\s*["'](\/api\/[^"']+)["'][^>]*>/i;
 
 
     try {
         // 1. Log pages found in index.html (optional)
-        const indexContent = await fs.readFile(indexFile, 'utf-8');
+        const indexContent = await fsPromises.readFile(indexFile, 'utf-8'); // <-- 使用 promises 版本
         const pageLinkRegex = /href=["'](pages\/[^"]+\.html)["']/g; // Adjusted regex slightly for quotes
         let match;
         while ((match = pageLinkRegex.exec(indexContent)) !== null) {
@@ -137,50 +138,44 @@ async function getDocumentedApis(basePath, indexFile) {
         for (const subDir of apiSubDirs) {
             const dirPath = path.join(basePath, subDir);
             try {
-                const filesInDir = await fs.readdir(dirPath);
-
-                // Keep debug log for export dir if needed
-                // if (subDir === 'export') {
-                //     console.log(`\n📂 扫描 ${subDir} 目录中的文件:`, filesInDir);
-                // }
+                 // 尝试创建目录（如果不存在），忽略已存在错误
+                 await fsPromises.mkdir(dirPath, { recursive: true }); 
+                 
+                const filesInDir = await fsPromises.readdir(dirPath); // <-- 使用 promises 版本
 
                 for (const file of filesInDir) {
                     if (file.endsWith('.html')) {
                         scannedFilesCount++;
                         const filePath = path.join(dirPath, file);
                         try {
-                            const fileContent = await fs.readFile(filePath, 'utf-8');
+                            const fileContent = await fsPromises.readFile(filePath, 'utf-8'); // <-- 使用 promises 版本
                             let foundApi = false;
-                            // const isTargetFile = file === 'importStdMd.html' || file === 'pushMsg.html' || file === 'pushErrMsg.html'; // DEBUG: Flag for target files - Removed
-                            // if (isTargetFile) console.log(`\\n--- DEBUG Processing Target File: ${path.join(subDir, file)} ---`); // DEBUG START - Removed
-
+                            
                             // --- Priority: Check for meta tag ---
                             const metaMatch = fileContent.match(metaTagRegex);
                             if (metaMatch && metaMatch[1]) {
                                 const apiPath = metaMatch[1].trim();
-                                // if (isTargetFile) console.log(`  [DEBUG Meta Found] API Path: ${apiPath}`); // DEBUG META FOUND - Removed
                                 documentedApis.add(apiPath);
                                 foundApi = true;
-                            } else {
-                                // if (isTargetFile) { // DEBUG META NOT FOUND - Removed
-                                //      console.log("  [DEBUG Meta Not Found]"); 
-                                //      console.log("  [DEBUG File Head]:\n" + fileContent.split('\n').slice(0, 15).join('\n'));
-                                // }
-                            }
+                            } 
                             // --- End Meta Tag Check ---
 
-                            // --- Fallback: Use Regex (only if meta tag not found) ---
+                            // --- Fallback: Use Regex (only if meta tag not found and meta tag was expected) ---
+                            // Fallback logic seems less reliable with explicit meta tags, maybe remove or refine?
+                            // Let's keep it for now but rely primarily on the meta tag.
                             if (!foundApi) {
                                 let apiMatchFallback;
                                 while ((apiMatchFallback = apiPathRegexFallback.exec(fileContent)) !== null) {
                                     if (apiMatchFallback[1]) {
                                         const apiPath = apiMatchFallback[1].trim();
-                                        documentedApis.add(apiPath);
+                                        // Avoid adding duplicates if meta tag was just missing
+                                        // documentedApis.add(apiPath); 
+                                        // Maybe log a warning instead?
+                                        // console.warn(`   ⚠️ 文件 ${path.join(subDir, file)} 可能缺少 meta 标签，但通过正则匹配到 API: ${apiPath}`);
                                     }
                                 }
                             }
                             // --- End Regex Fallback ---
-                            // if (isTargetFile) console.log("--- End DEBUG Processing Target File ---"); // DEBUG END - Removed
 
                         } catch (scanErr) {
                             // Log error but continue scanning other files
@@ -189,10 +184,8 @@ async function getDocumentedApis(basePath, indexFile) {
                     }
                 }
             } catch (dirErr) {
-                 if (dirErr.code === 'ENOENT') {
-                     // Directory doesn't exist (e.g., 'ai' before creation), skip silently
-                 } else {
-                    console.error(`   ❌ 读取目录 ${dirPath} 出错:`, dirErr.message);
+                 if (dirErr.code !== 'ENOENT') { // ENOENT should be handled by mkdir now
+                    console.error(`   ❌ 读取或创建目录 ${dirPath} 出错:`, dirErr.message);
                  }
             }
         }
@@ -225,16 +218,6 @@ async function findUndocumentedApis() {
     const definedApis = new Set([...definedApisRaw].map(api => api.trim()));
     const documentedApis = new Set([...documentedApisRaw].map(api => api.trim()));
 
-    // --- DEBUG: Print the contents of both Sets before comparison ---
-    // console.log('\n--- Defined APIs (from router.go) --- Check Count:', definedApis.size); // DEBUG - Removed
-    // const sortedDefinedApis = [...definedApis].sort();
-    // console.log(JSON.stringify(sortedDefinedApis, null, 2));
-
-    // console.log('\n--- Documented APIs (from HTML meta/regex) --- Check Count:', documentedApis.size); // DEBUG - Removed
-    // const sortedDocumentedApis = [...documentedApis].sort();
-    // console.log(JSON.stringify(sortedDocumentedApis, null, 2));
-    // console.log('--- End Debug Print ---\n');
-    // --- End DEBUG ---
 
     const undocumentedApis = [];
     for (const api of definedApis) {
@@ -243,13 +226,29 @@ async function findUndocumentedApis() {
         }
     }
 
-    if (undocumentedApis.length === 0) {
-        console.log('\n🎉 太棒了！所有在 router.go 中定义的 API 都已在文档中找到引用。');
+    // --- 新增：检查多余文档 ---
+    const extraDocumentedApis = [];
+    for (const api of documentedApis) {
+        if (!definedApis.has(api)) {
+            extraDocumentedApis.push(api);
+        }
+    }
+    // --------------------------
+
+    if (undocumentedApis.length === 0 && extraDocumentedApis.length === 0) {
+        console.log('\n🎉 太棒了！所有在 router.go 中定义的 API 都已在文档中找到引用，且没有多余的文档。');
     } else {
-        console.log(`\n🚨 注意：发现 ${undocumentedApis.length} 个 API 可能缺少文档：`);
-        undocumentedApis.sort().forEach(api => console.log(`   - ${api}`));
-        console.log('\n   请检查这些 API 是否需要添加到 apiDoc/pages/ 目录下的相关文档中。\n   注意：此检查基于 API 路径的文本匹配，可能存在误报或漏报。对动态路由（如 :param 或 *path）的处理比较基础。'
-        );
+        if (undocumentedApis.length > 0) {
+            console.log(`\n🚨 注意：发现 ${undocumentedApis.length} 个 API 可能缺少文档：`);
+            undocumentedApis.sort().forEach(api => console.log(`   - ${api}`));
+            console.log('\n   请检查这些 API 是否需要添加到文档中，或者对应的占位符文件是否正确添加了 meta 标签。');
+        }
+        if (extraDocumentedApis.length > 0) {
+            console.log(`\n⚠️ 警告：发现 ${extraDocumentedApis.length} 个 API 在文档中存在引用，但在 router.go 中未定义 (可能是旧文档或 meta 标签错误)：`);
+            extraDocumentedApis.sort().forEach(api => console.log(`   - ${api}`));
+            console.log('\n   请检查这些文档文件是否需要删除或更新。');
+        }
+         console.log('\n   注意：此检查基于 API 路径的文本匹配，可能存在误报或漏报。对动态路由（如 :param 或 *path）的处理比较基础。');
     }
     console.log('\n🏁 检查完成。');
 }
