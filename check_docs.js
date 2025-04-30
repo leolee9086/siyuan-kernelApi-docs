@@ -3,43 +3,41 @@
 const fs = require('fs').promises;
 const path = require('path');
 const https = require('https'); // <-- 引入 https 模块
+const { execSync } = require('child_process'); // <-- 引入 execSync 用于执行 shell 命令
 
-// --- GitHub 配置 --- (注释掉或删除，因为我们要读本地文件了)
-/*
-const GITHUB_CONFIG = {
-    repo: 'siyuan-note/siyuan', // 仓库路径
-    branch: 'master',            // 分支
-    filePath: 'kernel/api/router.go' // 文件路径
-};
-const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.filePath}`;
-*/
+// --- Git 仓库路径 ---
+const siyuanRepoPath = path.resolve(__dirname, '../siyuan');
 // -------------------
 
-// --- 新增：从 GitHub 下载文件的函数 --- (注释掉或删除)
-/*
-async function fetchRouterFromGitHub(url) {
-    console.log(`\n🌐 正在从 GitHub 下载: ${url}`);
-    return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
-            let data = '';
-            if (res.statusCode !== 200) {
-                reject(new Error(`下载失败，状态码: ${res.statusCode}`));
-                return;
-            }
-            res.on('data', (chunk) => {
-                data += chunk;
-            });
-            res.on('end', () => {
-                console.log('✅ 文件下载成功。');
-                resolve(data);
-            });
-        }).on('error', (err) => {
-            reject(new Error(`下载出错: ${err.message}`));
-        });
-    });
+// --- 自动拉取最新思源代码 --- (新增函数)
+function pullLatestSiyuanCode(repoPath) {
+    console.log(`\n🔄 正在尝试拉取最新的思源主代码: ${repoPath}`);
+    if (!fs.existsSync(repoPath)) {
+        console.warn(`   ⚠️ 警告：指定的思源仓库目录不存在: ${repoPath}`);
+        console.warn('   ⚠️ 跳过 git pull 操作。脚本将使用现有的 router.go (如果存在)。');
+        return false;
+    }
+    try {
+        // 检查是否是 Git 仓库
+        execSync('git rev-parse --is-inside-work-tree', { cwd: repoPath, stdio: 'ignore' });
+        console.log('   ✅ 目录确认是 Git 仓库，执行 git pull...');
+        const output = execSync('git pull', { cwd: repoPath, encoding: 'utf-8' });
+        console.log('   ✅ git pull 执行完毕。输出:');
+        console.log(output.split('\n').map(line => `     ${line}`).join('\n')); // 缩进输出
+        return true;
+    } catch (error) {
+        console.error(`   ❌ 执行 git pull 失败: ${error.message}`);
+        if (error.stderr) {
+            console.error(`   ❌ Git Stderr: ${error.stderr.toString()}`);
+        }
+        if (error.stdout) {
+             console.error(`   ❌ Git Stdout: ${error.stdout.toString()}`);
+        }
+        console.warn('   ⚠️ 继续使用当前本地的 router.go。');
+        return false;
+    }
 }
-*/
-// -------------------------------------
+// ------------------------
 
 // --- 本地路径配置 (恢复并更新) ---
 // 使用 path.resolve 确保路径正确，相对于当前脚本文件 (__dirname)
@@ -208,7 +206,10 @@ async function getDocumentedApis(basePath, indexFile) {
 }
 
 async function findUndocumentedApis() {
-    console.log('🚀 开始检查 API 文档覆盖情况 (基于本地 router.go)...'); // 更新日志
+    // 在检查开始前，先拉取最新代码
+    pullLatestSiyuanCode(siyuanRepoPath);
+
+    console.log('\n🚀 开始检查 API 文档覆盖情况 (基于本地 router.go)...');
 
     // 直接传递本地路径给 getDefinedApis
     const definedApisRaw = await getDefinedApis(routerGoPath);
