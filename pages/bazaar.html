@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集市 Bazaar API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+
+    <h1>集市 (Bazaar) API</h1>
+    <p>用于管理思源笔记的扩展，包括插件、主题、图标、挂件和模板等。</p>
+    
+    <h2>获取列表</h2>
+    <ul class="api-list">
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarPlugin.html" class="api-name">获取集市插件列表</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarPlugin</span>
+                <p class="api-desc">获取官方集市中可用的插件列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getInstalledPlugin.html" class="api-name">获取已安装插件列表</a>
+                <span class="api-endpoint">/api/bazaar/getInstalledPlugin</span>
+                <p class="api-desc">获取本地已安装的插件列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarWidget.html" class="api-name">获取集市挂件列表</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarWidget</span>
+                <p class="api-desc">获取官方集市中可用的挂件列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getInstalledWidget.html" class="api-name">获取已安装挂件列表</a>
+                <span class="api-endpoint">/api/bazaar/getInstalledWidget</span>
+                <p class="api-desc">获取本地已安装的挂件列表，支持关键词搜索。</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarIcon.html" class="api-name">获取集市图标列表</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarIcon</span>
+                <p class="api-desc">获取官方集市中可用的图标主题列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getInstalledIcon.html" class="api-name">获取已安装图标列表</a>
+                <span class="api-endpoint">/api/bazaar/getInstalledIcon</span>
+                <p class="api-desc">获取本地已安装的图标主题列表，支持关键词搜索。</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarTemplate.html" class="api-name">获取集市模板列表</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarTemplate</span>
+                <p class="api-desc">获取官方集市中可用的模板列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getInstalledTemplate.html" class="api-name">获取已安装模板列表</a>
+                <span class="api-endpoint">/api/bazaar/getInstalledTemplate</span>
+                <p class="api-desc">获取本地已安装的模板列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarTheme.html" class="api-name">获取集市主题列表</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarTheme</span>
+                <p class="api-desc">获取官方集市中可用的主题列表，支持关键词搜索。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getInstalledTheme.html" class="api-name">获取已安装主题列表</a>
+                <span class="api-endpoint">/api/bazaar/getInstalledTheme</span>
+                <p class="api-desc">获取本地已安装的主题列表，支持关键词搜索。</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="../bazaar/getUpdatedPackage.html" class="api-name">获取可更新包列表</a>
+                <span class="api-endpoint">/api/bazaar/getUpdatedPackage</span>
+                <p class="api-desc">检查本地已安装的扩展包（插件、主题等），返回有可用更新的列表。</p>
+            </div>
+        </li>
+    </ul>
+
+    <h2>安装扩展</h2>
+     <ul class="api-list">
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/installBazaarPlugin.html" class="api-name">安装插件</a>
+                <span class="api-endpoint">/api/bazaar/installBazaarPlugin</span>
+                <p class="api-desc">从集市下载并安装指定的插件。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/installBazaarWidget.html" class="api-name">安装挂件</a>
+                <span class="api-endpoint">/api/bazaar/installBazaarWidget</span>
+                <p class="api-desc">从集市下载并安装指定的挂件。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/installBazaarIcon.html" class="api-name">安装图标</a>
+                <span class="api-endpoint">/api/bazaar/installBazaarIcon</span>
+                <p class="api-desc">从集市下载并安装指定的图标主题。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/installBazaarTemplate.html" class="api-name">安装模板</a>
+                <span class="api-endpoint">/api/bazaar/installBazaarTemplate</span>
+                <p class="api-desc">从集市下载并安装指定的模板。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/installBazaarTheme.html" class="api-name">安装主题</a>
+                <span class="api-endpoint">/api/bazaar/installBazaarTheme</span>
+                <p class="api-desc">从集市下载并安装指定的主题。</p>
+            </div>
+        </li>
+    </ul>
+    
+    <h2>卸载扩展</h2>
+     <ul class="api-list">
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/uninstallBazaarPlugin.html" class="api-name">卸载插件</a>
+                <span class="api-endpoint">/api/bazaar/uninstallBazaarPlugin</span>
+                <p class="api-desc">卸载本地已安装的指定插件。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/uninstallBazaarWidget.html" class="api-name">卸载挂件</a>
+                <span class="api-endpoint">/api/bazaar/uninstallBazaarWidget</span>
+                <p class="api-desc">卸载本地已安装的指定挂件。</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="../bazaar/uninstallBazaarIcon.html" class="api-name">卸载图标</a>
+                <span class="api-endpoint">/api/bazaar/uninstallBazaarIcon</span>
+                <p class="api-desc">卸载本地已安装的指定图标主题。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/uninstallBazaarTemplate.html" class="api-name">卸载模板</a>
+                <span class="api-endpoint">/api/bazaar/uninstallBazaarTemplate</span>
+                <p class="api-desc">卸载本地已安装的指定模板。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/uninstallBazaarTheme.html" class="api-name">卸载主题</a>
+                <span class="api-endpoint">/api/bazaar/uninstallBazaarTheme</span>
+                <p class="api-desc">卸载本地已安装的指定主题。</p>
+            </div>
+        </li>
+    </ul>
+    
+     <h2>其他操作</h2>
+     <ul class="api-list">
+        <li>
+            <div class="api-item">
+                <a href="../bazaar/getBazaarPackageREAME.html" class="api-name">获取包 README</a>
+                <span class="api-endpoint">/api/bazaar/getBazaarPackageREAME</span>
+                <p class="api-desc">获取指定扩展包（插件、主题等）的 README 文件内容（通常是渲染后的 HTML）。</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="../bazaar/batchUpdatePackage.html" class="api-name">批量更新包信息</a>
+                <span class="api-endpoint">/api/bazaar/batchUpdatePackage</span>
+                <p class="api-desc">强制检查并更新本地已安装扩展包的版本等信息。</p>
+            </div>
+        </li>
+    </ul>
+
+</body>
+</html> 

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>globalCopyFiles API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>全局复制文件 API (`/api/file/globalCopyFiles`)</h1>
+            <nav>
+                <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/file.go#L53" target="_blank">在 GitHub 上查看源码</a>
+                <a href="../pages/file.html">返回文件 API 列表</a>
+                <a href="../index.html">返回 API 主页</a>
+            </nav>
+        </header>
+        <main>
+            <section id="description">
+                <h2>接口描述</h2>
+                <p>该接口用于将操作系统临时目录中的文件复制到思源笔记的资源目录 (`data/assets/`)。</p>
+                <p>主要用于处理从外部应用程序（如文件管理器）通过复制粘贴操作传入思源笔记的文件。</p>
+                <p>接口会为复制过来的文件生成唯一的安全文件名，并返回新旧文件名的映射关系。</p>
+            </section>
+
+            <section id="request">
+                <h2>请求</h2>
+                <p><strong>方法:</strong> POST</p>
+                <p><strong>路径:</strong> `/api/file/globalCopyFiles`</p>
+                <p><strong>认证:</strong> 需要 Token</p>
+                <h3>请求体 (JSON)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>必需</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>`paths`</td>
+                            <td>array (of strings)</td>
+                            <td>是</td>
+                            <td>包含要复制的文件在操作系统临时目录中的<strong>绝对路径</strong>的字符串数组。</td>
+                        </tr>
+                        <tr>
+                            <td>`assetPath`</td>
+                            <td>string</td>
+                            <td>是</td>
+                            <td>目标资源路径，相对于工作空间数据目录 (`data/`)，通常是 `assets`。这个参数似乎用于确定目标目录，但实际写入总是在 `data/assets/` 下。</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>请求示例</h3>
+                <pre><code class="language-json">{
+    "paths": [
+        "C:/Users/用户名/AppData/Local/Temp/copied-image.png",
+        "/tmp/another-file.pdf"
+    ],
+    "assetPath": "assets" 
+}</code></pre>
+            </section>
+
+            <section id="response">
+                <h2>响应</h2>
+                <h3>成功响应 (200 OK)</h3>
+                <p>成功复制后，返回一个对象，其中 `files` 字段包含一个映射，键是原始临时文件路径，值是在 `data/assets/` 下生成的新文件名。</p>
+                <pre><code class="language-json">{
+    "code": 0,
+    "msg": "",
+    "data": {
+        "files": {
+            "C:/Users/用户名/AppData/Local/Temp/copied-image.png": "assets/20230518120000-abcdefgh.png",
+            "/tmp/another-file.pdf": "assets/20230518120001-ijklmnop.pdf"
+        }
+    }
+}</code></pre>
+                <h3>失败响应</h3>
+                <p>如果请求失败（例如，路径无效、文件不存在、复制失败等），将返回错误信息。</p>
+                <pre><code class="language-json">{
+    "code": -1,
+    "msg": "Copy file failed: ...", // 或其他错误信息
+    "data": null
+}</code></pre>
+            </section>
+
+            <section id="online-test">
+                <h2>在线测试</h2>
+                 <p><strong>注意:</strong> 此接口操作的是操作系统级的临时文件路径，在线测试器无法直接模拟。你需要确保提供的 `paths` 是当前操作系统中实际存在的临时文件路径。</p>
+                <form id="test-form">
+                     <div class="form-group">
+                        <label for="param-paths">paths (必填, JSON 数组):</label>
+                        <textarea id="param-paths" name="paths" rows="4" required>[
+    "你的操作系统临时文件路径1",
+    "你的操作系统临时文件路径2"
+]</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="param-assetPath">assetPath (必填):</label>
+                        <input type="text" id="param-assetPath" name="assetPath" required value="assets">
+                    </div>
+                    <button type="submit">发送请求 (需提供有效临时路径)</button>
+                </form>
+                <h3>测试结果:</h3>
+                <pre><code id="test-result"></code></pre>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Siyuan Note API 文档</p>
+        </footer>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('test-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const pathsText = document.getElementById('param-paths').value;
+            const assetPath = document.getElementById('param-assetPath').value;
+            const resultContainer = document.getElementById('test-result');
+            resultContainer.textContent = '请求中...';
+            let paths;
+            try {
+                paths = JSON.parse(pathsText);
+                if (!Array.isArray(paths) || !paths.every(p => typeof p === 'string')) {
+                    throw new Error('paths 必须是一个 JSON 字符串数组');
+                }
+            } catch (e) {
+                resultContainer.textContent = `请求体格式错误: ${e.message}`;
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/file/globalCopyFiles', { // Updated API path
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${getAuthToken()}` // 从 localStorage 或其他地方获取 Token
+                    },
+                    body: JSON.stringify({ paths, assetPath })
+                });
+                const result = await response.json();
+                resultContainer.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                resultContainer.textContent = `请求失败: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html> 

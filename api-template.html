@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{API_NAME}} - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+    
+    <div class="api-header">
+        <span class="method">{{METHOD}}</span>
+        <span class="endpoint">{{ENDPOINT}}</span>
+    </div>
+    
+    <h1>{{API_NAME}}</h1>
+    
+    <!-- 新增 GitHub 链接 -->
+    <div class="github-source">
+        <a href="{{GITHUB_SOURCE_LINK}}" target="_blank" title="查看源文件">源文件 (GitHub)</a>
+    </div>
+    <!-- 结束新增 -->
+    
+    <div class="auth-tags">
+        {{#AUTH_REQUIRED}}
+        <span class="chip auth-required">需要认证</span>
+        {{/AUTH_REQUIRED}}
+        {{#ADMIN_REQUIRED}}
+        <span class="chip admin-required">需要管理员权限</span>
+        {{/ADMIN_REQUIRED}}
+    </div>
+    
+    <h2>接口描述</h2>
+    <p>{{DESCRIPTION}}</p>
+    
+    <h2>请求参数</h2>
+    {{#HAS_PARAMS}}
+    <table class="param-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必选</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#PARAMS}}
+            <tr>
+                <td>{{NAME}}</td>
+                <td>{{TYPE}}</td>
+                <td>{{#REQUIRED}}<span class="required">是</span>{{/REQUIRED}}{{^REQUIRED}}<span class="optional">否</span>{{/REQUIRED}}</td>
+                <td>{{DESCRIPTION}}</td>
+            </tr>
+            {{/PARAMS}}
+        </tbody>
+    </table>
+    {{/HAS_PARAMS}}
+    {{^HAS_PARAMS}}
+    <p>此接口不需要参数。</p>
+    {{/HAS_PARAMS}}
+    
+    <h2>返回值</h2>
+    <table class="response-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#RESPONSE}}
+            <tr>
+                <td>{{NAME}}</td>
+                <td>{{TYPE}}</td>
+                <td>{{DESCRIPTION}}</td>
+            </tr>
+            {{/RESPONSE}}
+        </tbody>
+    </table>
+    
+    <div class="tab-container">
+        <div class="tabs">
+            <div class="tab active" data-target="example-tab">请求示例</div>
+            <div class="tab" data-target="response-tab">返回示例</div>
+        </div>
+        
+        <div id="example-tab" class="tab-content active">
+            <h3>请求示例</h3>
+            <pre><code>{{REQUEST_EXAMPLE}}</code></pre>
+        </div>
+        
+        <div id="response-tab" class="tab-content">
+            <h3>返回示例</h3>
+            <pre><code>{{RESPONSE_EXAMPLE}}</code></pre>
+        </div>
+    </div>
+    
+    <div class="test-area">
+        <h3>在线测试</h3>
+        <form id="api-test-form">
+            <div class="form-group">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-endpoint">接口地址:</label>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806{{ENDPOINT}}">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-method">请求方法:</label>
+                <input type="text" id="api-method" value="{{METHOD}}" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-params">请求参数 (JSON):</label>
+                <textarea id="api-params">{{TEST_PARAMS}}</textarea>
+            </div>
+            
+            <button type="submit" class="btn">发送请求</button>
+        </form>
+        
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../index.html">返回首页</a>
+        {{#PREV_API}}
+        <a href="{{PREV_API}}">上一个接口: {{PREV_NAME}}</a>
+        {{/PREV_API}}
+        {{#NEXT_API}}
+        <a href="{{NEXT_API}}">下一个接口: {{NEXT_NAME}}</a>
+        {{/NEXT_API}}
+    </div>
+    
+    <script src="../api-tester.js"></script>
+</body>
+</html> 

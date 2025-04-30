@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取笔记本历史 - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+    
+    <div class="api-header">
+        <span class="method">POST</span>
+        <span class="endpoint">/api/history/getNotebookHistory</span>
+    </div>
+    
+    <h1>获取笔记本历史</h1>
+    
+    <div class="auth-tags">
+        <span class="chip auth-required">需要认证</span>
+    </div>
+    
+    <h2>接口描述</h2>
+    <p>获取指定笔记本的历史版本记录列表。这些历史记录是基于笔记本维度的快照，可以用于回滚整个笔记本到某个时间点。</p>
+    
+    <h2>请求参数</h2>
+    <table class="param-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必选</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>notebook</td>
+                <td>string</td>
+                <td><span class="required">是</span></td>
+                <td>笔记本 ID</td>
+            </tr>
+            <tr>
+                <td>page</td>
+                <td>number</td>
+                <td><span class="optional">否</span></td>
+                <td>页码，默认为 1</td>
+            </tr>
+             <tr>
+                <td>size</td>
+                <td>number</td>
+                <td><span class="optional">否</span></td>
+                <td>每页数量，默认为 20</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>返回值</h2>
+    <table class="response-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>number</td>
+                <td>返回码，0表示成功</td>
+            </tr>
+            <tr>
+                <td>msg</td>
+                <td>string</td>
+                <td>返回信息</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>object</td>
+                <td>包含历史记录列表和分页信息的对象</td>
+            </tr>
+            <tr>
+                <td class="nested">data.histories</td>
+                <td>array</td>
+                <td>笔记本历史版本数组</td>
+            </tr>
+             <tr>
+                <td class="nested-more">data.histories[].path</td>
+                <td>string</td>
+                <td>历史版本文件路径，用于回滚操作</td>
+            </tr>
+             <tr>
+                <td class="nested-more">data.histories[].created</td>
+                <td>number</td>
+                <td>历史版本创建时间戳 (毫秒)</td>
+            </tr>
+             <tr>
+                <td class="nested-more">data.histories[].size</td>
+                <td>number</td>
+                <td>历史版本文件大小 (字节)</td>
+            </tr>
+             <tr>
+                <td class="nested">data.count</td>
+                <td>number</td>
+                <td>总历史记录数量</td>
+            </tr>
+            <tr>
+                <td class="nested">data.pageCount</td>
+                <td>number</td>
+                <td>总页数</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="tab-container">
+        <div class="tabs">
+            <div class="tab active" data-target="example-tab">请求示例</div>
+            <div class="tab" data-target="response-tab">返回示例</div>
+        </div>
+        
+        <div id="example-tab" class="tab-content active">
+            <h3>请求示例</h3>
+            <pre><code>POST /api/history/getNotebookHistory HTTP/1.1
+Host: 127.0.0.1:6806
+Content-Type: application/json
+Authorization: Token your-token
+
+{
+  "notebook": "20200812220439-obsxfyn",
+  "page": 1,
+  "size": 10 
+}</code></pre>
+        </div>
+        
+        <div id="response-tab" class="tab-content">
+            <h3>返回示例</h3>
+            <pre><code>{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "histories": [
+      {
+        "path": "history/notebook/20200812220439-obsxfyn/20231027100000.zip",
+        "created": 1698372000000,
+        "size": 1048576 
+      },
+      {
+        "path": "history/notebook/20200812220439-obsxfyn/20231026153000.zip",
+        "created": 1698305400000,
+        "size": 987654
+      }
+      // ...更多历史记录
+    ],
+    "count": 50,
+    "pageCount": 5
+  }
+}</code></pre>
+        </div>
+    </div>
+    
+    <div class="test-area">
+        <h3>在线测试</h3>
+        <form id="api-test-form">
+            <div class="form-group">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="在思源笔记中的“设置-关于”中查看API token">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-endpoint">接口地址:</label>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/history/getNotebookHistory">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-method">请求方法:</label>
+                <input type="text" id="api-method" value="POST" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-params">请求参数 (JSON):</label>
+                <textarea id="api-params">{
+  "notebook": "输入笔记本ID",
+  "page": 1,
+  "size": 20
+}</textarea>
+            </div>
+            
+            <button type="submit" class="btn">发送请求</button>
+        </form>
+        
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../index.html">返回首页</a>
+        <a href="../pages/history.html">返回历史记录API</a>
+        <a href="rollbackDocHistory.html">上一个接口: 回滚文档历史</a> 
+        <a href="rollbackNotebookHistory.html">下一个接口: 回滚笔记本历史</a>
+    </div>
+    
+    <script src="../api-tester.js"></script>
+</body>
+</html> 

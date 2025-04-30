@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Template - SiYuan API Documentation</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html">返回首页</a>
+    <h1>Export Template</h1>
+    <p><strong>POST</strong> <code>/api/export/exportTemplate</code></p>
+    <p>导出模板。</p>
+
+    <h2>请求参数</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>是否必需</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>string</td>
+                <td>是</td>
+                <td>要导出的模板块 ID。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>返回数据</h2>
+    <p>成功导出的模板文件路径。</p>
+    <pre><code class="language-json">
+{
+    "code": 0,
+    "msg": "",
+    "data": {
+        "path": "string" // 导出的模板文件路径
+    }
+}
+    </code></pre>
+
+    <h2>请求示例</h2>
+    <pre><code class="language-bash">
+curl -X POST \
+  http://127.0.0.1:6806/api/export/exportTemplate \
+  -H 'Authorization: Token YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": "20230101..." // 模板块 ID
+  }'
+    </code></pre>
+
+    <h2>响应示例</h2>
+    <pre><code class="language-json">
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "path": "/path/to/exported/template.sy"
+  }
+}
+    </code></pre>
+
+    <h2>在线测试</h2>
+    <div class="api-tester">
+        <input type="text" id="apiToken" placeholder="API Token"><br>
+        <input type="text" id="endpoint" value="/api/export/exportTemplate" disabled><br>
+        <input type="text" id="method" value="POST" disabled><br>
+        <textarea id="params" placeholder='{"id": "YOUR_TEMPLATE_BLOCK_ID"}'></textarea><br>
+        <button onclick="sendRequest()">发送请求</button>
+        <pre id="response"></pre>
+    </div>
+
+    <h2>导航</h2>
+    <ul>
+        <li><a href="../index.html">返回首页</a></li>
+        <li><a href="exportSY.html">上一个接口：/api/export/exportSY</a></li>
+        <li><a href="getExportProgress.html">下一个接口：/api/export/getExportProgress</a></li>
+        <li><a href="../pages/export.html">返回 Export API</a></li>
+    </ul>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

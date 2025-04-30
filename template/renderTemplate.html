@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渲染模板片段 - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+    
+    <div class="api-header">
+        <span class="method">POST</span>
+        <span class="endpoint">/api/template/renderTemplate</span>
+    </div>
+    
+    <h1>渲染模板片段</h1>
+    
+    <div class="auth-tags">
+        <span class="chip auth-required">需要认证</span>
+    </div>
+    
+    <h2>接口描述</h2>
+    <p>根据提供的变量渲染指定的模板片段。模板中的变量将使用`vars`参数中的值进行替换。</p>
+    
+    <h2>请求参数</h2>
+    <table class="param-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必选</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>path</td>
+                <td>string</td>
+                <td><span class="required">是</span></td>
+                <td>模板文件路径，可以通过`listTemplates`接口获取</td>
+            </tr>
+            <tr>
+                <td>vars</td>
+                <td>object</td>
+                <td><span class="optional">否</span></td>
+                <td>用于替换模板中变量的键值对。键为模板中的变量名（不带`{{`和`}}`），值为替换后的内容。</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>返回值</h2>
+    <table class="response-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>number</td>
+                <td>返回码，0表示成功</td>
+            </tr>
+            <tr>
+                <td>msg</td>
+                <td>string</td>
+                <td>返回信息</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>string</td>
+                <td>渲染后的Markdown文本内容</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="code-example">
+        <h3>模板语法示例</h3>
+        <p>模板中使用双大括号 `{{变量名}}` 来定义变量。例如：</p>
+        <pre><code># 会议纪要
+
+**时间**: {{time}}
+**地点**: {{location}}
+**参会人员**: {{attendees}}
+
+## 议题
+
+- {{topic1}}
+- {{topic2}}</code></pre>
+        <p>使用此接口时，可以通过`vars`参数传入实际的值：</p>
+        <pre><code>{
+  "path": "/data/templates/会议纪要.md",
+  "vars": {
+    "time": "2024-04-17 10:00",
+    "location": "会议室A",
+    "attendees": "张三, 李四",
+    "topic1": "讨论项目进展",
+    "topic2": "确定下一步计划"
+  }
+}</code></pre>
+        <p>接口将返回渲染后的Markdown文本。</p>
+    </div>
+    
+    <div class="tab-container">
+        <div class="tabs">
+            <div class="tab active" data-target="example-tab">请求示例</div>
+            <div class="tab" data-target="response-tab">返回示例</div>
+        </div>
+        
+        <div id="example-tab" class="tab-content active">
+            <h3>请求示例</h3>
+            <pre><code>POST /api/template/renderTemplate HTTP/1.1
+Host: 127.0.0.1:6806
+Content-Type: application/json
+Authorization: Token your-token
+
+{
+  "path": "/data/templates/会议纪要.md",
+  "vars": {
+    "time": "2024-04-17 10:00",
+    "location": "会议室A",
+    "attendees": "张三, 李四",
+    "topic1": "讨论项目进展",
+    "topic2": "确定下一步计划"
+  }
+}</code></pre>
+        </div>
+        
+        <div id="response-tab" class="tab-content">
+            <h3>返回示例</h3>
+            <pre><code>{
+  "code": 0,
+  "msg": "",
+  "data": "# 会议纪要\n\n**时间**: 2024-04-17 10:00\n**地点**: 会议室A\n**参会人员**: 张三, 李四\n\n## 议题\n\n- 讨论项目进展\n- 确定下一步计划"
+}</code></pre>
+        </div>
+    </div>
+    
+    <div class="test-area">
+        <h3>在线测试</h3>
+        <form id="api-test-form">
+            <div class="form-group">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-endpoint">接口地址:</label>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/template/renderTemplate">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-method">请求方法:</label>
+                <input type="text" id="api-method" value="POST" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-params">请求参数 (JSON):</label>
+                <textarea id="api-params" rows="8">{
+  "path": "/data/templates/会议纪要.md",
+  "vars": {
+    "time": "测试时间",
+    "location": "测试地点",
+    "attendees": "测试人员"
+  }
+}</textarea>
+            </div>
+            
+            <button type="submit" class="btn">发送请求</button>
+        </form>
+        
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../index.html">返回首页</a>
+        <a href="../pages/template.html">返回模板API</a>
+        <a href="listTemplates.html">上一个接口: 获取所有模板片段</a>
+        <a href="createTemplate.html">下一个接口: 创建模板片段</a>
+    </div>
+    
+    <script src="../api-tester.js"></script>
+</body>
+</html> 

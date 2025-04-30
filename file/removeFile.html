@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>removeFile API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>删除文件/目录 API (`/api/file/removeFile`)</h1>
+            <nav>
+                <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/file.go#L324" target="_blank">在 GitHub 上查看源码</a>
+                <a href="../pages/file.html">返回文件 API 列表</a>
+                <a href="../index.html">返回 API 主页</a>
+            </nav>
+        </header>
+        <main>
+            <section id="description">
+                <h2>接口描述</h2>
+                <p>该接口用于删除工作空间数据目录 (`data/`) 下的单个文件或整个目录（包括其内容）。</p>
+                 <p><strong>注意:</strong> 请谨慎使用此接口，删除操作通常是不可逆的（除非系统回收站功能可以恢复）。</p>
+            </section>
+
+            <section id="request">
+                <h2>请求</h2>
+                <p><strong>方法:</strong> POST</p>
+                <p><strong>路径:</strong> `/api/file/removeFile`</p>
+                <p><strong>认证:</strong> 需要 Token</p>
+                <h3>请求体 (JSON)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>必需</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>`path`</td>
+                            <td>string</td>
+                            <td>是</td>
+                            <td>要删除的文件或目录的路径，相对于工作空间数据目录 (`data/`)。</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>请求示例</h3>
+                <p>删除文件:</p>
+                <pre><code class="language-json">{
+    "path": "assets/image-to-delete.png"
+}</code></pre>
+                 <p>删除目录:</p>
+                 <pre><code class="language-json">{
+    "path": "widgets/widget-to-remove"
+}</code></pre>
+            </section>
+
+            <section id="response">
+                <h2>响应</h2>
+                <h3>成功响应 (200 OK)</h3>
+                <p>成功删除后，返回一个空数据对象。</p>
+                <pre><code class="language-json">{
+    "code": 0,
+    "msg": "",
+    "data": null
+}</code></pre>
+                <h3>失败响应</h3>
+                <p>如果请求失败（例如，路径无效、文件或目录不存在、权限不足等），将返回错误信息。</p>
+                <pre><code class="language-json">{
+    "code": -1,
+    "msg": "Remove file failed: remove [...] The system cannot find the file specified.", // 或 "Invalid path [...]"
+    "data": null
+}</code></pre>
+            </section>
+
+            <section id="online-test">
+                <h2>在线测试</h2>
+                <form id="test-form">
+                     <div class="form-group">
+                        <label for="param-path">path (必填):</label>
+                        <input type="text" id="param-path" name="path" required placeholder="e.g., assets/file-to-delete.txt">
+                    </div>
+                    <button type="submit">发送请求</button>
+                </form>
+                <h3>测试结果:</h3>
+                <pre><code id="test-result"></code></pre>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Siyuan Note API 文档</p>
+        </footer>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('test-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const path = document.getElementById('param-path').value;
+            const resultContainer = document.getElementById('test-result');
+            
+            if (!confirm(`确定要删除路径 "${path}" 吗？此操作可能无法恢复！`)) {
+                return;
+            }
+            
+            resultContainer.textContent = '请求中...';
+
+            try {
+                const response = await fetch('/api/file/removeFile', { // Updated API path
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${getAuthToken()}` // 从 localStorage 或其他地方获取 Token
+                    },
+                    body: JSON.stringify({ path })
+                });
+                const result = await response.json();
+                resultContainer.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                resultContainer.textContent = `请求失败: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html> 

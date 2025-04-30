@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 Setting API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+
+    <h1>设置 (Setting) API</h1>
+    <p>用于获取和修改思源笔记的各项配置。</p>
+    
+    <ul class="api-list">
+        <li>
+            <div class="api-item">
+                <a href="../setting/setAI.html" class="api-name">配置 AI 设置</a>
+                <span class="api-endpoint">/api/setting/setAI</span>
+                <p class="api-desc">配置 AI 服务提供商、API Key、模型等参数。</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置编辑器设置</a>
+                <span class="api-endpoint">/api/setting/setEditor</span>
+                <p class="api-desc">配置编辑器相关选项，如字体、行距、Markdown 语法等。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置外观设置</a>
+                <span class="api-endpoint">/api/setting/setAppearance</span>
+                <p class="api-desc">配置主题、字体、图标、代码块主题等外观选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置导出设置</a>
+                <span class="api-endpoint">/api/setting/setExport</span>
+                <p class="api-desc">配置导出相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置闪卡设置</a>
+                <span class="api-endpoint">/api/setting/setFlashcard</span>
+                <p class="api-desc">配置闪卡（Riff Card）相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置集市设置</a>
+                <span class="api-endpoint">/api/setting/setBazaar</span>
+                <p class="api-desc">配置集市（插件、主题市场）相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置账户设置</a>
+                <span class="api-endpoint">/api/setting/setAccount</span>
+                <p class="api-desc">配置账户相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置文档树设置</a>
+                <span class="api-endpoint">/api/setting/setFiletree</span>
+                <p class="api-desc">配置文档树相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置搜索设置</a>
+                <span class="api-endpoint">/api/setting/setSearch</span>
+                <p class="api-desc">配置搜索相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置快捷键</a>
+                <span class="api-endpoint">/api/setting/setKeymap</span>
+                <p class="api-desc">配置快捷键映射。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置发布设置</a>
+                <span class="api-endpoint">/api/setting/setPublish</span>
+                <p class="api-desc">配置云端发布相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="#" class="api-name">获取发布设置</a>
+                <span class="api-endpoint">/api/setting/getPublish</span>
+                <p class="api-desc">获取云端发布相关的选项。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">获取云端用户信息</a>
+                <span class="api-endpoint">/api/setting/getCloudUser</span>
+                <p class="api-desc">获取已登录的云端账户信息。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">登出云端用户</a>
+                <span class="api-endpoint">/api/setting/logoutCloudUser</span>
+                <p class="api-desc">登出当前云端账户。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">云端用户 2FA 登录</a>
+                <span class="api-endpoint">/api/setting/login2faCloudUser</span>
+                <p class="api-desc">使用两步验证码登录云端账户。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">设置 Emoji</a>
+                <span class="api-endpoint">/api/setting/setEmoji</span>
+                <p class="api-desc">配置 Emoji 相关的设置。(文档待创建)</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="#" class="api-name">设置只读模式</a>
+                <span class="api-endpoint">/api/setting/setEditorReadOnly</span>
+                <p class="api-desc">启用或禁用编辑器只读模式。(文档待创建)</p>
+            </div>
+        </li>
+        <li>
+            <div class="api-item">
+                <a href="#" class="api-name">刷新虚拟引用缓存</a>
+                <span class="api-endpoint">/api/setting/refreshVirtualBlockRef</span>
+                <p class="api-desc">手动刷新虚拟引用的缓存。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">添加虚拟引用包含规则</a>
+                <span class="api-endpoint">/api/setting/addVirtualBlockRefInclude</span>
+                <p class="api-desc">添加虚拟引用需要包含的关键词。(文档待创建)</p>
+            </div>
+        </li>
+          <li>
+            <div class="api-item">
+                <a href="#" class="api-name">添加虚拟引用排除规则</a>
+                <span class="api-endpoint">/api/setting/addVirtualBlockRefExclude</span>
+                <p class="api-desc">添加虚拟引用需要排除的关键词。(文档待创建)</p>
+            </div>
+        </li>
+         <li>
+            <div class="api-item">
+                <a href="#" class="api-name">配置代码片段</a>
+                <span class="api-endpoint">/api/setting/setSnippet</span>
+                <p class="api-desc">配置代码片段。(文档待创建)</p>
+            </div>
+        </li>
+        <!-- 其他 Setting API 链接将在这里添加 -->
+    </ul>
+
+</body>
+</html> 

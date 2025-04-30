@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>读取剪贴板文件路径 - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../pages/clipboard.html" class="back-link">← 返回 Clipboard API 列表</a>
+    <h1>读取剪贴板文件路径</h1>
+    <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/clipboard.go#L24" target="_blank" class="github-link">在 GitHub 上查看源码</a>
+
+    <p class="endpoint"><code>POST /api/clipboard/readFilePaths</code></p>
+
+    <h2>描述</h2>
+    <p>尝试从系统剪贴板中读取文件路径列表。这通常用于处理用户从文件管理器复制文件后，在思源笔记中进行粘贴操作的场景。</p>
+    <p><strong>注意：</strong> 此功能在 Linux 系统上可能受限。</p>
+
+    <h2>请求参数</h2>
+    <p>此接口不需要请求参数。</p>
+
+    <h2>响应结果</h2>
+    <p>响应体是 JSON 格式。<code>code</code> 为 0 表示成功。<code>data</code> 是一个包含从剪贴板读取到的文件绝对路径的字符串数组。如果剪贴板中没有文件路径，则返回空数组 <code>[]</code>。</p>
+    <pre><code class="language-json">
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    "/path/to/file1.txt",
+    "/path/to/image.png"
+    // ... more file paths
+  ]
+}
+    </code></pre>
+
+    <div class="test-area">
+        <h3>在线测试</h3>
+        <form id="api-test-form">
+            <div class="form-group">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token">
+            </div>
+
+            <div class="form-group">
+                <label for="api-endpoint">接口地址:</label>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/clipboard/readFilePaths" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="api-method">请求方法:</label>
+                <input type="text" id="api-method" value="POST" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="api-params">请求参数 (JSON):</label>
+                <textarea id="api-params">{}</textarea>
+            </div>
+
+            <button type="submit" class="btn">发送请求</button>
+        </form>
+
+        <div id="api-result" class="result"></div>
+    </div>
+
+    <footer>
+        <p>思源笔记 API 文档</p>
+    </footer>
+    <script src="../api-tester.js"></script>
+</body>
+</html> 

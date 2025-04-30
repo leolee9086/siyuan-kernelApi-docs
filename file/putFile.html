@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>putFile API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>写入文件 API (`/api/file/putFile`)</h1>
+            <nav>
+                <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/file.go#L361" target="_blank">在 GitHub 上查看源码</a>
+                <a href="../pages/file.html">返回文件 API 列表</a>
+                <a href="../index.html">返回 API 主页</a>
+            </nav>
+        </header>
+        <main>
+            <section id="description">
+                <h2>接口描述</h2>
+                <p>该接口用于向工作空间指定路径写入文件内容。如果文件已存在，将会被覆盖；如果不存在，将会创建新文件（包括必要的父目录）。</p>
+                <p>通常用于上传资源文件、创建配置文件或写入其他类型的文件。</p>
+                <p><strong>注意:</strong> 出于安全考虑，写入路径会受到一些限制。</p>
+            </section>
+
+            <section id="request">
+                <h2>请求</h2>
+                <p><strong>方法:</strong> POST</p>
+                <p><strong>路径:</strong> `/api/file/putFile`</p>
+                <p><strong>认证:</strong> 需要 Token</p>
+                <h3>请求体 (JSON)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>必需</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>`path`</td>
+                            <td>string</td>
+                            <td>是</td>
+                            <td>目标文件路径，相对于工作空间数据目录 (`data/`)。例如 `assets/my-image.png` 或 `widgets/my-widget/data.json`。</td>
+                        </tr>
+                        <tr>
+                            <td>`file`</td>
+                            <td>object</td>
+                            <td>是</td>
+                            <td>包含文件数据的对象。通常由前端 `FormData` 转换而来，至少包含 `content` 字段。</td>
+                        </tr>
+                         <tr>
+                            <td>`file.content`</td>
+                            <td>string</td>
+                            <td>是</td>
+                            <td>文件的原始内容（通常是 base64 编码后的字符串）。</td>
+                        </tr>
+                        <tr>
+                            <td>`isDir`</td>
+                            <td>boolean</td>
+                            <td>是</td>
+                            <td>指明 `path` 是否是目录。如果为 `true`，则只创建目录；如果为 `false`，则写入文件。</td>
+                        </tr>
+                         <tr>
+                            <td>`modTime`</td>
+                            <td>integer</td>
+                            <td>是</td>
+                            <td>文件的修改时间戳（毫秒）。</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>请求示例</h3>
+                <p>写入文件内容 (通常来自文件上传):</p>
+                <pre><code class="language-json">{
+    "path": "assets/uploaded-image.jpg",
+    "file": {
+        "content": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...", // base64 编码的文件内容
+        // FormData 可能会包含其他字段如 name, size, type 等，但此处非必需
+    },
+    "isDir": false,
+    "modTime": 1678886400000 // 示例时间戳
+}</code></pre>
+                 <p>创建目录:</p>
+                 <pre><code class="language-json">{
+    "path": "assets/new-folder",
+    "file": { "content": "" }, // content 可以为空字符串
+    "isDir": true,
+    "modTime": 1678886400000
+}</code></pre>
+            </section>
+
+            <section id="response">
+                <h2>响应</h2>
+                <h3>成功响应 (200 OK)</h3>
+                <p>成功写入文件或创建目录后，返回一个空数据对象。</p>
+                <pre><code class="language-json">{
+    "code": 0,
+    "msg": "",
+    "data": null
+}</code></pre>
+                <h3>失败响应</h3>
+                <p>如果请求失败（例如，路径无效、写入权限不足、数据解析错误等），将返回错误信息。</p>
+                <pre><code class="language-json">{
+    "code": -1,
+    "msg": "Invalid path [path=...]", // 或 "Write file failed: ...", "Parse form file failed: ..."
+    "data": null
+}</code></pre>
+            </section>
+
+            <section id="online-test">
+                <h2>在线测试</h2>
+                 <p><strong>注意:</strong> 此接口通常需要配合文件上传使用，在线测试器无法直接模拟文件上传的 `file` 对象结构。以下仅为参数结构示例，直接发送可能无法成功写入文件。</p>
+                <form id="test-form">
+                     <div class="form-group">
+                        <label for="param-path">path (必填):</label>
+                        <input type="text" id="param-path" name="path" required placeholder="e.g., assets/my-file.txt">
+                    </div>
+                     <div class="form-group">
+                        <label for="param-file-content">file.content (必填, Base64):</label>
+                        <textarea id="param-file-content" name="fileContent" rows="4" required placeholder="文件内容的 Base64 编码"></textarea>
+                    </div>
+                     <div class="form-group">
+                        <label for="param-isDir">isDir (必填):</label>
+                        <select id="param-isDir" name="isDir" required>
+                            <option value="false" selected>false (文件)</option>
+                            <option value="true">true (目录)</option>
+                        </select>
+                    </div>
+                      <div class="form-group">
+                        <label for="param-modTime">modTime (必填, ms 时间戳):</label>
+                        <input type="number" id="param-modTime" name="modTime" required placeholder="例如：1678886400000">
+                    </div>
+                    <button type="submit">发送请求 (仅结构示例)</button>
+                </form>
+                <h3>测试结果:</h3>
+                <pre><code id="test-result"></code></pre>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Siyuan Note API 文档</p>
+        </footer>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        // 提醒：直接用 fetch 发送 base64 可能不足以模拟真实的文件上传场景
+        // 服务端可能期望一个更完整的 FormData 结构
+        document.getElementById('test-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const path = document.getElementById('param-path').value;
+            const fileContent = document.getElementById('param-file-content').value;
+            const isDir = document.getElementById('param-isDir').value === 'true';
+            const modTime = parseInt(document.getElementById('param-modTime').value);
+            const resultContainer = document.getElementById('test-result');
+            resultContainer.textContent = '请求中...';
+
+            if (isNaN(modTime)) {
+                 resultContainer.textContent = '错误：modTime 必须是一个有效的数字时间戳。';
+                return;
+            }
+
+            const body = {
+                path: path,
+                file: { content: fileContent }, // 简化结构，真实场景可能不同
+                isDir: isDir,
+                modTime: modTime
+            };
+
+            try {
+                const response = await fetch('/api/file/putFile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(body)
+                });
+                const result = await response.json();
+                resultContainer.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                resultContainer.textContent = `请求失败: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html> 

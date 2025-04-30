@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown转HTML - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+    
+    <div class="api-header">
+        <span class="method">POST</span>
+        <span class="endpoint">/api/lute/markdown2HTML</span>
+    </div>
+    
+    <h1>Markdown转HTML</h1>
+    
+    <div class="auth-tags">
+        <span class="chip auth-required">需要认证</span>
+    </div>
+    
+    <h2>接口描述</h2>
+    <p>将输入的Markdown文本转换为HTML格式。使用思源笔记内置的Lute引擎进行转换，确保与笔记内部渲染效果一致。</p>
+    
+    <h2>请求参数</h2>
+    <table class="param-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必选</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>markdown</td>
+                <td>string</td>
+                <td><span class="required">是</span></td>
+                <td>要转换的Markdown文本</td>
+            </tr>
+            <tr>
+                <td>options</td>
+                <td>object</td>
+                <td><span class="optional">否</span></td>
+                <td>Lute转换选项（具体选项待确认，可能包括GFM、脚注等支持开关）</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>返回值</h2>
+    <table class="response-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>number</td>
+                <td>返回码，0表示成功</td>
+            </tr>
+            <tr>
+                <td>msg</td>
+                <td>string</td>
+                <td>返回信息</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>string</td>
+                <td>转换后的HTML文本</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="tab-container">
+        <div class="tabs">
+            <div class="tab active" data-target="example-tab">请求示例</div>
+            <div class="tab" data-target="response-tab">返回示例</div>
+        </div>
+        
+        <div id="example-tab" class="tab-content active">
+            <h3>请求示例</h3>
+            <pre><code>POST /api/lute/markdown2HTML HTTP/1.1
+Host: 127.0.0.1:6806
+Content-Type: application/json
+Authorization: Token your-token
+
+{
+  "markdown": "# 标题1\n\n这是**加粗**文本。\n\n- 列表项1\n- 列表项2"
+}</code></pre>
+        </div>
+        
+        <div id="response-tab" class="tab-content">
+            <h3>返回示例</h3>
+            <pre><code>{
+  "code": 0,
+  "msg": "",
+  "data": "&lt;h1&gt;标题1&lt;/h1&gt;\n&lt;p&gt;这是&lt;strong&gt;加粗&lt;/strong&gt;文本。&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;列表项1&lt;/li&gt;\n&lt;li&gt;列表项2&lt;/li&gt;\n&lt;/ul&gt;"
+}</code></pre>
+        </div>
+    </div>
+    
+    <div class="test-area">
+        <h3>在线测试</h3>
+        <form id="api-test-form">
+            <div class="form-group">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-endpoint">接口地址:</label>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/lute/markdown2HTML">
+            </div>
+            
+            <div class="form-group">
+                <label for="api-method">请求方法:</label>
+                <input type="text" id="api-method" value="POST" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-params">请求参数 (JSON):</label>
+                <textarea id="api-params" rows="6">{
+  "markdown": "# 输入Markdown\n\n*支持各种Markdown语法*"
+}</textarea>
+            </div>
+            
+            <button type="submit" class="btn">发送请求</button>
+        </form>
+        
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../index.html">返回首页</a>
+        <a href="../pages/lute.html">返回Lute API</a>
+        <a href="html2BlockDOM.html">下一个接口: HTML转块DOM</a>
+    </div>
+    
+    <script src="../api-tester.js"></script>
+</body>
+</html> 

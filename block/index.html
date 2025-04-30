@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block (块) API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>Block (块) API</h1>
+        <nav>
+            <a href="../index.html">首页</a>
+        </nav>
+    </header>
+    <main>
+        <p>这里包含了与块（Block）操作相关的 API，块是思源笔记内容的基本单位。</p>
+        <h2>API 列表</h2>
+        <ul>
+            <li><a href="appendBlock.html">/api/block/appendBlock</a> - 在父块末尾追加块</li>
+            <li><a href="batchUpdateBlock.html">/api/block/batchUpdateBlock</a> - 批量更新块内容</li>
+            <li><a href="deleteBlock.html">/api/block/deleteBlock</a> - 删除块</li>
+            <li><a href="foldBlock.html">/api/block/foldBlock</a> - 折叠块</li>
+            <li><a href="getBlockBreadcrumb.html">/api/block/getBlockBreadcrumb</a> - 获取块的面包屑路径</li>
+            <li><a href="getBlockDefIDsByRefText.html">/api/block/getBlockDefIDsByRefText</a> - 通过引用文本获取定义块ID列表</li>
+            <li><a href="getBlockDOM.html">/api/block/getBlockDOM</a> - 获取块的 DOM 结构</li>
+            <li><a href="getBlockIndex.html">/api/block/getBlockIndex</a> - 获取块的索引信息（已废弃？）</li>
+            <li><a href="getBlockInfo.html">/api/block/getBlockInfo</a> - 获取块的基本信息（所属笔记本、路径等）</li>
+            <li><a href="getBlockKramdown.html">/api/block/getBlockKramdown</a> - 获取块的 Kramdown 源码</li>
+            <li><a href="getBlockRefIDs.html">/api/block/getBlockRefIDs</a> - 获取块引用的 ID 列表</li>
+            <li><a href="getBlockRefIDsByFileAnnotationID.html">/api/block/getBlockRefIDsByFileAnnotationID</a> - 通过文件标注 ID 获取块引用 ID 列表</li>
+            <li><a href="getBlocksIndexes.html">/api/block/getBlocksIndexes</a> - 批量获取块的索引信息（已废弃？）</li>
+            <li><a href="getChildBlocks.html">/api/block/getChildBlocks</a> - 获取子块列表</li>
+            <li><a href="getRefIDs.html">/api/block/getRefIDs</a> - 获取引用了指定块的块 ID 列表（反向链接）</li>
+            <li><a href="getTailChildBlocks.html">/api/block/getTailChildBlocks</a> - 获取末尾 N 个子块</li>
+            <li><a href="insertBlock.html">/api/block/insertBlock</a> - 在指定位置插入块</li>
+            <li><a href="moveBlock.html">/api/block/moveBlock</a> - 移动块</li>
+            <li><a href="prependBlock.html">/api/block/prependBlock</a> - 在父块开头插入块</li>
+            <li><a href="transferBlockRef.html">/api/block/transferBlockRef</a> - 转移块引用关系</li>
+            <li><a href="unfoldBlock.html">/api/block/unfoldBlock</a> - 展开块</li>
+            <li><a href="updateBlock.html">/api/block/updateBlock</a> - 更新单个块内容</li>
+            <li><a href="getDocsInfo.html">/api/block/getDocsInfo</a> - 获取多个文档块信息</li>
+            <li><a href="getBlockDef.html">/api/block/getBlockDef</a> - 获取块定义</li>
+            <li><a href="getBlockMarkdownAndHTML.html">/api/block/getBlockMarkdownAndHTML</a> - 获取块 Markdown 和 HTML</li>
+            <li><a href="getDocInfo.html">/api/block/getDocInfo</a> - 获取文档块信息</li>
+            <li><a href="getHeadingLevelTransaction.html">/api/block/getHeadingLevelTransaction</a> - 获取设置标题层级事务</li>
+            <li><a href="getRefIDsByFileAnnotationID.html">/api/block/getRefIDsByFileAnnotationID</a> - 根据文件标注 ID 获取引用块 ID</li>
+            <li><a href="getRefText.html">/api/block/getRefText</a> - 获取引用文本</li>
+            <li><a href="getTreeStat.html">/api/block/getTreeStat</a> - 获取树状态</li>
+            <li><a href="setBlockAttrs.html">/api/block/setBlockAttrs</a> - 设置块属性</li>
+            <li><a href="sql.html">/api/block/sql</a> - 执行 SQL 查询</li>
+            <li><a href="checkBlockExist.html">/api/block/checkBlockExist</a> - 检查块是否存在</li>
+            <li><a href="checkBlocksExist.html">/api/block/checkBlocksExist</a> - 检查块是否存在（批量）</li>
+            <li><a href="findBlock.html">/api/block/findBlock</a> - 查找块</li>
+            <li><a href="getBlockByID.html">/api/block/getBlockByID</a> - 根据 ID 获取块</li>
+            <li><a href="getBlockAttrs.html">/api/block/getBlockAttrs</a> - 获取块属性</li>
+            <li><a href="getBlocksInfo.html">/api/block/getBlocksInfo</a> - 获取多个块信息</li>
+            <li><a href="getDocInfoByBlockID.html">/api/block/getDocInfoByBlockID</a> - 根据块 ID 获取文档信息</li>
+            <li><a href="getFiles.html">/api/block/getFiles</a> - 获取文件列表</li>
+            <li><a href="getHeadingLevel.html">/api/block/getHeadingLevel</a> - 获取标题层级</li>
+            <li><a href="setBlockRef.html">/api/block/setBlockRef</a> - 设置块引用</li>
+            <li><a href="updateBlockBatch.html">/api/block/updateBlockBatch</a> - 批量更新块（旧，建议使用 batchUpdateBlock）</li>
+            <li><a href="createDocWithMd.html">/api/block/createDocWithMd</a> - 使用 Markdown 创建文档</li>
+            <li><a href="appendBlockBatch.html">/api/block/appendBlockBatch</a> - 批量追加块</li>
+            <li><a href="prependBlockBatch.html">/api/block/prependBlockBatch</a> - 批量前置块</li>
+            <li><a href="insertBlockBatch.html">/api/block/insertBlockBatch</a> - 批量插入块</li>
+            <li><a href="updateBlocks.html">/api/block/updateBlocks</a> - 更新多个块</li>
+            <li><a href="deleteBlocks.html">/api/block/deleteBlocks</a> - 批量删除块</li>
+            <li><a href="getBlockChildBlocks.html">/api/block/getBlockChildBlocks</a> - 获取块的子块</li>
+            <li><a href="getDocOutline.html">/api/block/getDocOutline</a> - 获取文档大纲</li>
+            <li><a href="getRecentUpdatedBlocks.html">/api/block/getRecentUpdatedBlocks</a> - 获取最近更新的块</li>
+        </ul>
+    </main>
+    <footer>
+        <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        // 更新最后更新时间
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 

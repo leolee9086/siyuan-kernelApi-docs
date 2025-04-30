@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓库/版本库 API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>仓库/版本库 API (Repo)</h1>
+        <nav>
+            <a href="../index.html">首页</a>
+        </nav>
+    </header>
+    <main>
+        <p>与思源笔记内置版本库（快照）相关的 API。</p>
+        <h2>API 列表</h2>
+        <ul>
+            <!-- API links will be added here -->
+            <li><a href="createSnapshot.html">/api/repo/createSnapshot</a> - 创建版本库快照</li>
+            <li><a href="checkoutRepo.html">/api/repo/checkoutRepo</a> - 检出版本库快照</li>
+            <li><a href="diffRepoSnapshots.html">/api/repo/diffRepoSnapshots</a> - 对比两个快照的差异</li>
+            <li><a href="downloadCloudSnapshot.html">/api/repo/downloadCloudSnapshot</a> - 从云端下载快照</li>
+            <li><a href="getCloudRepoSnapshots.html">/api/repo/getCloudRepoSnapshots</a> - 获取云端仓库的快照列表</li>
+            <li><a href="getCloudRepoTagSnapshots.html">/api/repo/getCloudRepoTagSnapshots</a> - 获取云端仓库指定标签的快照列表</li>
+            <li><a href="getRepoFile.html">/api/repo/getRepoFile</a> - 获取快照中的文件内容</li>
+            <li><a href="getRepoSnapshots.html">/api/repo/getRepoSnapshots</a> - 获取本地仓库的快照列表（分页）</li>
+            <li><a href="getRepoTagSnapshots.html">/api/repo/getRepoTagSnapshots</a> - 获取本地仓库指定标签的快照列表</li>
+            <li><a href="importRepoKey.html">/api/repo/importRepoKey</a> - 导入仓库密钥</li>
+            <li><a href="initRepoKey.html">/api/repo/initRepoKey</a> - 初始化仓库密钥</li>
+            <li><a href="initRepoKeyFromPassphrase.html">/api/repo/initRepoKeyFromPassphrase</a> - 从口令初始化仓库密钥</li>
+            <li><a href="openRepoSnapshotDoc.html">/api/repo/openRepoSnapshotDoc</a> - 打开快照中的文档内容</li>
+            <li><a href="purgeCloudRepo.html">/api/repo/purgeCloudRepo</a> - 清理云端仓库</li>
+            <li><a href="purgeRepo.html">/api/repo/purgeRepo</a> - 清理本地仓库</li>
+            <li><a href="removeCloudRepoTagSnapshot.html">/api/repo/removeCloudRepoTagSnapshot</a> - 删除云端仓库指定标签的快照</li>
+            <li><a href="removeRepoTagSnapshot.html">/api/repo/removeRepoTagSnapshot</a> - 删除本地仓库指定标签的快照</li>
+            <li><a href="resetRepo.html">/api/repo/resetRepo</a> - 重置仓库</li>
+            <li><a href="tagSnapshot.html">/api/repo/tagSnapshot</a> - 为快照打标签</li>
+            <li><a href="uploadCloudSnapshot.html">/api/repo/uploadCloudSnapshot</a> - 上传快照到云端</li>
+        </ul>
+    </main>
+    <footer>
+        <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        // 更新最后更新时间
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 

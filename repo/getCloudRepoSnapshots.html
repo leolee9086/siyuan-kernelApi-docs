@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="siyuan-api-endpoint" content="/api/repo/getCloudRepoSnapshots"> <!-- API Endpoint Meta Tag -->
+    <title>获取云端快照列表 - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>获取云端快照列表 (getCloudRepoSnapshots)</h1>
+        <nav>
+            <a href="../index.html">首页</a> | 
+            <a href="index.html">Repo API</a> |
+            <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/repo.go#L213" target="_blank">GitHub Source</a>
+        </nav>
+    </header>
+    <main>
+        <section id="description">
+            <h2>功能描述</h2>
+            <p>此 API 端点 <code>POST /api/repo/getCloudRepoSnapshots</code> 用于获取已配置的云端存储中的版本库快照列表。</p>
+            <p>返回的结果支持分页。</p>
+        </section>
+
+        <section id="request-parameters">
+            <h2>请求参数</h2>
+            <p>请求体必须是 JSON 格式，包含以下参数：</p>
+            <ul>
+                <li><code>page</code> (number): <strong>必填</strong>。要获取的快照列表的页码，从 1 开始计数。</li>
+            </ul>
+            <p><strong>请求示例 (获取第 1 页):</strong></p>
+            <pre><code class="language-json">
+{
+  "page": 1
+}
+            </code></pre>
+        </section>
+
+        <section id="response-format">
+            <h2>响应结果</h2>
+            <p>成功的请求将返回一个 JSON 对象，<code>code</code> 为 0，<code>data</code> 字段包含快照列表和分页信息。</p>
+            <pre><code class="language-json">
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "snapshots": [
+      {
+        "time": 1666857600,
+        "hTime": "2023-10-27 10:00:00",
+        "id": "20231027100000-hijklmn",
+        "size": 103424,
+        "hSize": "101 KB",
+        "tag": "v1.0" // 快照标签
+      },
+      {
+        "time": 1666771200,
+        "hTime": "2023-10-26 10:00:00",
+        "id": "20231026100000-abcdefg",
+        "size": 102400,
+        "hSize": "100 KB",
+        "tag": ""
+      }
+      // ... 更多快照信息 ...
+    ],
+    "pageCount": 5, // 总页数
+    "totalCount": 48 // 快照总数
+  }
+}
+            </code></pre>
+            <ul>
+                <li><code>code</code>: 0 表示成功，非 0 表示失败（例如连接云端失败、认证失败等）。</li>
+                <li><code>msg</code>: 错误信息（如果 code 非 0）。</li>
+                <li><code>data.snapshots</code>: 一个数组，包含当前页的快照信息对象。每个对象包含 `id`, `time` (时间戳), `hTime` (可读时间), `size` (字节大小), `hSize` (可读大小), `tag` (标签名) 等字段。</li>
+                <li><code>data.pageCount</code>: 云端快照的总页数。</li>
+                <li><code>data.totalCount</code>: 云端快照的总数量。</li>
+            </ul>
+        </section>
+
+        <section id="online-testing">
+            <h2>在线测试</h2>
+            <p>您可以在下方输入要获取的页码进行在线测试。请确保您已正确配置云端同步设置。</p>
+            <div class="api-tester">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="请输入您的 API Token (可选)" value=""><br>
+
+                <label for="endpoint">Endpoint:</label>
+                <input type="text" id="endpoint" value="/api/repo/getCloudRepoSnapshots" readonly><br>
+
+                <label for="method">Method:</label>
+                <input type="text" id="method" value="POST" readonly><br>
+
+                <label for="params">Parameters (JSON):</label><br>
+                <textarea id="params" rows="5" placeholder='{
+  "page": 1
+}'></textarea><br>
+
+                <button onclick="sendRequest()">发送请求</button>
+
+                <h3>响应结果:</h3>
+                <pre id="response-output"></pre>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        // 更新最后更新时间
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 

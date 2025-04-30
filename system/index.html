@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System (系统) API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>System (系统) API</h1>
+        <nav>
+            <a href="../index.html">首页</a>
+        </nav>
+    </header>
+    <main>
+        <p>这里包含了与思源笔记系统层面功能相关的 API，例如工作空间管理、系统设置、版本信息等。</p>
+        <h2>API 列表</h2>
+        <ul>
+            <!-- API links will be added here -->
+            <li><a href="checkWorkspaceDir.html">/api/system/checkWorkspaceDir</a> - 检查工作空间目录是否有效</li>
+            <li><a href="createWorkspaceDir.html">/api/system/createWorkspaceDir</a> - 创建工作空间目录并添加到列表</li>
+            <li><a href="exit.html" style="color: #d32f2f;">/api/system/exit</a> - <span style="color: #d32f2f; font-weight: bold;">退出程序 (高风险!)</span></li>
+            <li><a href="exportLog.html">/api/system/exportLog</a> - 导出系统日志</li>
+            <li><a href="getMobileWorkspaces.html">/api/system/getMobileWorkspaces</a> - 获取移动端工作空间列表 (移动端专用)</li>
+            <li><a href="getNetwork.html">/api/system/getNetwork</a> - 获取网络设置 (代理)</li>
+            <li><a href="getSysFonts.html">/api/system/getSysFonts</a> - 获取系统字体列表</li>
+            <li><a href="removeWorkspaceDir.html">/api/system/removeWorkspaceDir</a> - 从列表移除工作空间目录 (不删文件)</li>
+            <li><a href="removeWorkspaceDirPhysically.html" style="color: #d32f2f;">/api/system/removeWorkspaceDirPhysically</a> - <span style="color: #d32f2f; font-weight: bold;">物理删除工作空间目录 (极度危险!)</span></li>
+            <li><a href="setAppearanceMode.html">/api/system/setAppearanceMode</a> - 设置外观模式（亮/暗）。</li>
+            <li><a href="setAutoLaunch.html">/api/system/setAutoLaunch</a> - 设置是否开机自动启动应用。</li>
+            <li><a href="setDownloadInstallPkg.html">/api/system/setDownloadInstallPkg</a> - 设置是否自动下载并安装更新包。</li>
+            <li><a href="setFollowSystemLockScreen.html">/api/system/setFollowSystemLockScreen</a> - 设置是否跟随系统锁屏。</li>
+            <li><a href="setGoogleAnalytics.html">/api/system/setGoogleAnalytics</a> - 设置是否启用谷歌分析功能。</li>
+            <li><a href="setNetworkProxy.html">/api/system/setNetworkProxy</a> - 设置网络代理配置。</li>
+            <li><a href="setNetworkServe.html">/api/system/setNetworkServe</a> - 设置是否在局域网中提供服务。</li>
+            <li><a href="setUILayout.html">/api/system/setUILayout</a> - 设置思源笔记的界面布局。</li>
+            <li><a href="setUploadErrLog.html">/api/system/setUploadErrLog</a> - 设置是否允许上传错误日志。</li>
+            <li><a href="setWorkspaceDir.html">/api/system/setWorkspaceDir</a> - 设置要切换到的工作空间目录。</li>
+            <!-- More APIs will be added later -->
+        </ul>
+    </main>
+    <footer>
+        <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        // 更新最后更新时间
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 

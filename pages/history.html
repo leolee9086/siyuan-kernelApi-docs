@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史记录 API - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <a href="../index.html" class="home-link">← 返回首页</a>
+    
+    <h1>历史记录 API</h1>
+    
+    <p class="description">历史记录相关的API接口，用于获取和管理笔记本、文档及资源文件的历史版本。</p>
+    
+    <div class="api-list-container">
+        <ul class="api-list detailed-list">
+            <li>
+                <div class="api-item">
+                    <a href="../history/getNotebookHistory.html" class="api-name">获取笔记本历史</a>
+                    <span class="api-endpoint">/api/history/getNotebookHistory</span>
+                    <p class="api-desc">获取指定笔记本的历史版本记录列表</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/rollbackNotebookHistory.html" class="api-name">回滚笔记本历史</a>
+                    <span class="api-endpoint">/api/history/rollbackNotebookHistory</span>
+                    <p class="api-desc">将指定笔记本恢复到指定的历史版本</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/getDocHistoryContent.html" class="api-name">获取文档历史内容</a>
+                    <span class="api-endpoint">/api/history/getDocHistoryContent</span>
+                    <p class="api-desc">获取指定文档的历史版本内容</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/rollbackDocHistory.html" class="api-name">回滚文档历史</a>
+                    <span class="api-endpoint">/api/history/rollbackDocHistory</span>
+                    <p class="api-desc">将指定文档恢复到指定的历史版本</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/clearWorkspaceHistory.html" class="api-name">清理工作空间历史</a>
+                    <span class="api-endpoint">/api/history/clearWorkspaceHistory</span>
+                    <p class="api-desc">清理当前工作空间的所有历史记录</p>
+                </div>
+            </li>
+             <!-- 以下 API 似乎在当前的 router.go 中未找到，暂时注释掉或确认 -->
+            <!-- 
+            <li>
+                <div class="api-item">
+                    <a href="../history/rollbackAssetsHistory.html" class="api-name">回滚资源文件历史</a>
+                    <span class="api-endpoint">/api/history/rollbackAssetsHistory</span>
+                    <p class="api-desc">将资源文件回滚到指定的历史版本</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/reindexHistory.html" class="api-name">重建历史索引</a>
+                    <span class="api-endpoint">/api/history/reindexHistory</span>
+                    <p class="api-desc">重新建立历史记录的索引</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/searchHistory.html" class="api-name">搜索历史</a>
+                    <span class="api-endpoint">/api/history/searchHistory</span>
+                    <p class="api-desc">在历史记录中进行搜索</p>
+                </div>
+            </li>
+            <li>
+                <div class="api-item">
+                    <a href="../history/getHistoryItems.html" class="api-name">获取历史项目</a>
+                    <span class="api-endpoint">/api/history/getHistoryItems</span>
+                    <p class="api-desc">获取历史记录中的项目列表</p>
+                </div>
+            </li>
+            -->
+        </ul>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../index.html">返回首页</a>
+    </div>
+    
+    <footer>
+        <p>思源笔记 API 文档</p>
+    </footer>
+</body>
+</html> 

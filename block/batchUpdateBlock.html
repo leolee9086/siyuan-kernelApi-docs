@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="siyuan-api-endpoint" content="/api/block/batchUpdateBlock"> <!-- API Endpoint Meta Tag -->
+    <title>批量更新块 - 思源笔记 API 文档</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>批量更新块 (batchUpdateBlock)</h1>
+        <nav>
+            <a href="../index.html">首页</a> | 
+            <a href="index.html">Block API</a> |
+            <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/block_op.go#L22" target="_blank">GitHub Source</a> <!-- 行号根据实际位置调整 -->
+        </nav>
+    </header>
+    <main>
+        <section id="description">
+            <h2>功能描述</h2>
+            <p>此 API 端点 <code>POST /api/block/batchUpdateBlock</code> 用于在一个原子事务中批量更新多个块的内容。</p>
+            <p>这对于需要同时修改多个块并确保它们要么全部成功、要么全部失败的场景非常有用。</p>
+            <p>API 会将所有指定的更新操作打包成一个事务执行，执行后会强制刷新数据库队列，并通过 WebSocket 广播变更。</p>
+            <p><strong>注意：</strong> 更新文档块（`NodeDocument`）时，此 API 会先删除文档内所有现有块，然后将新内容追加进去，行为与更新普通块不同。</p>
+        </section>
+
+        <section id="request-parameters">
+            <h2>请求参数</h2>
+            <p>请求体必须是 JSON 格式，包含以下参数：</p>
+            <ul>
+                <li><code>blocks</code> (array): <strong>必填</strong>。一个包含多个块更新信息的对象数组。
+                    <ul>
+                        <li>数组中的每个对象代表一个要更新的块，包含以下字段：
+                            <ul>
+                                <li><code>id</code> (string): <strong>必填</strong>。要更新的块的 ID。</li>
+                                <li><code>data</code> (string): <strong>必填</strong>。块的新内容。</li>
+                                <li><code>dataType</code> (string): <strong>必填</strong>。`data` 的格式，必须是 `"markdown"` 或 `"dom"`。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>请求示例:</strong></p>
+            <pre><code class="language-json">
+{
+  "blocks": [
+    {
+      "id": "20230315180000-abcdefg",
+      "data": "这是块 1 的新 Markdown 内容",
+      "dataType": "markdown"
+    },
+    {
+      "id": "20230315180100-hijklmn",
+      "data": "&lt;div data-type=\"NodeParagraph\" class=\"p\"&gt;&lt;div contenteditable=\"true\"&gt;这是块 2 的新 DOM 内容&lt;/div&gt;&lt;/div&gt;",
+      "dataType": "dom"
+    }
+    // ... 可以有更多要更新的块
+  ]
+}
+            </code></pre>
+        </section>
+
+        <section id="response-format">
+            <h2>响应结果</h2>
+            <p>成功的请求将返回一个 JSON 对象，<code>code</code> 为 0，<code>data</code> 字段包含一个事务数组（通常只包含一个事务，包含了所有执行的操作）。</p>
+            <p>返回的事务结构与 <a href="../transactions/performTransactions.html">/api/transactions</a> 类似，包含了 <code>doOperations</code> 和 <code>undoOperations</code>。</p>
+            <pre><code class="language-json">
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "doOperations": [
+        {
+          "action": "update", // 或者 delete, appendInsert 等
+          "id": "20230315180000-abcdefg",
+          "data": "&lt;div data-node-id=\"20230315180000-abcdefg\" ...&gt;...&lt;/div&gt;" // 处理后的 DOM
+        },
+        {
+          "action": "update",
+          "id": "20230315180100-hijklmn",
+          "data": "&lt;div data-node-id=\"20230315180100-hijklmn\" ...&gt;...&lt;/div&gt;"
+        }
+        // ... 所有操作
+      ],
+      "undoOperations": [
+        // ... 对应的撤销操作
+      ],
+      "timestamp": 1678886400000 // 实际时间戳
+    }
+  ]
+}
+            </code></pre>
+            <p>如果操作失败（例如参数错误、块不存在、数据解析失败等），将返回非 0 的 <code>code</code> 和具体的错误信息 <code>msg</code>。</p>
+             <pre><code class="language-json">
+{
+  "code": -1,
+  "msg": "parse tree failed", // 示例错误信息
+  "data": null
+}
+            </code></pre>
+        </section>
+
+        <section id="online-testing">
+            <h2>在线测试</h2>
+            <p>您可以在下方输入要批量更新的块信息进行在线测试。请谨慎操作，确保 ID 和数据正确。</p>
+            <div class="api-tester">
+                <label for="api-token">API Token:</label>
+                <input type="text" id="api-token" placeholder="请输入您的 API Token (可选)" value=""><br>
+
+                <label for="endpoint">Endpoint:</label>
+                <input type="text" id="endpoint" value="/api/block/batchUpdateBlock" readonly><br>
+
+                <label for="method">Method:</label>
+                <input type="text" id="method" value="POST" readonly><br>
+
+                <label for="params">Parameters (JSON):</label><br>
+                <textarea id="params" rows="12" placeholder='{
+  "blocks": [
+    {
+      "id": "block-id-1",
+      "data": "New content 1",
+      "dataType": "markdown"
+    },
+    {
+      "id": "block-id-2",
+      "data": "New content 2",
+      "dataType": "markdown"
+    }
+  ]
+}'></textarea><br>
+
+                <button onclick="sendRequest()">发送请求</button>
+
+                <h3>响应结果:</h3>
+                <pre id="response-output"></pre>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        // 更新最后更新时间
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 
