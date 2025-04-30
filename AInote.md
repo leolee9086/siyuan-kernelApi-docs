@@ -43,37 +43,100 @@
 
 ## 已完成的工作
 
-*   创建了API文档项目的基本架构
-*   完成了首页API分类列表的完善（根据后端router.go添加了所有API分类）
-*   实现了部分文档页面（详情见旧版记录）
-*   优化了首页结构，将API列表按分组拆分为单独页面（详情见旧版记录）
-*   **修改 `check_docs.js` 脚本，使其在运行时自动拉取最新的思源主仓库代码 (`../siyuan`)。**
-*   **根据 `check_docs.js` 的检测结果，为 27 个缺失文档的 API 批量创建了 HTML 占位符文件，并添加了 `siyuan-api-endpoint` meta 标签。**
+1. 创建了API文档项目的基本架构
+2. 完成了首页API分类列表的完善（根据后端router.go添加了所有API分类）
+3. 实现了部分文档页面：
+   - system目录: bootProgress.html, version.html, currentTime.html
+   - notebook目录: lsNotebooks.html, renameNotebook.html
+   - block目录：getBlockInfo.html, insertBlock.html, prependBlock.html, appendBlock.html, updateBlock.html, deleteBlock.html, moveBlock.html, foldBlock.html, unfoldBlock.html, getBlockKramdown.html, getChildBlocks.html, transferBlockRef.html
+4. 优化了首页结构，将API列表按分组拆分为单独页面
+   - 创建了pages目录存放分组页面
+   - 完成了所有API分组页面：
+     - system.html（系统API）
+     - notebook.html（笔记本API）
+     - block.html（块API）
+     - filetree.html（文档API）
+     - attr.html（属性API）
+     - query.html（SQL查询API）
+     - template.html（模板API）
+     - file.html（文件API）
+     - export.html（导出API）
+     - history.html（历史记录API）
+     - search.html（搜索API）
+     - ref.html（引用API）
+     - outline.html（大纲API）
+     - bookmark.html（书签API）
+     - tag.html（标签API）
+     - storage.html（存储API）
+     - account.html（账户API）
+     - lute.html（文本处理API）
+     - format.html（格式化API）
+     - cloud.html（云服务API）
+     - sync.html（同步API）
+     - inbox.html（收集箱API）
+   - 更新了样式表以支持新的页面结构
 
 ## 待完成工作
 
-1.  **完善自动生成的 API 文档占位符**: 需要人工或借助 AI 进一步分析 `router.go` 和相关代码，填充每个占位符文件的详细描述、参数、返回值和示例。
+1. 完成剩余API的文档页面创建
 
-    *(之前列出的优先 API 列表已大部分被占位符覆盖，重点变为填充内容)*
+   以下是下一步需要优先创建的API文档页面：
+   
+   - 在history目录下创建：
+     - getNotebookHistory.html
+     - rollbackNotebookHistory.html
+     - getDocHistoryContent.html
+     - rollbackDocHistory.html
+     - clearWorkspaceHistory.html
+   
+   - 在search目录下创建：
+     - searchTag.html
+     - searchTemplate.html
+     - fullTextSearchBlock.html
+     - findReplace.html
+   
+   - 在ref目录下创建：
+     - getBacklink.html
+     - getBacklinkDoc.html
+   
+   - 在outline目录下创建：
+     - getDocOutline.html
+   
+   - 在bookmark目录下创建：
+     - getBookmark.html
+     - renameBookmark.html
+     - removeBookmark.html
+   
+   - 在tag目录下创建：
+     - getTag.html
+     - renameTag.html
+     - removeTag.html
+   
+   - 在storage目录下创建：
+     - getLocalStorage.html
+     - setLocalStorage.html
+   
+   - 在account目录下创建：
+     - login.html
+   
+   完成以上优先API文档后，继续完成其他API文档。
 
-2.  优化文档样式和交互体验
+2. 优化文档样式和交互体验
 
-3.  测试确认所有API测试功能正常工作
+3. 测试确认所有API测试功能正常工作
 
 ## 测试记录
 
 - 已测试API:
-    - /api/system/version
-    - /api/notebook/lsNotebooks
-- 已运行 `check_docs.js` 确认脚本功能及占位符添加效果。
+  - /api/system/version
+  - /api/notebook/lsNotebooks
 
 ## 贡献指南
 
 如需添加新API文档或改进现有文档，请遵循以下步骤：
 
-1.  对于已有占位符的 API，请直接编辑对应的 HTML 文件，补充内容。
-2.  对于全新的 API，请使用api-template.html作为基础模板创建新API文档页面。
-3.  在对应分组页面中添加或确认 API 链接。
-4.  确保API文档内容完整且准确。
-5.  更新AInote.md中的开发进度信息。
+1. 使用api-template.html作为基础模板创建新API文档页面
+2. 在对应分组页面中添加API链接
+3. 确保API文档内容完整且准确
+4. 更新AInote.md中的开发进度信息
  
