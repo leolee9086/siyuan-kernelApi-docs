@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="siyuan-api-endpoint" content="/api/system/exit"> <!-- API Endpoint Meta Tag -->
@@ -113,16 +111,16 @@
                 <input type="text" id="api-token" placeholder="请输入您的 API Token (可选)" value=""><br>
 
                 <label for="endpoint">Endpoint:</label>
-                <input type="text" id="endpoint" value="/api/system/exit" readonly><br>
+                <input type="text" id="endpoint" value="/api/system/exit" readonly=""><br>
 
                 <label for="method">Method:</label>
-                <input type="text" id="method" value="POST" readonly><br>
+                <input type="text" id="method" value="POST" readonly=""><br>
 
                 <label for="params">Parameters (JSON, 可选):</label><br>
-                <textarea id="params" rows="6" placeholder='{
-  "force": false, // 可选, true 或 false
-  "execInstallPkg": 0 // 可选, 0, 1, 或 2
-}'></textarea><br>
+                <textarea id="params" rows="6" placeholder="{
+  &quot;force&quot;: false, // 可选, true 或 false
+  &quot;execInstallPkg&quot;: 0 // 可选, 0, 1, 或 2
+}"></textarea><br>
 
                 <button onclick="confirmSendRequest('警告：您确定要发送退出程序的请求吗？这将关闭当前的思源笔记实例！')">发送请求 (危险)</button>
 
@@ -134,7 +132,12 @@
     <footer>
         <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
     </footer>
-    <script src="../script.js"></script>
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<script src="../script.js"></script>
     <script>
         // 更新最后更新时间
         document.getElementById('last-updated').textContent = new Date().toLocaleString();
@@ -146,5 +149,5 @@
             }
         }
     </script>
-</body>
-</html> 
+
+ </body></html>

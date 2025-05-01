@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>moveBlock API 文档</title>
@@ -108,7 +106,7 @@
                 <form id="test-form">
                     <div class="form-group">
                         <label for="param-id">id (必填):</label>
-                        <input type="text" id="param-id" name="id" required>
+                        <input type="text" id="param-id" name="id" required="">
                     </div>
                     <div class="form-group">
                         <label for="param-parentID">parentID:</label>
@@ -125,10 +123,15 @@
             </section>
         </main>
         <footer>
-            <p>&copy; 2023 Siyuan Note API 文档</p>
+            <p>© 2023 Siyuan Note API 文档</p>
         </footer>
     </div>
-    <script src="../script.js"></script>
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<script src="../script.js"></script>
     <script>
         document.getElementById('test-form').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -158,5 +161,5 @@
             }
         });
     </script>
-</body>
-</html> 
+
+ </body></html>

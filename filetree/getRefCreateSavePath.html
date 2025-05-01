@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>获取引用创建时文档的默认保存路径 - 思源笔记 API 文档</title>
@@ -15,7 +13,7 @@
 
     <h2>描述</h2>
     <p>获取当通过"提及"（例如输入 <code>((块引用))</code>）或"嵌入块"（例如输入 <code>/嵌入块</code>）引用一个不存在的文档时，这个新文档将被默认创建在哪个笔记本的哪个路径下。</p>
-    <p>这个路径由系统设置（设置 -> 文件树 -> 引用创建时自动创建文档路径）和当前笔记本的设置共同决定，且路径模板支持 Go 模板语法（例如日期变量）。</p>
+    <p>这个路径由系统设置（设置 -&gt; 文件树 -&gt; 引用创建时自动创建文档路径）和当前笔记本的设置共同决定，且路径模板支持 Go 模板语法（例如日期变量）。</p>
 
     <h2>请求参数</h2>
     <p>请求体需要是 JSON 格式。</p>
@@ -53,22 +51,27 @@
     <p>路径中的 <code>{{.Year}}</code>, <code>{{.Month}}</code>, <code>{{.Day}}</code> 等是 Go 模板变量，在实际创建时会被替换为当前日期。</p>
     <p>如果计算过程中发生错误（例如模板渲染失败），<code>code</code> 可能为非 0，并包含错误信息。</p>
 
-    <div class="test-area">
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<div class="test-area">
         <h3>在线测试</h3>
         <form id="api-test-form">
             <div class="form-group">
                 <label for="api-token">API Token:</label>
-                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token">
+                <input type="text" id="api-token" placeholder="在思源笔记中的" 设置-关于"中查看api="" token"="">
             </div>
 
             <div class="form-group">
                 <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/filetree/getRefCreateSavePath" readonly>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/filetree/getRefCreateSavePath" readonly="">
             </div>
 
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
-                <input type="text" id="api-method" value="POST" readonly>
+                <input type="text" id="api-method" value="POST" readonly="">
             </div>
 
             <div class="form-group">
@@ -88,5 +91,5 @@
         <p>思源笔记 API 文档</p>
     </footer>
     <script src="../api-tester.js"></script>
-</body>
-</html> 
+
+ </body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Export Markdown - SiYuan API Documentation</title>
@@ -64,8 +62,8 @@ curl -X POST \
     <h2>在线测试</h2>
     <div class="api-tester">
         <input type="text" id="apiToken" placeholder="API Token"><br>
-        <input type="text" id="endpoint" value="/api/export/exportMd" disabled><br>
-        <input type="text" id="method" value="POST" disabled><br>
+        <input type="text" id="endpoint" value="/api/export/exportMd" disabled=""><br>
+        <input type="text" id="method" value="POST" disabled=""><br>
         <textarea id="params" placeholder="JSON 请求体">{"id": "", "pdf": false, "paragraphBeginningSpace": false, "keepFold": false, "removeAssets": false}</textarea><br>
         <button onclick="sendRequest()">发送请求</button>
         <pre id="response"></pre>
@@ -79,6 +77,11 @@ curl -X POST \
         <li><a href="../pages/export.html">返回 Export API</a></li>
     </ul>
 
-    <script src="../script.js"></script>
-</body>
-</html> 
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<script src="../script.js"></script>
+
+ </body></html>

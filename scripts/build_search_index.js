@@ -59,55 +59,66 @@ async function buildSearchIndex() {
                     const apiDocPath = path.join(categoryPath, fileName);
                     let apiDocContent = '';
                     processedFiles++;
+                    let extractionError = null; // 用于记录提取错误
 
                     try {
                         // 4. 读取 API 文档内容
                         apiDocContent = await fs.readFile(apiDocPath, 'utf-8');
                         const $apiDoc = cheerio.load(apiDocContent);
 
-                        // 5. 提取信息
-                        const h1 = $apiDoc('h1').first();
-                        const apiName = h1.text().trim(); // API 名称 (通常也是文件名)
+                        // 5. 严格提取信息
+                        let apiName = '';
                         let description = '';
                         let apiPath = '';
 
-                        // 尝试从 h1 后面的第一个 <p> 提取描述
-                        let nextElement = h1.next();
-                        while (nextElement.length > 0 && !nextElement.is('p, h2, h3, h4, div.risk-warning, div.important-note, div.test-area')) {
-                            nextElement = nextElement.next();
-                        }
-                        if (nextElement.is('p')) {
-                            description = nextElement.text().trim();
-                        }
-                        if (!description) {
-                           description = $apiDoc('h1').nextAll('p').first().text().trim();
+                        // 提取 API 名称 (来自 <h1>)
+                        const h1 = $apiDoc('h1').first();
+                        if (h1.length === 0 || !h1.text().trim()) {
+                            extractionError = `未能找到有效的 API 名称 (<h1> 标签)`;
+                        } else {
+                            apiName = h1.text().trim();
                         }
 
-                        // 尝试从 <h2>地址</h2> 下面的 <code> 提取 API 路径
-                        const addressHeading = $apiDoc('h2:contains("地址")');
-                        if (addressHeading.length > 0) {
-                             const codeElement = addressHeading.nextAll('p').find('code').first();
-                             if(codeElement.length > 0){
-                                 // 提取路径，移除方法前缀 (GET/POST等)
-                                 const rawPath = codeElement.text().trim();
-                                 apiPath = rawPath.replace(/^(GET|POST|PUT|DELETE|PATCH)\s+/i, '');
-                             }
+                        // 提取 API 路径 (来自 <span class="endpoint">)
+                        if (!extractionError) {
+                            const endpointSpan = $apiDoc('.api-header .endpoint').first();
+                            if (endpointSpan.length === 0 || !endpointSpan.text().trim()) {
+                                extractionError = `未能找到 API 路径 (<span class="endpoint">)`;
+                            } else {
+                                apiPath = endpointSpan.text().trim();
+                                if (!apiPath.startsWith('/api/') && !apiPath.startsWith('/ws/')) {
+                                    extractionError = `API 路径 \"${apiPath}\" 格式无效 (应以 /api/ 或 /ws/ 开头)`;
+                                    apiPath = ''; // 清空无效路径
+                                }
+                            }
                         }
 
-                        // 如果没提取到 API 路径，尝试根据分类和文件名猜测
-                        if (!apiPath && apiName) {
-                            // 默认猜测 /api/ 前缀，可以根据需要调整或增加 /ws/ 判断
-                            apiPath = `/api/${categoryName}/${apiName}`;
-                            console.warn(`   ⚠️ 未能在 ${fileName} 中找到明确的 API 地址，猜测为: ${apiPath}`);
+                        // 提取接口描述 (来自 <h2>接口描述</h2> 后的第一个 <p>)
+                        if (!extractionError) {
+                            const descHeading = $apiDoc('h2:contains("接口描述")');
+                            if (descHeading.length === 0) {
+                                extractionError = `未能找到 \"接口描述\" (<h2> 标签)`;
+                            } else {
+                                const descPara = descHeading.nextAll('p').first();
+                                if (descPara.length === 0 || !descPara.text().trim()) {
+                                    extractionError = `未能找到 \"接口描述\" 后的描述文本 (<p> 标签)`;
+                                } else {
+                                    description = descPara.text().trim();
+                                }
+                            }
                         }
 
-                        if (!apiName || !description || !apiPath) {
-                            console.warn(`   ⚠️ 文件 ${fileName} 信息不完整 (名称: ${!!apiName}, 描述: ${!!description}, 路径: ${!!apiPath})，跳过。`);
+                        // 如果在提取过程中有任何错误，则报告并跳过
+                        if (extractionError) {
+                            console.warn(`   ⚠️ 文件 ${fileName}: ${extractionError}，跳过。`);
                             failedFiles++;
                             continue;
                         }
+                        
+                        // 如果路径、名称、描述都提取成功 (移除之前的猜测逻辑)
+                        // if (!apiName || !description || !apiPath) { ... }
 
-                        // 6. 生成拼音
+                        // 6. 生成拼音 (只对路径和描述生成，名称可能意义不大)
                         const textToPinyin = `${apiPath} ${description}`;
                         const pinyinData = getPinyin(textToPinyin);
 
@@ -115,12 +126,12 @@ async function buildSearchIndex() {
                         searchIndex.push({
                             category: categoryName,
                             file: `${categoryName}/${fileName}`,
-                            path: apiPath,
+                            path: apiPath,          // 使用严格提取的路径
+                            name: apiName,          // 添加提取到的名称
                             description: description,
                             pinyin_full: pinyinData.full,
                             pinyin_first: pinyinData.first
                         });
-                        // console.log(`      ✅ 处理文件: ${fileName}`);
 
                     } catch (readErr) {
                         console.error(`   ❌ 处理文件 ${apiDocPath} 出错:`, readErr.message);

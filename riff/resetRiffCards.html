@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="siyuan-api-endpoint" content="/api/riff/resetRiffCards"> <!-- API Endpoint Meta Tag -->
@@ -109,18 +107,18 @@
                 <input type="text" id="api-token" placeholder="请输入您的 API Token (可选)" value=""><br>
 
                 <label for="endpoint">Endpoint:</label>
-                <input type="text" id="endpoint" value="/api/riff/resetRiffCards" readonly><br>
+                <input type="text" id="endpoint" value="/api/riff/resetRiffCards" readonly=""><br>
 
                 <label for="method">Method:</label>
-                <input type="text" id="method" value="POST" readonly><br>
+                <input type="text" id="method" value="POST" readonly=""><br>
 
                 <label for="params">Parameters (JSON):</label><br>
-                <textarea id="params" rows="10" placeholder='{
-  "type": "deck", // "notebook", "tree", or "deck"
-  "id": "", // notebook ID, root ID, or deck ID
-  "deckID": "", // target deck ID
-  "blockIDs": [] // optional, list of block IDs to reset, empty or omit to reset all in scope
-}'></textarea><br>
+                <textarea id="params" rows="10" placeholder="{
+  &quot;type&quot;: &quot;deck&quot;, // &quot;notebook&quot;, &quot;tree&quot;, or &quot;deck&quot;
+  &quot;id&quot;: &quot;&quot;, // notebook ID, root ID, or deck ID
+  &quot;deckID&quot;: &quot;&quot;, // target deck ID
+  &quot;blockIDs&quot;: [] // optional, list of block IDs to reset, empty or omit to reset all in scope
+}"></textarea><br>
 
                 <button onclick="sendRequest()">发送请求</button>
 
@@ -132,10 +130,15 @@
     <footer>
         <p>思源笔记 API 文档 | 最后更新时间：<span id="last-updated"></span></p>
     </footer>
-    <script src="../script.js"></script>
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<script src="../script.js"></script>
     <script>
         // 更新最后更新时间
         document.getElementById('last-updated').textContent = new Date().toLocaleString();
     </script>
-</body>
-</html> 
+
+ </body></html>

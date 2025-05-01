@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>getRefText API</title>
     <link rel="stylesheet" href="../static/css/style.css">
@@ -55,7 +53,7 @@
     <p>注意：</p>
     <ul>
         <li>如果块内容为空，`data` 字段会返回块的 `id`。</li>
-        <li>如果块内容全部由反斜杠 `\` 组成，`data` 字段会返回转义后的 HTML 实体字符串（例如 `&#92;&#92;`）。</li>
+        <li>如果块内容全部由反斜杠 `\` 组成，`data` 字段会返回转义后的 HTML 实体字符串（例如 `\\`）。</li>
     </ul>
     <p>失败时（例如 ID 格式无效）：</p>
     <pre><code class="language-json">{
@@ -73,12 +71,12 @@
     <div class="api-tester">
         <p>服务器地址: <code id="serverAddress"></code></p>
         <p>API Token: <input type="text" id="apiToken" placeholder="请输入 API Token"></p>
-        <p>API 路径: <input type="text" id="apiPath" value="/api/block/getRefText" readonly></p>
-        <p>请求方法: <input type="text" id="apiMethod" value="POST" readonly></p>
+        <p>API 路径: <input type="text" id="apiPath" value="/api/block/getRefText" readonly=""></p>
+        <p>请求方法: <input type="text" id="apiMethod" value="POST" readonly=""></p>
         <p>请求体:</p>
-        <textarea id="apiRequestBody" rows="4" placeholder='{
-    "id": "块ID"
-}'></textarea>
+        <textarea id="apiRequestBody" rows="4" placeholder="{
+    &quot;id&quot;: &quot;块ID&quot;
+}"></textarea>
         <button onclick="sendRequest()">发送请求</button>
         <p>响应结果:</p>
         <pre><code id="apiResponse" class="language-json"></code></pre>
@@ -92,7 +90,12 @@
     </p>
 </main>
 <footer>
-    <p>&copy; 2024 Siyuan Note API Documentation</p>
+    <p>© 2024 Siyuan Note API Documentation</p>
 </footer>
-</body>
-</html> 
+
+ 
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+</body></html>

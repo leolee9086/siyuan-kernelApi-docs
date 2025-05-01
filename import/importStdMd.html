@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="siyuan-api-endpoint" content="/api/import/importStdMd">
@@ -61,35 +59,40 @@
     </code></pre>
     <p>如果请求处理或导入过程中出错（例如路径不存在、文件无读取权限、转换失败等），<code>code</code> 会是 -1，并包含错误信息。</p>
 
-    <div class="test-area">
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<div class="test-area">
         <h3>在线测试</h3>
         <p>由于此 API 需要访问本地文件系统路径，存在权限和安全风险，不建议在此处直接测试。请通过思源笔记的导入功能或使用具有相应权限的脚本/工具进行操作。</p>
         <form id="api-test-form" class="disabled-form">
             <div class="form-group">
                 <label for="api-token">API Token:</label>
-                <input type="text" id="api-token" placeholder="在思源笔记中的"设置-关于"中查看API token" disabled>
+                <input type="text" id="api-token" placeholder="在思源笔记中的" 设置-关于"中查看api="" token"="" disabled="">
             </div>
 
             <div class="form-group">
                 <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/import/importStdMd" readonly disabled>
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/import/importStdMd" readonly="" disabled="">
             </div>
 
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
-                <input type="text" id="api-method" value="POST" readonly disabled>
+                <input type="text" id="api-method" value="POST" readonly="" disabled="">
             </div>
 
             <div class="form-group">
                 <label for="api-params">请求参数 (JSON):</label>
-                <textarea id="api-params" disabled>{
+                <textarea id="api-params" disabled="">{
     "notebook": "目标笔记本ID",
     "localPath": "/path/to/your/markdown/file_or_folder",
     "toPath": "/导入目标路径/"
 }</textarea>
             </div>
 
-            <button type="submit" class="btn" disabled>发送请求 (已禁用)</button>
+            <button type="submit" class="btn" disabled="">发送请求 (已禁用)</button>
         </form>
 
         <div id="api-result" class="result"></div>
@@ -105,5 +108,5 @@
         <p>思源笔记 API 文档</p>
     </footer>
     <script src="../api-tester.js"></script>
-</body>
-</html> 
+
+ </body></html>

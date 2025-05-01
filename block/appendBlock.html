@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>appendBlock API 文档</title>
@@ -109,18 +107,18 @@
                 <form id="test-form">
                     <div class="form-group">
                         <label for="param-data">data (必填):</label>
-                        <textarea id="param-data" name="data" rows="4" required></textarea>
+                        <textarea id="param-data" name="data" rows="4" required=""></textarea>
                     </div>
                     <div class="form-group">
                         <label for="param-dataType">dataType (必填):</label>
-                        <select id="param-dataType" name="dataType" required>
-                            <option value="markdown" selected>markdown</option>
+                        <select id="param-dataType" name="dataType" required="">
+                            <option value="markdown" selected="">markdown</option>
                             <option value="dom">dom</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="param-parentID">parentID (必填):</label>
-                        <input type="text" id="param-parentID" name="parentID" required>
+                        <input type="text" id="param-parentID" name="parentID" required="">
                     </div>
                     <button type="submit">发送请求</button>
                 </form>
@@ -129,10 +127,15 @@
             </section>
         </main>
         <footer>
-            <p>&copy; 2023 Siyuan Note API 文档</p>
+            <p>© 2023 Siyuan Note API 文档</p>
         </footer>
     </div>
-    <script src="../script.js"></script>
+    
+<blockquote class="important-note">
+    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+</blockquote>
+<script src="../script.js"></script>
     <script>
         document.getElementById('test-form').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -158,5 +161,5 @@
             }
         });
     </script>
-</body>
-</html> 
+
+ </body></html>
