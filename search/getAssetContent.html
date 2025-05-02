@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/api/block/batchUpdateBlock - 思源笔记 API 文档</title>
+    <title>/api/search/getAssetContent - 思源笔记 API 文档</title>
     <link rel="stylesheet" href="../stylesheets/styles.css">
 </head>
 <body>
@@ -11,26 +11,25 @@
 
     <div class="api-header">
         <span class="method">POST</span>
-        <span class="endpoint">/api/block/batchUpdateBlock</span>
+        <span class="endpoint">/api/search/getAssetContent</span>
     </div>
 
-    <h1>批量更新块</h1>
+    <h1>获取资源文件内容片段</h1>
 
     <div class="auth-tags">
         <span class="chip">需要认证</span>
     </div>
 
     <h2>接口描述</h2>
-    <p>此接口用于在一个原子事务中批量更新多个块的内容。</p>
-    <p>这对于需要同时修改多个块并确保它们要么全部成功、要么全部失败的场景非常有用。</p>
-    <p>API 会将所有指定的更新操作打包成一个事务执行，执行后会强制刷新数据库队列，并通过 WebSocket 广播变更。</p>
-    <p><strong>注意：</strong> 更新文档块（`NodeDocument`）时，此 API 会先删除文档内所有现有块，然后将新内容追加进去，行为与更新普通块不同。</p>
+    <p>获取指定资源文件（Asset）的内容片段，并高亮指定的查询关键词。</p>
+    <p>通常用于资源文件搜索结果的预览区域，展示匹配到的内容上下文。</p>
+    <p>注意：需要先对资源文件内容建立索引。</p>
 
     <h2>实现链接</h2>
     <ul>
         <li>后端路由: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/router.go" target="_blank">siyuan/kernel/api/router.go</a></li>
-        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/block_op.go#L22" target="_blank">siyuan/kernel/api/block_op.go</a> (<code>batchUpdateBlock</code> 函数)</li>
-        <!-- 可能需要进一步确认核心逻辑位置 -->
+        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/search.go" target="_blank">siyuan/kernel/api/search.go</a> (<code>getAssetContent</code> 函数)</li>
+        <li>核心逻辑: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/model/asset_content.go" target="_blank">siyuan/kernel/model/asset_content.go</a> (<code>GetAssetContent</code> 函数)</li>
     </ul>
 
     <h2>请求参数</h2>
@@ -45,28 +44,22 @@
         </thead>
         <tbody>
             <tr>
-                <td>blocks</td>
-                <td>array</td>
-                <td>是</td>
-                <td>包含多个块更新信息的对象数组。</td>
-            </tr>
-             <tr>
-                <td class="indent-1">blocks[].id</td>
+                <td>id</td>
                 <td>string</td>
                 <td>是</td>
-                <td>要更新的块的 ID。</td>
+                <td>要获取内容的资源文件在内部数据库中的 ID。这个 ID 通常从 <code>fullTextSearchAssetContent</code> 或 <code>searchAsset</code> 接口的响应中获取。<strong>注意：这不是块 ID。</strong></td>
             </tr>
-             <tr>
-                <td class="indent-1">blocks[].data</td>
+            <tr>
+                <td>query</td>
                 <td>string</td>
                 <td>是</td>
-                <td>块的新内容。</td>
+                <td>需要在返回内容中高亮的关键词。</td>
             </tr>
-             <tr>
-                <td class="indent-1">blocks[].dataType</td>
-                <td>string</td>
+            <tr>
+                <td>queryMethod</td>
+                <td>number</td>
                 <td>是</td>
-                <td>`data` 的格式，必须是 `"markdown"` 或 `"dom"`。</td>
+                <td>查询方法，用于确定如何处理 `query`：0: 关键字, 1: 查询语法。</td>
             </tr>
         </tbody>
     </table>
@@ -93,39 +86,53 @@
             </tr>
             <tr>
                 <td>data</td>
-                <td>array</td>
-                <td>包含执行的操作事务信息的数组（通常只包含一个事务）。</td>
+                <td>object</td>
+                <td>包含结果数据的对象。</td>
             </tr>
             <tr>
-                <td class="indent-1">data[].doOperations</td>
-                <td>array</td>
-                <td>执行的操作数组。</td>
+                <td class="indent-1">data.assetContent</td>
+                <td>object</td>
+                <td>包含资源文件信息的对象。如果找不到对应的资源文件或发生错误，可能为 `null`。</td>
             </tr>
             <tr>
-                <td class="indent-2">data[].doOperations[].action</td>
+                <td class="indent-2">data.assetContent.id</td>
                 <td>string</td>
-                <td>操作类型，例如 "update"。</td>
-            </tr>
-             <tr>
-                <td class="indent-2">data[].doOperations[].id</td>
-                <td>string</td>
-                <td>被更新的块的 ID。</td>
-            </tr>
-             <tr>
-                <td class="indent-2">data[].doOperations[].data</td>
-                <td>string</td>
-                <td>处理后的 DOM 内容。</td>
-            </tr>
-            <!-- 可能包含其他操作字段 -->
-            <tr>
-                <td class="indent-1">data[].undoOperations</td>
-                <td>array</td>
-                <td>对应的撤销操作数组。</td>
+                <td>资源文件数据库记录 ID。</td>
             </tr>
             <tr>
-                <td class="indent-1">data[].timestamp</td>
+                <td class="indent-2">data.assetContent.name</td>
+                <td>string</td>
+                <td>文件名。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.ext</td>
+                <td>string</td>
+                <td>文件扩展名。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.path</td>
+                <td>string</td>
+                <td>资源文件路径 (相对于 data/)。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.size</td>
                 <td>number</td>
-                <td>事务的时间戳 (毫秒)。</td>
+                <td>文件大小 (字节)。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.hSize</td>
+                <td>string</td>
+                <td>人类可读的文件大小。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.updated</td>
+                <td>number</td>
+                <td>文件最后更新时间戳 (秒)。</td>
+            </tr>
+            <tr>
+                <td class="indent-2">data.assetContent.content</td>
+                <td>string</td>
+                <td>匹配到的内容片段，关键词用 <code>&lt;mark&gt;</code> 标签高亮，换行符替换为 <code>&lt;br&gt;</code>。</td>
             </tr>
         </tbody>
     </table>
@@ -139,54 +146,30 @@
         <div id="request-example-tab" class="tab-content active">
             <h3>请求示例</h3>
             <pre><code class="language-json">{
-  "blocks": [
-    {
-      "id": "20230315180000-abcdefg",
-      "data": "这是块 1 的新 Markdown 内容",
-      "dataType": "markdown"
-    },
-    {
-      "id": "20230315180100-hijklmn",
-      "data": "&lt;div data-type=\"NodeParagraph\" class=\"p\"&gt;&lt;div contenteditable=\"true\"&gt;这是块 2 的新 DOM 内容&lt;/div&gt;&lt;/div&gt;",
-      "dataType": "dom"
-    }
-  ]
+  "id": "20231101100000-abcdef0",
+  "query": "思源笔记",
+  "queryMethod": 0
 }
 </code></pre>
         </div>
 
         <div id="response-example-tab" class="tab-content">
-            <h3>返回示例 (成功)</h3>
+            <h3>返回示例</h3>
             <pre><code class="language-json">{
   "code": 0,
   "msg": "",
-  "data": [
-    {
-      "doOperations": [
-        {
-          "action": "update",
-          "id": "20230315180000-abcdefg",
-          "data": "&lt;div data-node-id=\"20230315180000-abcdefg\" ...&gt;...&lt;/div&gt;"
-        },
-        {
-          "action": "update",
-          "id": "20230315180100-hijklmn",
-          "data": "&lt;div data-node-id=\"20230315180100-hijklmn\" ...&gt;...&lt;/div&gt;"
-        }
-      ],
-      "undoOperations": [
-        // ... 对应的撤销操作
-      ],
-      "timestamp": 1678886400000
+  "data": {
+    "assetContent": {
+      "id": "20231101100000-abcdef0",
+      "name": "产品介绍.pdf",
+      "ext": ".pdf",
+      "path": "assets/产品介绍.pdf",
+      "size": 150000,
+      "hSize": "146.48 KB",
+      "updated": 1667296800,
+      "content": "...本文档介绍了&lt;mark&gt;思源笔记&lt;/mark&gt;的主要功能，包括双向链接、块引用等特性...&lt;br&gt;...&lt;mark&gt;思源笔记&lt;/mark&gt;是本地优先的笔记软件..."
     }
-  ]
-}
-</code></pre>
-            <h3>返回示例 (失败)</h3>
-            <pre><code class="language-json">{
-  "code": -1,
-  "msg": "parse tree failed",
-  "data": null
+  }
 }
 </code></pre>
         </div>
@@ -206,7 +189,7 @@
             </div>
             <div class="form-group">
                 <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/block/batchUpdateBlock">
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/search/getAssetContent">
             </div>
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
@@ -214,14 +197,10 @@
             </div>
             <div class="form-group">
                 <label for="api-params">请求参数 (JSON):</label>
-                <textarea id="api-params" rows="15">{
-  "blocks": [
-    {
-      "id": "",
-      "data": "",
-      "dataType": "markdown"
-    }
-  ]
+                <textarea id="api-params" rows="5">{
+  "id": "请填写资源文件数据库 ID",
+  "query": "思源笔记",
+  "queryMethod": 0
 }</textarea>
             </div>
             <button type="submit" class="btn">发送请求</button>
@@ -232,4 +211,4 @@
     <script src="../api-tester.js"></script>
 
 </body>
-</html>
+</html> 

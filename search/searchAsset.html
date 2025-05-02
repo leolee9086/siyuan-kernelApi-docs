@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/api/block/appendBlock - 思源笔记 API 文档</title>
+    <title>/api/search/searchAsset - 思源笔记 API 文档</title>
     <link rel="stylesheet" href="../stylesheets/styles.css">
 </head>
 <body>
@@ -11,23 +11,24 @@
 
     <div class="api-header">
         <span class="method">POST</span>
-        <span class="endpoint">/api/block/appendBlock</span>
+        <span class="endpoint">/api/search/searchAsset</span>
     </div>
 
-    <h1>追加块</h1>
+    <h1>搜索资源文件</h1>
 
     <div class="auth-tags">
         <span class="chip">需要认证</span>
     </div>
 
     <h2>接口描述</h2>
-    <p>该接口用于在一个指定的父块内容的末尾追加一个新的块。</p>
+    <p>根据关键词和文件扩展名搜索工作空间中的资源文件（Assets）。</p>
+    <p>这个搜索主要基于文件名和文件路径进行匹配。</p>
 
     <h2>实现链接</h2>
     <ul>
         <li>后端路由: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/router.go" target="_blank">siyuan/kernel/api/router.go</a></li>
-        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/block_op.go#L361" target="_blank">siyuan/kernel/api/block_op.go</a> (<code>appendBlock</code> 函数)</li>
-        <!-- 可能需要进一步确认核心逻辑位置 -->
+        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/search.go" target="_blank">siyuan/kernel/api/search.go</a> (<code>searchAsset</code> 函数)</li>
+        <li>核心逻辑: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/model/assets.go" target="_blank">siyuan/kernel/model/assets.go</a> (<code>SearchAssetsByName</code> 函数)</li>
     </ul>
 
     <h2>请求参数</h2>
@@ -42,22 +43,16 @@
         </thead>
         <tbody>
             <tr>
-                <td>data</td>
+                <td>k</td>
                 <td>string</td>
                 <td>是</td>
-                <td>要追加的块的内容。</td>
+                <td>搜索关键词，多个关键词可以用空格分隔。</td>
             </tr>
             <tr>
-                <td>dataType</td>
-                <td>string</td>
-                <td>是</td>
-                <td>数据类型，可选值为 'markdown' 或 'dom'。如果为 'markdown'，服务器会自动转换为 'dom'。</td>
-            </tr>
-            <tr>
-                <td>parentID</td>
-                <td>string</td>
-                <td>是</td>
-                <td>目标父块的 ID。</td>
+                <td>exts</td>
+                <td>array</td>
+                <td>否</td>
+                <td>一个包含文件扩展名字符串的数组（例如 <code>[".png", ".jpg"]</code>），用于限定搜索的文件类型。如果为空或不提供，则搜索所有类型的资源文件。</td>
             </tr>
         </tbody>
     </table>
@@ -85,40 +80,33 @@
             <tr>
                 <td>data</td>
                 <td>object</td>
-                <td>包含执行的操作事务信息的对象。</td>
+                <td>包含结果数据的对象。</td>
             </tr>
             <tr>
-                <td class="indent-1">data.transactions</td>
+                <td class="indent-1">data.assets</td>
                 <td>array</td>
-                <td>事务数组。</td>
+                <td>匹配到的资源文件信息对象数组。</td>
             </tr>
             <tr>
-                <td class="indent-2">data.transactions[].doOperations</td>
-                <td>array</td>
-                <td>执行的操作数组。</td>
+                <td class="indent-2">data.assets[].hName</td>
+                <td>string</td>
+                <td>资源文件名，关键词会用 <code>&lt;mark&gt;</code> 标签高亮。</td>
             </tr>
             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].action</td>
+                <td class="indent-2">data.assets[].path</td>
                 <td>string</td>
-                <td>操作类型，例如 "appendInsert"。</td>
+                <td>资源文件相对于 <code>data/</code> 目录的路径。</td>
             </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].id</td>
+            <tr>
+                <td class="indent-2">data.assets[].updated</td>
+                <td>number</td>
+                <td>文件最后更新时间戳 (秒)。</td>
+            </tr>
+            <tr>
+                <td class="indent-1">data.k</td>
                 <td>string</td>
-                <td>新生成的块的 ID。</td>
+                <td>请求中传入的关键词 <code>k</code>。</td>
             </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].data</td>
-                <td>string</td>
-                <td>新生成的块的 DOM 内容。</td>
-            </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].parentID</td>
-                <td>string</td>
-                <td>父块 ID。</td>
-            </tr>
-             <!-- 可能包含其他操作相关字段 -->
-             <!-- 可能包含其他事务相关字段 -->
         </tbody>
     </table>
 
@@ -129,48 +117,40 @@
         </div>
 
         <div id="request-example-tab" class="tab-content active">
-            <h3>请求示例 (Markdown)</h3>
+            <h3>请求示例 (搜索所有图片)</h3>
             <pre><code class="language-json">{
-  "data": "这是要追加的 Markdown 内容",
-  "dataType": "markdown",
-  "parentID": "20230517100000-ijklmnop"
+  "k": "截图",
+  "exts": [".png", ".jpg", ".jpeg", ".gif", ".bmp"]
 }
 </code></pre>
-            <h3>请求示例 (DOM)</h3>
+            <h3>请求示例 (搜索特定文件)</h3>
             <pre><code class="language-json">{
-  "data": "&lt;div data-type=\"NodeParagraph\" data-node-id=\"20230518100000-uvwxyzab\"&gt;这是要追加的 DOM 内容&lt;/div&gt;",
-  "dataType": "dom",
-  "parentID": "20230517100000-ijklmnop"
+  "k": "用户手册",
+  "exts": [".pdf"]
 }
 </code></pre>
         </div>
 
         <div id="response-example-tab" class="tab-content">
-            <h3>返回示例 (成功)</h3>
+            <h3>返回示例</h3>
             <pre><code class="language-json">{
   "code": 0,
   "msg": "",
   "data": {
-    "transactions": [
+    "assets": [
       {
-        "doOperations": [
-          {
-            "action": "appendInsert",
-            "id": "20230518100000-abcdefg1",
-            "data": "&lt;div data-type=\"NodeParagraph\" data-node-id=\"20230518100000-abcdefg1\"&gt;这是要追加的 Markdown 内容&lt;/div&gt;",
-            "parentID": "20230517100000-ijklmnop"
-          }
-        ]
+        "hName": "桌面&lt;mark&gt;截图&lt;/mark&gt;_20231101.png",
+        "path": "assets/桌面截图_20231101.png",
+        "updated": 1667280000
+      },
+      {
+        "hName": "项目&lt;mark&gt;截图&lt;/mark&gt;.jpg",
+        "path": "assets/项目截图.jpg",
+        "updated": 1667193600
       }
-    ]
+    ],
+    "k": "截图"
   }
-}
-</code></pre>
-             <h3>返回示例 (失败)</h3>
-            <pre><code class="language-json">{
-  "code": -1,
-  "msg": "Invalid block ID pattern [无效的父ID]",
-  "data": null
 }
 </code></pre>
         </div>
@@ -190,7 +170,7 @@
             </div>
             <div class="form-group">
                 <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/block/appendBlock">
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/search/searchAsset">
             </div>
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
@@ -199,9 +179,8 @@
             <div class="form-group">
                 <label for="api-params">请求参数 (JSON):</label>
                 <textarea id="api-params" rows="5">{
-  "data": "",
-  "dataType": "markdown",
-  "parentID": ""
+  "k": "截图",
+  "exts": [".png", ".jpg"]
 }</textarea>
             </div>
             <button type="submit" class="btn">发送请求</button>
@@ -212,4 +191,4 @@
     <script src="../api-tester.js"></script>
 
 </body>
-</html>
+</html> 

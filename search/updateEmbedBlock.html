@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/api/block/appendBlock - 思源笔记 API 文档</title>
+    <title>/api/search/updateEmbedBlock - 思源笔记 API 文档</title>
     <link rel="stylesheet" href="../stylesheets/styles.css">
 </head>
 <body>
@@ -11,23 +11,24 @@
 
     <div class="api-header">
         <span class="method">POST</span>
-        <span class="endpoint">/api/block/appendBlock</span>
+        <span class="endpoint">/api/search/updateEmbedBlock</span>
     </div>
 
-    <h1>追加块</h1>
+    <h1>更新嵌入块</h1>
 
     <div class="auth-tags">
         <span class="chip">需要认证</span>
     </div>
 
     <h2>接口描述</h2>
-    <p>该接口用于在一个指定的父块内容的末尾追加一个新的块。</p>
+    <p>更新指定嵌入块 (<code>query_embed</code> 类型) 的 SQL 查询语句。</p>
+    <p>这通常用于在 UI 上修改了嵌入块查询条件后，将其保存回块属性中。</p>
 
     <h2>实现链接</h2>
     <ul>
         <li>后端路由: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/router.go" target="_blank">siyuan/kernel/api/router.go</a></li>
-        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/block_op.go#L361" target="_blank">siyuan/kernel/api/block_op.go</a> (<code>appendBlock</code> 函数)</li>
-        <!-- 可能需要进一步确认核心逻辑位置 -->
+        <li>处理函数: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/api/search.go" target="_blank">siyuan/kernel/api/search.go</a> (<code>updateEmbedBlock</code> 函数)</li>
+        <li>核心逻辑: <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/model/attribute.go" target="_blank">siyuan/kernel/model/attribute.go</a> (<code>SetBlockAttrs</code> 函数)</li>
     </ul>
 
     <h2>请求参数</h2>
@@ -42,22 +43,16 @@
         </thead>
         <tbody>
             <tr>
-                <td>data</td>
+                <td>embedBlockID</td>
                 <td>string</td>
                 <td>是</td>
-                <td>要追加的块的内容。</td>
+                <td>要更新的嵌入块的 ID。</td>
             </tr>
             <tr>
-                <td>dataType</td>
+                <td>stmt</td>
                 <td>string</td>
                 <td>是</td>
-                <td>数据类型，可选值为 'markdown' 或 'dom'。如果为 'markdown'，服务器会自动转换为 'dom'。</td>
-            </tr>
-            <tr>
-                <td>parentID</td>
-                <td>string</td>
-                <td>是</td>
-                <td>目标父块的 ID。</td>
+                <td>新的 SQL 查询语句。</td>
             </tr>
         </tbody>
     </table>
@@ -85,40 +80,8 @@
             <tr>
                 <td>data</td>
                 <td>object</td>
-                <td>包含执行的操作事务信息的对象。</td>
+                <td>通常为 null 或空对象。</td>
             </tr>
-            <tr>
-                <td class="indent-1">data.transactions</td>
-                <td>array</td>
-                <td>事务数组。</td>
-            </tr>
-            <tr>
-                <td class="indent-2">data.transactions[].doOperations</td>
-                <td>array</td>
-                <td>执行的操作数组。</td>
-            </tr>
-            <tr>
-                <td class="indent-3">data.transactions[].doOperations[].action</td>
-                <td>string</td>
-                <td>操作类型，例如 "appendInsert"。</td>
-            </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].id</td>
-                <td>string</td>
-                <td>新生成的块的 ID。</td>
-            </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].data</td>
-                <td>string</td>
-                <td>新生成的块的 DOM 内容。</td>
-            </tr>
-             <tr>
-                <td class="indent-3">data.transactions[].doOperations[].parentID</td>
-                <td>string</td>
-                <td>父块 ID。</td>
-            </tr>
-             <!-- 可能包含其他操作相关字段 -->
-             <!-- 可能包含其他事务相关字段 -->
         </tbody>
     </table>
 
@@ -129,47 +92,19 @@
         </div>
 
         <div id="request-example-tab" class="tab-content active">
-            <h3>请求示例 (Markdown)</h3>
+            <h3>请求示例</h3>
             <pre><code class="language-json">{
-  "data": "这是要追加的 Markdown 内容",
-  "dataType": "markdown",
-  "parentID": "20230517100000-ijklmnop"
-}
-</code></pre>
-            <h3>请求示例 (DOM)</h3>
-            <pre><code class="language-json">{
-  "data": "&lt;div data-type=\"NodeParagraph\" data-node-id=\"20230518100000-uvwxyzab\"&gt;这是要追加的 DOM 内容&lt;/div&gt;",
-  "dataType": "dom",
-  "parentID": "20230517100000-ijklmnop"
+  "embedBlockID": "20231101160000-abcdefg",
+  "stmt": "SELECT * FROM blocks WHERE content LIKE '%新关键词%' AND type = 'p' ORDER BY created DESC LIMIT 20"
 }
 </code></pre>
         </div>
 
         <div id="response-example-tab" class="tab-content">
-            <h3>返回示例 (成功)</h3>
+            <h3>返回示例</h3>
             <pre><code class="language-json">{
   "code": 0,
   "msg": "",
-  "data": {
-    "transactions": [
-      {
-        "doOperations": [
-          {
-            "action": "appendInsert",
-            "id": "20230518100000-abcdefg1",
-            "data": "&lt;div data-type=\"NodeParagraph\" data-node-id=\"20230518100000-abcdefg1\"&gt;这是要追加的 Markdown 内容&lt;/div&gt;",
-            "parentID": "20230517100000-ijklmnop"
-          }
-        ]
-      }
-    ]
-  }
-}
-</code></pre>
-             <h3>返回示例 (失败)</h3>
-            <pre><code class="language-json">{
-  "code": -1,
-  "msg": "Invalid block ID pattern [无效的父ID]",
   "data": null
 }
 </code></pre>
@@ -190,7 +125,7 @@
             </div>
             <div class="form-group">
                 <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/block/appendBlock">
+                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/search/updateEmbedBlock">
             </div>
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
@@ -199,9 +134,8 @@
             <div class="form-group">
                 <label for="api-params">请求参数 (JSON):</label>
                 <textarea id="api-params" rows="5">{
-  "data": "",
-  "dataType": "markdown",
-  "parentID": ""
+  "embedBlockID": "请填写嵌入块ID",
+  "stmt": "SELECT * FROM blocks WHERE type = 'p' LIMIT 10"
 }</textarea>
             </div>
             <button type="submit" class="btn">发送请求</button>
@@ -212,4 +146,4 @@
     <script src="../api-tester.js"></script>
 
 </body>
-</html>
+</html> 

@@ -14,14 +14,20 @@
     
     <h1>获取文档历史内容</h1>
     
+    <div class="github-source">
+        <a href="https://github.com/siyuan-note/siyuan/blob/master/kernel/model/history.go#L165" target="_blank" title="查看源文件 (推测)">源文件 (GitHub, 推测位置)</a>
+    </div>
+    
     <div class="auth-tags">
         <span class="chip auth-required">需要认证</span>
+        <span class="chip admin-required">需要管理员权限</span>
     </div>
     
     <h2>接口描述</h2>
-    <p>获取特定历史版本中某个文档的内容。此接口允许查看文档在历史版本中的完整内容，包括其中所有的块。</p>
+    <p>获取指定历史快照中某个特定文档的内容。这允许用户查看或预览文档在过去某个时间点的具体状态。</p>
+    <p>接口会读取指定的历史 <code>.sy</code> 文件，解析其内容（JSON AST），并将其渲染为只读格式返回。如果提供了关键词，会在内容中进行高亮（仅对非大文档生效）。</p>
     
-    <h2>请求参数</h2>
+    <h2>请求参数 (JSON Body)</h2>
     <table class="param-table">
         <thead>
             <tr>
@@ -36,13 +42,19 @@
                 <td>historyPath</td>
                 <td>string</td>
                 <td><span class="required">是</span></td>
-                <td>历史记录路径，通过getNotebookHistory接口获取</td>
+                <td>目标历史文档文件的绝对路径（相对于工作空间 <code>data/</code> 目录）。例如: <code>/history/20231027110000/20231027105900-abcdefg/20231027105901-hijklmn.sy</code>。此路径通常需要结合 <code>/api/history/getNotebookHistory</code> 返回的 <code>hCreated</code> 和 <code>items[].path</code> 手动构造（注意 <code>items[].path</code> 可能需要拼接笔记本 ID）。</td>
             </tr>
             <tr>
-                <td>docID</td>
+                <td>k</td>
                 <td>string</td>
-                <td><span class="required">是</span></td>
-                <td>文档ID</td>
+                <td><span class="optional">否</span></td>
+                <td>用于在返回内容中高亮显示的关键词。多个词用空格分隔。</td>
+            </tr>
+            <tr>
+                <td>highlight</td>
+                <td>boolean</td>
+                <td><span class="optional">否</span></td>
+                <td>是否执行关键词高亮，默认为 <code>true</code>。仅当参数 <code>k</code> 非空时有效，且对大文档无效。</td>
             </tr>
         </tbody>
     </table>
@@ -60,92 +72,37 @@
             <tr>
                 <td>code</td>
                 <td>number</td>
-                <td>返回码，0表示成功</td>
+                <td>返回码，0 表示成功，非 0 表示失败。</td>
             </tr>
             <tr>
                 <td>msg</td>
                 <td>string</td>
-                <td>返回信息</td>
+                <td>错误信息，成功时为空字符串。</td>
             </tr>
             <tr>
                 <td>data</td>
                 <td>object</td>
-                <td>返回数据</td>
+                <td>包含文档历史内容数据。</td>
             </tr>
             <tr>
-                <td>data.id</td>
+                <td class="indent-1">data.id</td>
                 <td>string</td>
-                <td>文档ID</td>
+                <td>文档 ID。</td>
             </tr>
-            <tr>
-                <td>data.rootID</td>
+             <tr>
+                <td class="indent-1">data.rootID</td>
                 <td>string</td>
-                <td>文档根ID</td>
+                <td>文档的根块 ID。</td>
             </tr>
-            <tr>
-                <td>data.content</td>
+             <tr>
+                <td class="indent-1">data.content</td>
                 <td>string</td>
-                <td>文档内容</td>
+                <td>渲染后的只读历史文档内容。<strong>格式注意：</strong>对于普通大小的文档，此字段通常包含适用于 Protyle 编辑器的 HTML DOM 字符串；对于大文档（<code>isLargeDoc</code> 为 true），此字段可能包含纯文本或 Markdown 格式的内容。</td>
             </tr>
-            <tr>
-                <td>data.created</td>
-                <td>string</td>
-                <td>创建时间</td>
-            </tr>
-            <tr>
-                <td>data.updated</td>
-                <td>string</td>
-                <td>更新时间</td>
-            </tr>
-            <tr>
-                <td>data.box</td>
-                <td>string</td>
-                <td>笔记本ID</td>
-            </tr>
-            <tr>
-                <td>data.path</td>
-                <td>string</td>
-                <td>文档路径</td>
-            </tr>
-            <tr>
-                <td>data.hPath</td>
-                <td>string</td>
-                <td>人类可读的文档路径</td>
-            </tr>
-            <tr>
-                <td>data.title</td>
-                <td>string</td>
-                <td>文档标题</td>
-            </tr>
-            <tr>
-                <td>data.type</td>
-                <td>string</td>
-                <td>文档类型</td>
-            </tr>
-            <tr>
-                <td>data.blocks</td>
-                <td>array</td>
-                <td>文档中的块列表</td>
-            </tr>
-            <tr>
-                <td>data.blocks[].id</td>
-                <td>string</td>
-                <td>块ID</td>
-            </tr>
-            <tr>
-                <td>data.blocks[].type</td>
-                <td>string</td>
-                <td>块类型</td>
-            </tr>
-            <tr>
-                <td>data.blocks[].content</td>
-                <td>string</td>
-                <td>块内容</td>
-            </tr>
-            <tr>
-                <td>data.blocks[].depth</td>
-                <td>number</td>
-                <td>块深度</td>
+             <tr>
+                <td class="indent-1">data.isLargeDoc</td>
+                <td>boolean</td>
+                <td>指示该历史文档是否为大文档（文件大小 >= 1MB）。这会影响 <code>content</code> 字段的渲染格式和高亮是否生效。</td>
             </tr>
         </tbody>
     </table>
@@ -161,83 +118,52 @@
             <pre><code>POST /api/history/getDocHistoryContent HTTP/1.1
 Host: 127.0.0.1:6806
 Content-Type: application/json
-Authorization: Token your-token
+Authorization: Token your-api-token
 
 {
-  "historyPath": "/data/history/20210808180117-czj9bvb/20230415120000",
-  "docID": "20220301153724-vy37rik"
+  "historyPath": "/history/20231027110000/20231027105900-abcdefg/20231027105901-hijklmn.sy",
+  "k": "重要 笔记",
+  "highlight": true
 }</code></pre>
         </div>
         
         <div id="response-tab" class="tab-content">
-            <h3>返回示例</h3>
+            <h3>返回示例 (普通文档)</h3>
             <pre><code>{
   "code": 0,
   "msg": "",
   "data": {
-    "id": "20220301153724-vy37rik",
-    "rootID": "20220301153724-vy37rik",
-    "content": "",
-    "created": "20220301153724",
-    "updated": "20230415115504",
-    "box": "20210808180117-czj9bvb",
-    "path": "/20210808180117-czj9bvb/20220301153724-vy37rik",
-    "hPath": "/教程/思源笔记简介",
-    "title": "思源笔记简介",
-    "type": "doc",
-    "blocks": [
-      {
-        "id": "20220301153816-dj8ul5t",
-        "type": "h1",
-        "content": "思源笔记简介",
-        "depth": 0,
-        "children": []
-      },
-      {
-        "id": "20220301153845-pn6ig6o",
-        "type": "p",
-        "content": "思源笔记是一款本地优先的个人知识管理系统，支持完全离线使用，同时也支持端到端加密同步。",
-        "depth": 1,
-        "children": []
-      },
-      {
-        "id": "20220301153927-kq9m7qs",
-        "type": "h2",
-        "content": "核心特性",
-        "depth": 1,
-        "children": []
-      },
-      {
-        "id": "20220301154036-rk92lbp",
-        "type": "h3",
-        "content": "块级引用",
-        "depth": 2,
-        "children": []
-      },
-      {
-        "id": "20220301154112-t8i7nvx",
-        "type": "h3",
-        "content": "双向链接",
-        "depth": 2,
-        "children": []
-      }
-    ]
+    "id": "20231027105901-hijklmn",
+    "rootID": "20231027105901-hijklmn",
+    "content": "&lt;div data-node-id=\"20231027105901-hijklmn\" data-type=\"NodeDocument\" class=\"protyle-wysiwyg\"&gt;&lt;div data-node-id=\"20231027110500-uvwxyz\" data-type=\"NodeParagraph\" class=\"p\"&gt;这是一段&lt;mark data-type=\"search-mark"&gt;重要&lt;/mark&gt;的&lt;mark data-type=\"search-mark"&gt;笔记&lt;/mark&gt;内容。&lt;/div&gt;&lt;!-- More HTML DOM nodes --&gt;&lt;/div&gt;",
+    "isLargeDoc": false
+  }
+}</code></pre>
+            <h3>返回示例 (大文档，无高亮)</h3>
+             <pre><code>{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "id": "20231028120000-largeid",
+    "rootID": "20231028120000-largeid",
+    "content": "# 大文档标题\n\n这是大文档的第一段...\n\n这是第二段... (内容可能是纯文本或Markdown)",
+    "isLargeDoc": true
   }
 }</code></pre>
         </div>
     </div>
     
+    <blockquote class="important-note">
+        <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
+        <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
+    </blockquote>
     
-<blockquote class="important-note">
-    <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
-    <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
-</blockquote>
-<div class="test-area">
+    <div class="test-area">
         <h3>在线测试</h3>
         <form id="api-test-form">
             <div class="form-group">
                 <label for="api-token">API Token:</label>
-                <input type="text" id="api-token" placeholder="在思源笔记中的" 设置-关于"中查看api="" token"="">
+                <input type="text" id="api-token" placeholder="在思源笔记中的'设置-关于'中查看API token (需要管理员权限)">
             </div>
             
             <div class="form-group">
@@ -247,14 +173,15 @@ Authorization: Token your-token
             
             <div class="form-group">
                 <label for="api-method">请求方法:</label>
-                <input type="text" id="api-method" value="POST" readonly="">
+                <input type="text" id="api-method" value="POST" readonly>
             </div>
             
             <div class="form-group">
                 <label for="api-params">请求参数 (JSON):</label>
                 <textarea id="api-params">{
-  "historyPath": "输入历史记录路径",
-  "docID": "输入文档ID"
+  "historyPath": "/history/YYYYMMDDHHMMSS/notebook_id/doc_id.sy",
+  "k": "",
+  "highlight": true
 }</textarea>
             </div>
             
@@ -266,8 +193,7 @@ Authorization: Token your-token
     
     <div class="nav-links">
         <a href="../index.html">返回首页</a>
-        <a href="../pages/history.html">返回历史记录API</a>
-        <a href="rollbackNotebookHistory.html">上一个接口: 回滚笔记本历史</a>
+        <a href="rollbackNotebookHistory.html">上一个接口: 回滚工作空间历史</a> 
         <a href="rollbackDocHistory.html">下一个接口: 回滚文档历史</a>
     </div>
     
