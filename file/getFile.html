@@ -20,32 +20,32 @@
     
     <main>
         <section id="description">
-            <h2>接口描述</h2>
+    <h2>接口描述</h2>
             <p>获取工作空间中指定文件的内容。</p>
             <p class="important-note"><strong>注意:</strong> 路径参数相对于工作空间根目录。要获取 <code>data</code> 目录下的文件，路径必须以 <code>data/</code> 开头。要获取临时目录 <code>temp</code> 下的文件，路径必须以 <code>temp/</code> 开头。</p>
             <p>出于安全原因，无法直接获取 <code>conf.json</code> 文件内容（除非是管理员）。</p>
         </section>
-
+    
         <section id="request">
-            <h2>请求参数</h2>
-            <table class="param-table">
-                <thead>
-                    <tr>
-                        <th>参数名</th>
-                        <th>类型</th>
-                        <th>必选</th>
-                        <th>描述</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
+    <h2>请求参数</h2>
+    <table class="param-table">
+        <thead>
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必选</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
                         <td>`path`</td>
-                        <td>string</td>
+                <td>string</td>
                         <td>是</td>
                         <td>要获取的文件路径，相对于工作空间根目录。例如 <code>data/assets/image.png</code> 或 <code>temp/downloaded.zip</code>。<strong>必须包含正确的路径前缀 (如 <code>data/</code> 或 <code>temp/</code>)。</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            </tr>
+        </tbody>
+    </table>
             <h3>请求示例</h3>
              <p>获取数据目录下的图片文件:</p>
             <pre><code class="language-json">{
