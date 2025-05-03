@@ -76,6 +76,18 @@
 *   **结果**: 检查发现目前仍有 **272** 个 API 文档缺少有效的源码位置链接。虽然比上次检查的 290 个有所减少，但仍然是一个需要重点关注的文档质量问题。
 *   **后续计划**: 系统性地为这 272 个文档添加准确的源码位置链接。添加时需要参考思源笔记源代码，确保链接指向正确的实现文件和代码行。添加链接时，优先考虑使用 `<nav>` 或 `<header>` 内链接的格式，以保持风格统一。
 
+## 2025-05-02 修正 `putFile` API 文档 (织)
+*   **背景**: 在尝试使用 Node.js 脚本调用 `/api/file/putFile` 接口部署挂件时，遇到 `[400] form file is nil` 错误，表明 API 实际需要 `multipart/form-data` 而非文档中记录的 JSON 请求体。
+*   **操作**:
+    1.  **查阅源码**: 查看 `siyuan/kernel/api/file.go` 中 `putFile` 函数的实现，确认其使用 `c.PostForm` 和 `c.FormFile` 解析参数，证实了需要 `multipart/form-data` 格式。
+    2.  **修正文档 `file/putFile.html`**: 
+        *   将请求体类型从 `JSON` 修改为 `multipart/form-data`。
+        *   更新参数表格，明确字段名为表单字段，更新 `isDir` 和 `modTime` 的类型为字符串，明确 `file` 字段为文件类型且在 `isDir=false` 时必需。
+        *   将请求示例从 JSON 格式改为使用 `curl` 命令发送 `multipart/form-data` 的示例。
+        *   更新了 `path` 字段的描述，强调需要包含 `data/` 前缀。
+        *   更新了在线测试区域的说明，指出因格式变化导致该功能暂不可用，并隐藏了表单，注释了相关 JS 代码。
+*   **结果**: `putFile.html` 文档现在准确反映了 API 的实际请求格式和参数要求。
+
 <思源笔记API文档生成项目>
 你可以从后端go代码中找到这些后端api的实现代码
 
