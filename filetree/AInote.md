@@ -24,6 +24,7 @@
 - duplicateDoc.html：复制文档
 - getDocCreateSavePath.html：获取文档创建保存路径
 - setDocAttrs.html：设置文档属性
+- createDailyNote.html：创建每日笔记
 
 ## 待完成API文档
 
@@ -40,4 +41,64 @@
 ## 文档API的重要性
 
 文档API是思源笔记核心功能的基础，为用户提供了通过编程方式管理知识库文档的能力。
-这些API可用于构建自动化工具、第三方集成和扩展功能。 
+这些API可用于构建自动化工具、第三方集成和扩展功能。
+
+## AI 修改记录
+
+### 2025-05-09
+
+- **创建文件**: `createDailyNote.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/createDailyNote`
+  - **主要功能**: 创建或打开今天的每日笔记文档。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `createDailyNote`), `siyuan/kernel/model/file.go` (函数 `CreateDailyNote`)。
+  - **备注**: 文档包含接口描述、请求参数、响应体、示例、错误码、源码定位及在线测试区。
+
+- **创建文件**: `createDoc.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/createDoc`
+  - **主要功能**: 在指定的笔记本中创建新文档。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `createDoc`), `siyuan/kernel/model/file.go` (函数 `CreateDocByMd`, `createDoc`)。
+  - **备注**: 文档详细说明了创建文档的参数要求，包括路径、标题和内容的规范。
+
+- **创建文件**: `getHPathByID.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/getHPathByID`
+  - **主要功能**: 根据文档 ID 获取其人类可读路径（HPath）。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `getHPathByID`), `siyuan/kernel/model/file.go` (函数 `GetHPathByID`)。
+  - **备注**: 文档说明了 HPath 的概念和使用场景，强调了与物理路径的区别以及与 `getFullHPathByID` 的关系。
+
+- **创建文件**: `getHPathByPath.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/getHPathByPath`
+  - **主要功能**: 根据文档的物理路径获取其人类可读路径（HPath）。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `getHPathByPath`), `siyuan/kernel/model/file.go` (函数 `GetHPathByPath`)。
+  - **备注**: 文档详细解释了物理路径和人类可读路径的区别，以及此接口在用户界面展示中的应用价值。
+
+- **创建文件**: `getPathByID.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/getPathByID`
+  - **主要功能**: 根据文档 ID 获取其物理路径和所属笔记本。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `getPathByID`), `siyuan/kernel/model/file.go` (函数 `GetPathByID`)。
+  - **备注**: 文档说明了此接口返回的路径与 `getHPathByID` 的区别，以及其在文件系统操作中的应用。
+
+- **创建文件**: `getIDsByHPath.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/getIDsByHPath`
+  - **主要功能**: 根据人类可读路径（HPath）获取对应的文档 ID 列表。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `getIDsByHPath`), `siyuan/kernel/model/file.go` (函数 `GetIDsByHPath`)。
+  - **备注**: 文档强调了可能存在同名文档，因此返回 ID 列表的特点。
+
+- **创建文件**: `listDocsByPath.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/listDocsByPath`
+  - **主要功能**: 列出指定笔记本和路径下的所有文档信息。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `listDocsByPath`), `siyuan/kernel/model/file.go` (函数 `ListDocsByPath`)。
+  - **备注**: 文档详细描述了排序选项和每个文档对象包含的属性字段。
+
+- **创建文件**: `removeDocByID.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/filetree/removeDocByID`
+  - **主要功能**: 根据 ID 删除一个文档（移动到回收站）。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `removeDocByID`), `siyuan/kernel/model/file.go` (函数 `RemoveDocByID`)。
+  - **备注**: 文档包含特别警告，提醒用户谨慎使用此 API 以避免数据丢失。 

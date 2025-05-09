@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>av API Index - 思源笔记 API 文档</title>
@@ -13,31 +11,32 @@
     </nav>
     <h2>API/WS 列表</h2>
     <ul>
-            <li><a href="addAttributeViewBlocks.html">/api/av/addAttributeViewBlocks</a></li>
-            <li><a href="addAttributeViewKey.html">/api/av/addAttributeViewKey</a></li>
-            <li><a href="appendAttributeViewDetachedBlocksWithValues.html">/api/av/appendAttributeViewDetachedBlocksWithValues</a></li>
-            <li><a href="duplicateAttributeViewBlock.html">/api/av/duplicateAttributeViewBlock</a></li>
-            <li><a href="getAttributeView.html">/api/av/getAttributeView</a></li>
-            <li><a href="getAttributeViewFilterSort.html">/api/av/getAttributeViewFilterSort</a></li>
-            <li><a href="getAttributeViewKeys.html">/api/av/getAttributeViewKeys</a></li>
-            <li><a href="getAttributeViewKeysByAvID.html">/api/av/getAttributeViewKeysByAvID</a></li>
-            <li><a href="getAttributeViewPrimaryKeyValues.html">/api/av/getAttributeViewPrimaryKeyValues</a></li>
-            <li><a href="getMirrorDatabaseBlocks.html">/api/av/getMirrorDatabaseBlocks</a></li>
-            <li><a href="removeAttributeViewBlocks.html">/api/av/removeAttributeViewBlocks</a></li>
-            <li><a href="removeAttributeViewKey.html">/api/av/removeAttributeViewKey</a></li>
-            <li><a href="renderAttributeView.html">/api/av/renderAttributeView</a></li>
-            <li><a href="renderHistoryAttributeView.html">/api/av/renderHistoryAttributeView</a></li>
-            <li><a href="renderSnapshotAttributeView.html">/api/av/renderSnapshotAttributeView</a></li>
-            <li><a href="searchAttributeView.html">/api/av/searchAttributeView</a></li>
-            <li><a href="searchAttributeViewNonRelationKey.html">/api/av/searchAttributeViewNonRelationKey</a></li>
-            <li><a href="searchAttributeViewRelationKey.html">/api/av/searchAttributeViewRelationKey</a></li>
-            <li><a href="setAttributeViewBlockAttr.html">/api/av/setAttributeViewBlockAttr</a></li>
-            <li><a href="setDatabaseBlockView.html">/api/av/setDatabaseBlockView</a></li>
-            <li><a href="sortAttributeViewKey.html">/api/av/sortAttributeViewKey</a></li>
-            <li><a href="sortAttributeViewViewKey.html">/api/av/sortAttributeViewViewKey</a></li>
+            <li><a href="addAttributeViewBlocks.html">/api/av/addAttributeViewBlocks</a> <span class="api-description">- 向指定的属性视图（数据库）中添加块。这些块将成为数据库的行。</span></li>
+            <li><a href="addAttributeViewKey.html">/api/av/addAttributeViewKey</a> <span class="api-description">- 向指定的属性视图（数据库）中添加一个新的列（Key）。</span></li>
+            <li><a href="appendAttributeViewDetachedBlocksWithValues.html">/api/av/appendAttributeViewDetachedBlocksWithValues</a> <span class="api-description">- 创建新的游离块（独立块），并将其添加到指定的属性视图中，同时为这些新块设置属性值。</span></li>
+            <li><a href="duplicateAttributeViewBlock.html">/api/av/duplicateAttributeViewBlock</a> <span class="api-description">- 复制指定的属性视图块（行）。</span></li>
+            <li><a href="getAttributeView.html">/api/av/getAttributeView</a> <span class="api-description">- 获取指定 ID 的属性视图（数据库）的结构和配置信息，但不包含其数据行。</span></li>
+            <li><a href="getAttributeViewFilterSort.html">/api/av/getAttributeViewFilterSort</a> <span class="api-description">- 获取指定属性视图（数据库）特定视图（View）的过滤（Filter）和排序（Sort）规则。</span></li>
+            <li><a href="getAttributeViewKeys.html">/api/av/getAttributeViewKeys</a> <span class="api-description">- 获取指定属性视图（数据库）的所有列 (Key) 的信息。</span></li>
+            <li><a href="getAttributeViewKeysByAvID.html">/api/av/getAttributeViewKeysByAvID</a> <span class="api-description">- 获取指定属性视图（数据库）的所有列 (Key) 的信息。根据 Go 源码，此接口与 `/api/av/getAttributeViewKeys` 功能高度相似，可能存在冗余，主要区别在于请求参数字段名不同 (`avID` vs `id`)。</span></li>
+            <li><a href="getAttributeViewPrimaryKeyValues.html">/api/av/getAttributeViewPrimaryKeyValues</a> <span class="api-description">- 获取指定属性视图（数据库）的主键列（通常是文本列）的值，支持分页和关键词搜索。常用于关系列选择关联块。</span></li>
+            <li><a href="getMirrorDatabaseBlocks.html">/api/av/getMirrorDatabaseBlocks</a> <span class="api-description">- 获取指定属性视图（数据库）的所有镜像块（Mirror Blocks）的 ID 列表。</span></li>
+            <li><a href="removeAttributeViewBlocks.html">/api/av/removeAttributeViewBlocks</a> <span class="api-description">- 从指定的属性视图（数据库）中移除块（行）。</span></li>
+            <li><a href="removeAttributeViewKey.html">/api/av/removeAttributeViewKey</a> <span class="api-description">- 从指定的属性视图（数据库）中移除列 (Key)。</span></li>
+            <li><a href="renderAttributeView.html">/api/av/renderAttributeView</a> <span class="api-description">- 渲染指定的属性视图，返回其结构和数据。支持分页和过滤。</span></li>
+            <li><a href="renderHistoryAttributeView.html">/api/av/renderHistoryAttributeView</a> <span class="api-description">- 根据指定的属性视图 ID 和历史记录时间戳，渲染该属性视图在特定历史时刻的状态和数据。</span></li>
+            <li><a href="renderSnapshotAttributeView.html">/api/av/renderSnapshotAttributeView</a> <span class="api-description">- 根据指定的属性视图 ID 和仓库快照 (Snapshot) 索引，渲染该属性视图在特定快照中的状态和数据。</span></li>
+            <li><a href="searchAttributeView.html">/api/av/searchAttributeView</a> <span class="api-description">- 根据关键词搜索属性视图 (Attribute Views)。可以指定需要排除的属性视图。</span></li>
+            <li><a href="searchAttributeViewNonRelationKey.html">/api/av/searchAttributeViewNonRelationKey</a> <span class="api-description">- 在指定的属性视图 (Attribute View) 中，根据关键词搜索非关系类型的列 (Key)。</span></li>
+            <li><a href="searchAttributeViewRelationKey.html">/api/av/searchAttributeViewRelationKey</a> <span class="api-description">- 在指定的属性视图 (Attribute View) 中，根据关键词搜索关系类型的列 (Key)。关系列用于链接其他属性视图。</span></li>
+            <li><a href="setAttributeViewBlockAttr.html">/api/av/setAttributeViewBlockAttr</a> <span class="api-description">- 更新属性视图 (Attribute View) 中指定块（行）的某个属性（单元格）的值。</span></li>
+            <li><a href="setDatabaseBlockView.html">/api/av/setDatabaseBlockView</a> <span class="api-description">- 设置数据库块（属性视图块）的默认显示视图 (View)。当用户打开该属性视图时，将默认展示这里设置的视图。</span></li>
+            <li><a href="sortAttributeViewKey.html">/api/av/sortAttributeViewKey</a> <span class="api-description">- 对指定属性视图 (Attribute View) 中的列 (Key) 进行排序，改变它们在界面上的显示顺序。</span></li>
+            <li><a href="sortAttributeViewViewKey.html">/api/av/sortAttributeViewViewKey</a> <span class="api-description">- 对指定属性视图 (Attribute View) 的特定视图 (View) 中的列 (Key) 进行排序，改变它们在该特定视图下的显示顺序。这允许不同的视图（如表格、列表）拥有独立的列排序。</span></li>
     </ul>
     <footer>
-        <p>Generated by script on 2025-05-01T12:42:48.438Z</p>
+        <p>Generated by script on 2025-05-09T02:52:01.602Z</p>
     </footer>
-</body>
-</html>
+
+
+</body></html>

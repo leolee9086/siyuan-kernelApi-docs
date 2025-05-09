@@ -648,6 +648,15 @@
     "pinyin_first": "/api/bookmark/renamebookmark  x g z d id d s q m c 。 s y c j k k y g x s q d x s m c ， f b z z h g l s q 。"
   },
   {
+    "category": "broadcast",
+    "file": "broadcast/publish.html",
+    "path": "/api/broadcast/publish",
+    "name": "发布广播消息",
+    "description": "此 API 用于向一个或多个指定的广播频道推送（发布）多条消息。消息可以是字符串类型，也可以是二进制文件类型。",
+    "pinyin_full": "/api/broadcast/publish  ci  api  yong yu xiang yi ge huo duo ge zhi ding de guang bo pin dao tui song （ fa bu ） duo tiao xiao xi 。 xiao xi ke yi shi zi fu chuan lei xing ， ye ke yi shi er jin zhi wen jian lei xing 。",
+    "pinyin_first": "/api/broadcast/publish  c  api  y y x y g h d g z d d g b p d t s （ f b ） d t x x 。 x x k y s z f c l x ， y k y s e j z w j l x 。"
+  },
+  {
     "category": "cloud",
     "file": "cloud/getCloudSpace.html",
     "path": "/api/cloud/space",
@@ -684,6 +693,24 @@
     "pinyin_first": "/api/export/exportmdcontent  h q z d w d d y s  markdown  n r ， b k w d d c j l j 。 z g j k b h s c w j ， j f h w d n r 。"
   },
   {
+    "category": "export",
+    "file": "export/exportMds.html",
+    "path": "/api/export/exportMds",
+    "name": "导出多个 Markdown 文档 (exportMds)",
+    "description": "本接口用于将指定的多个文档导出为独立的 Markdown 文件，并将这些文件打包成一个 ZIP 压缩包供下载。",
+    "pinyin_full": "/api/export/exportmds  ben jie kou yong yu jiang zhi ding de duo ge wen dang dao chu wei du li de  markdown  wen jian ， bing jiang zhe xie wen jian da bao cheng yi ge  zip  ya suo bao gong xia zai 。",
+    "pinyin_first": "/api/export/exportmds  b j k y y j z d d d g w d d c w d l d  markdown  w j ， b j z x w j d b c y g  zip  y s b g x z 。"
+  },
+  {
+    "category": "export",
+    "file": "export/exportNotebookMd.html",
+    "path": "/api/export/exportNotebookMd",
+    "name": "导出笔记本为 Markdown (exportNotebookMd)",
+    "description": "本接口用于将指定 ID 的整个笔记本导出为一系列 Markdown 文件，并将这些文件及其相关资源（如图片）打包成一个 ZIP 压缩文件。",
+    "pinyin_full": "/api/export/exportnotebookmd  ben jie kou yong yu jiang zhi ding  id  de zheng ge bi ji ben dao chu wei yi xi lie  markdown  wen jian ， bing jiang zhe xie wen jian ji qi xiang guan zi yuan （ ru tu pian ） da bao cheng yi ge  zip  ya suo wen jian 。",
+    "pinyin_first": "/api/export/exportnotebookmd  b j k y y j z d  id  d z g b j b d c w y x l  markdown  w j ， b j z x w j j q x g z y （ r t p ） d b c y g  zip  y s w j 。"
+  },
+  {
     "category": "file",
     "file": "file/getFile.html",
     "path": "/api/file/getFile",
@@ -700,6 +727,24 @@
     "description": "在指定目录下生成一个唯一的文件名（避免覆盖现有文件）。",
     "pinyin_full": "/api/file/getuniquefilename  zai zhi ding mu lu xia sheng cheng yi ge wei yi de wen jian ming （ bi mian fu gai xian you wen jian ）。",
     "pinyin_first": "/api/file/getuniquefilename  z z d m l x s c y g w y d w j m （ b m f g x y w j ）。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/createDailyNote.html",
+    "path": "/api/filetree/createDailyNote",
+    "name": "创建每日笔记 (createDailyNote)",
+    "description": "本接口用于创建或打开今天的每日笔记文档。如果文档已存在，将返回现有文档的 ID；如果不存在，则会根据笔记本的每日笔记设置创建新文档，然后返回新创建文档的 ID。",
+    "pinyin_full": "/api/filetree/createdailynote  ben jie kou yong yu chuang jian huo da kai jin tian de mei ri bi ji wen dang 。 ru guo wen dang yi cun zai ， jiang fan hui xian you wen dang de  id； ru guo bu cun zai ， ze hui gen ju bi ji ben de mei ri bi ji she zhi chuang jian xin wen dang ， ran hou fan hui xin chuang jian wen dang de  id。",
+    "pinyin_first": "/api/filetree/createdailynote  b j k y y c j h d k j t d m r b j w d 。 r g w d y c z ， j f h x y w d d  id； r g b c z ， z h g j b j b d m r b j s z c j x w d ， r h f h x c j w d d  id。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/createDoc.html",
+    "path": "/api/filetree/createDoc",
+    "name": "创建文档 (createDoc)",
+    "description": "本接口用于在指定的笔记本中创建新文档。可以同时指定文档的路径、标题和初始 Markdown 内容。创建后会返回新文档的 ID。",
+    "pinyin_full": "/api/filetree/createdoc  ben jie kou yong yu zai zhi ding de bi ji ben zhong chuang jian xin wen dang 。 ke yi tong shi zhi ding wen dang de lu jing 、 biao ti he chu shi  markdown  nei rong 。 chuang jian hou hui fan hui xin wen dang de  id。",
+    "pinyin_first": "/api/filetree/createdoc  b j k y y z z d d b j b z c j x w d 。 k y t s z d w d d l j 、 b t h c s  markdown  n r 。 c j h h f h x w d d  id。"
   },
   {
     "category": "filetree",
@@ -736,6 +781,33 @@
     "description": "获取在指定笔记本和路径下创建新文档时，系统建议的默认保存路径。这对于需要确定新文档确切存储位置的场景很有用。",
     "pinyin_full": "/api/filetree/getdoccreatesavepath  huo qu zai zhi ding bi ji ben he lu jing xia chuang jian xin wen dang shi ， xi tong jian yi de mo ren bao cun lu jing 。 zhe dui yu xu yao que ding xin wen dang que qie cun chu wei zhi de chang jing hen you yong 。",
     "pinyin_first": "/api/filetree/getdoccreatesavepath  h q z z d b j b h l j x c j x w d s ， x t j y d m r b c l j 。 z d y x y q d x w d q q c c w z d c j h y y 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/getHPathByID.html",
+    "path": "/api/filetree/getHPathByID",
+    "name": "获取文档人类可读路径 (getHPathByID)",
+    "description": "本接口用于根据文档 ID 获取其人类可读路径（HPath）。HPath 是文档在笔记本中的层级结构路径，以文档标题组成，例如 /笔记/子文件夹/文档标题。",
+    "pinyin_full": "/api/filetree/gethpathbyid  ben jie kou yong yu gen ju wen dang  id  huo qu qi ren lei ke du lu jing （hpath）。hpath  shi wen dang zai bi ji ben zhong de ceng ji jie gou lu jing ， yi wen dang biao ti zu cheng ， li ru  / bi ji / zi wen jian jia / wen dang biao ti 。",
+    "pinyin_first": "/api/filetree/gethpathbyid  b j k y y g j w d  id  h q q r l k d l j （hpath）。hpath  s w d z b j b z d c j j g l j ， y w d b t z c ， l r  / b j / z w j j / w d b t 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/getHPathByPath.html",
+    "path": "/api/filetree/getHPathByPath",
+    "name": "根据路径获取人类可读路径 (getHPathByPath)",
+    "description": "本接口用于根据文档的物理路径（path）获取其人类可读路径（HPath）。HPath 是文档在笔记本中的层级结构路径，以文档标题组成，例如 /笔记/子文件夹/文档标题。",
+    "pinyin_full": "/api/filetree/gethpathbypath  ben jie kou yong yu gen ju wen dang de wu li lu jing （path） huo qu qi ren lei ke du lu jing （hpath）。hpath  shi wen dang zai bi ji ben zhong de ceng ji jie gou lu jing ， yi wen dang biao ti zu cheng ， li ru  / bi ji / zi wen jian jia / wen dang biao ti 。",
+    "pinyin_first": "/api/filetree/gethpathbypath  b j k y y g j w d d w l l j （path） h q q r l k d l j （hpath）。hpath  s w d z b j b z d c j j g l j ， y w d b t z c ， l r  / b j / z w j j / w d b t 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/getPathByID.html",
+    "path": "/api/filetree/getPathByID",
+    "name": "根据 ID 获取文档路径 (getPathByID)",
+    "description": "本接口用于根据文档 ID 获取其物理存储路径和所属笔记本。物理路径是指文档在文件系统中的实际存储位置，由 ID 组成，例如 /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。",
+    "pinyin_full": "/api/filetree/getpathbyid  ben jie kou yong yu gen ju wen dang  id  huo qu qi wu li cun chu lu jing he suo shu bi ji ben 。 wu li lu jing shi zhi wen dang zai wen jian xi tong zhong de shi ji cun chu wei zhi ， you  id  zu cheng ， li ru  /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。",
+    "pinyin_first": "/api/filetree/getpathbyid  b j k y y g j w d  id  h q q w l c c l j h s s b j b 。 w l l j s z w d z w j x t z d s j c c w z ， y  id  z c ， l r  /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。"
   },
   {
     "category": "filetree",
@@ -1150,5 +1222,14 @@
     "description": "使用 Sprig 库 提供的扩展函数来渲染 Go template 模板字符串。Sprig 提供了许多实用的模板函数，例如字符串操作、数学计算、日期处理等。",
     "pinyin_full": "/api/template/rendersprig  shi yong  sprig  ku   ti gong de kuo zhan han shu lai xuan ran  go template  mu ban zi fu chuan 。sprig  ti gong le xu duo shi yong de mu ban han shu ， li ru zi fu chuan cao zuo 、 shu xue ji suan 、 ri qi chu li deng 。",
     "pinyin_first": "/api/template/rendersprig  s y  sprig  k   t g d k z h s l x r  go template  m b z f c 。sprig  t g l x d s y d m b h s ， l r z f c c z 、 s x j s 、 r q c l d 。"
+  },
+  {
+    "category": "websocket",
+    "file": "websocket/broadcast.html",
+    "path": "/ws/broadcast",
+    "name": "/ws/broadcast",
+    "description": "这是 /ws/broadcast 接口的文档。需要补充详细说明。",
+    "pinyin_full": "/ws/broadcast  zhe shi  /ws/broadcast  jie kou de wen dang 。 xu yao bu chong xiang xi shuo ming 。",
+    "pinyin_first": "/ws/broadcast  z s  /ws/broadcast  j k d w d 。 x y b c x x s m 。"
   }
 ]

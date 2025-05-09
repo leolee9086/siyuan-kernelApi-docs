@@ -33,4 +33,22 @@
 
 ## 导出API的重要性
 
-导出功能是知识管理系统的重要组成部分，允许用户将数据迁移到其他平台或进行离线备份。 
+导出功能是知识管理系统的重要组成部分，允许用户将数据迁移到其他平台或进行离线备份。
+
+## AI 修改记录
+
+### 2025-05-09
+
+- **创建文件**: `exportMds.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/export/exportMds`
+  - **主要功能**: 将指定的多个文档导出为独立的 Markdown 文件，并打包成 ZIP 压缩包。
+  - **参考源码**: `siyuan/kernel/api/router.go` 和 `siyuan/kernel/api/export.go` 中的 `exportMds` 函数。
+  - **备注**: 文档内容包括接口描述、请求参数、响应体、示例、错误码、源码定位及在线测试区。CSS 和 JS 路径基于通用模板推测。
+
+- **创建文件**: `exportNotebookMd.html`
+  - **原因**: 补充缺失的 API 文档。
+  - **API 路径**: `/api/export/exportNotebookMd`
+  - **主要功能**: 将指定 ID 的整个笔记本导出为一系列 Markdown 文件，并打包成 ZIP 压缩文件。
+  - **参考源码**: `siyuan/kernel/api/router.go` (路由) 和 `siyuan/kernel/api/export.go` (函数 `exportNotebookMd`) 以及 `siyuan/kernel/model/export.go` (函数 `ExportNotebookMarkdown`)。
+  - **备注**: 文档结构和内容参考 `exportMds.html`。 
