@@ -88,6 +88,28 @@
         *   更新了在线测试区域的说明，指出因格式变化导致该功能暂不可用，并隐藏了表单，注释了相关 JS 代码。
 *   **结果**: `putFile.html` 文档现在准确反映了 API 的实际请求格式和参数要求。
 
+## 2025-05-09 修复文档API路径显示问题 (织)
+*   **背景**: 运行 `validate_docs.js --all` 校验脚本时，发现多个文档缺少标准的 API 路径格式 (`<span class="endpoint">`)，导致校验失败和搜索索引生成问题。
+*   **操作**:
+    1.  **分析问题**: 确认校验脚本在寻找特定格式的 HTML 元素 `<span class="endpoint">` 来提取 API 路径，而多个文档虽然在文本中包含路径，但没有使用这个特定的标签格式。
+    2.  **查阅源码**: 分析 `siyuan/kernel/api/router.go` 和相关模块文件，找到每个问题API的准确路径定义。
+    3.  **修复文档**: 在 12 个文件中添加标准格式的API路径显示：
+        *   `asset/getDocAssets.html`
+        *   `attr/batchSetBlockAttrs.html`
+        *   `attr/resetBlockAttrs.html`
+        *   `bazaar/batchUpdatePackage.html`
+        *   `bazaar/getBazaarIcon.html`
+        *   `bazaar/getBazaarPackageREAME.html`
+        *   `bazaar/getBazaarTemplate.html`
+        *   `bazaar/getBazaarTheme.html`
+        *   `bazaar/getBazaarWidget.html` 
+        *   `bazaar/getInstalledIcon.html`
+        *   `bazaar/getInstalledTemplate.html`
+        *   `bazaar/getInstalledTheme.html`
+    4.  **统一格式**: 在每个文件的 `<h1>` 标题下方添加 `<p class="api-path-display"><strong>方法：</strong><span class="method">POST</span> <strong>路径：</strong><span class="endpoint">/api/xxx/yyy</span></p>` 格式的标准路径显示。
+*   **结果**: 所有文档现在均包含标准格式的 API 路径显示，校验脚本可以正确识别并提取这些路径。这提高了文档的一致性和工具的兼容性。
+*   **注意事项**: 工作中发现 `getBazaarPackageREAME.html` 文件名中的 "REAME" 疑似拼写错误，应为 "README"，但保持了与后端代码一致的命名。
+
 <思源笔记API文档生成项目>
 你可以从后端go代码中找到这些后端api的实现代码
 
