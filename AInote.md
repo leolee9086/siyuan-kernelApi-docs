@@ -338,3 +338,44 @@ node scripts/validate_docs.js --all --report=md
 2. 考虑添加自动修复简单问题的功能
 3. 为新增API自动生成文档模板的功能
  
+## 2025-05-10 22:13 运行校验脚本 (织)
+*   **操作时间**:
+    *   开始: `Sat May 10 2025 22:12:35 GMT+0800 (中国标准时间)`
+    *   结束: `Sat May 10 2025 22:13:06 GMT+0800 (中国标准时间)`
+*   **执行动作**: 在 `siyuan-kernelApi-docs` 目录下运行 `node ./scripts/validate_docs.js`。
+*   **校验结果**:
+    *   API 缺失文档: 85 (上次为 99)
+    *   孤立文件: 1
+    *   孤立索引文件: 0
+    *   赞助链接缺失: 4
+    *   赞助链接位置不正确: 8
+    *   缺失在线测试区: 115
+    *   搜索索引构建: ✅ 通过 (但有 162 个文件因信息不完整未加入索引，主要提示：`未能找到 API 路径 (<span class="endpoint">)` 或 `未能找到有效的 API 名称 (<h1> 标签)`)
+    *   样式检查: ✅ 通过
+    *   HTML 有效性: ✅ 通过
+    *   内容格式: ✅ 通过
+*   **整体校验结果**: 🔴 未通过 (API 覆盖率、赞助链接、在线测试区问题)
+*   **尝试写入思源笔记**: 失败 (API Token 问题仍未解决)。
+
+## 2025-05-10 补全 API 文档: /api/ref/getBackmentionDoc (织)
+*   **操作时间**:
+    *   开始: `Sat May 10 2025 22:15:57 GMT+0800 (中国标准时间)`
+    *   结束: `Sat May 10 2025 22:16:52 GMT+0800 (中国标准时间)`
+*   **执行动作**: 创建 `siyuan-kernelApi-docs/ref/getBackmentionDoc.html` 文件。
+*   **API 信息**:
+    *   HTTP Method: `POST`
+    *   路径: `/api/ref/getBackmentionDoc`
+    *   处理函数: `getBackmentionDoc` (位于 `kernel/api/ref.go`)
+    *   认证: `model.CheckAuth` (需要认证)
+*   **请求参数** (JSON Body):
+    *   `defID`: string (必需) - 被引用的定义块 ID。
+    *   `refTreeID`: string (必需) - 引用所在文档的根块 ID。
+    *   `keyword`: string (必需) - 用于过滤提及的关键词。
+    *   `containChildren`: boolean (可选, 默认 `model.Conf.Editor.BacklinkContainChildren`)
+    *   `highlight`: boolean (可选, 默认 `true`)
+*   **返回值** (`data`):
+    *   `backmentions`: array (提及内容块数组)
+    *   `keywords`: array (高亮关键词数组)
+*   **备注**: 返回值中 `backmentions` 和 `keywords` 的具体结构未在文档中详细列出，提示用户参考 `model.GetBackmentionDoc`。
+*   **尝试写入思源笔记**: 失败 (API Token 问题仍未解决)。
+ 

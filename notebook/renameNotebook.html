@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="zh-CN"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>重命名笔记本 - 思源笔记 API 文档</title>
@@ -15,19 +17,21 @@
     <h1>重命名笔记本</h1>
     
     <div class="auth-tags">
-        <span class="chip auth-required">需要认证</span>
+        <span class="chip auth-admin-readonly">需要认证 (管理员权限，检查只读模式)</span>
     </div>
     
     <h2>接口描述</h2>
-    <p>修改现有笔记本的名称。</p>
+    <p>根据提供的笔记本 ID 和新名称，重命名一个已存在的笔记本。</p>
+    <p class="note">此接口需要管理员权限，并且会在只读模式下受限。</p>
     
     <h2>请求参数</h2>
-    <table class="param-table">
+    <p>请求体为一个 JSON 对象，包含以下字段：</p>
+    <table class="request-table">
         <thead>
             <tr>
                 <th>参数名</th>
                 <th>类型</th>
-                <th>必选</th>
+                <th>必需</th>
                 <th>描述</th>
             </tr>
         </thead>
@@ -35,19 +39,20 @@
             <tr>
                 <td>notebook</td>
                 <td>string</td>
-                <td><span class="required">是</span></td>
-                <td>笔记本ID</td>
+                <td>是</td>
+                <td>要重命名的笔记本的 ID。</td>
             </tr>
             <tr>
                 <td>name</td>
                 <td>string</td>
-                <td><span class="required">是</span></td>
-                <td>笔记本的新名称</td>
+                <td>是</td>
+                <td>笔记本的新名称。名称不能为空，且需要符合命名规范。</td>
             </tr>
         </tbody>
     </table>
     
     <h2>返回值</h2>
+    <p>返回标准的 JSON 结构：</p>
     <table class="response-table">
         <thead>
             <tr>
@@ -60,17 +65,17 @@
             <tr>
                 <td>code</td>
                 <td>number</td>
-                <td>返回码，0 表示成功</td>
+                <td>返回码，0 表示成功，其他表示失败。</td>
             </tr>
             <tr>
                 <td>msg</td>
                 <td>string</td>
-                <td>错误信息，成功时为空字符串</td>
+                <td>错误信息，成功时为空字符串。</td>
             </tr>
             <tr>
                 <td>data</td>
                 <td>null</td>
-                <td>重命名成功时为 null</td>
+                <td>成功时，此字段通常为 null。</td>
             </tr>
         </tbody>
     </table>
@@ -83,70 +88,51 @@
         
         <div id="example-tab" class="tab-content active">
             <h3>请求示例</h3>
-            <pre><code>POST /api/notebook/renameNotebook HTTP/1.1
-Host: 127.0.0.1:6806
-Content-Type: application/json
-Authorization: Token your-api-token
-
-{
-  "notebook": "20210831090520-7dvbdv0",
-  "name": "笔记本的新名称"
+            <pre><code>{
+  "notebook": "20200812220409-rng0qan",
+  "name": "我的日常记录本"
 }</code></pre>
         </div>
         
         <div id="response-tab" class="tab-content">
-            <h3>返回示例</h3>
+            <h3>成功返回示例</h3>
             <pre><code>{
   "code": 0,
   "msg": "",
   "data": null
 }</code></pre>
+            <h3>失败返回示例 (例如，笔记本ID不存在)</h3>
+            <pre><code>{
+  "code": -1,
+  "msg": "rename box [non-existent-id] failed: notebook [non-existent-id] not found",
+  "data": {
+    "closeTimeout": 5000
+  }
+}</code></pre>
+            <h3>失败返回示例 (例如，新名称不合法)</h3>
+            <pre><code>{
+  "code": -1,
+  "msg": "box name [\\] is invalid: path segments should not be empty",
+  "data": {
+    "closeTimeout": 5000
+  }
+}</code></pre>
+            <h3>失败返回示例 (只读模式)</h3>
+            <pre><code>{
+  "code": -1,
+  "msg": "只读模式下无法执行该操作",
+  "data": {
+    "closeTimeout": 5000
+  }
+}</code></pre>
         </div>
     </div>
-    
     
 <blockquote class="important-note">
     <p>注意：这是一个社区维护的文档，可能与官方最新版本存在差异。</p>
     <p>如果您觉得本文档有帮助，可以考虑赞助支持：<a href="https://afdian.com/a/leolee9086?tab=feed">爱发电</a></p>
 </blockquote>
-<div class="test-area">
-        <h3>在线测试</h3>
-        <form id="api-test-form">
-            <div class="form-group">
-                <label for="api-token">API Token:</label>
-                <input type="text" id="api-token" placeholder="在思源笔记中的" 设置-关于"中查看api="" token"="">
-            </div>
-            
-            <div class="form-group">
-                <label for="api-endpoint">接口地址:</label>
-                <input type="text" id="api-endpoint" value="http://127.0.0.1:6806/api/notebook/renameNotebook">
-            </div>
-            
-            <div class="form-group">
-                <label for="api-method">请求方法:</label>
-                <input type="text" id="api-method" value="POST" readonly="">
-            </div>
-            
-            <div class="form-group">
-                <label for="api-params">请求参数 (JSON):</label>
-                <textarea id="api-params">{
-  "notebook": "20210831090520-7dvbdv0",
-  "name": "笔记本的新名称"
-}</textarea>
-            </div>
-            
-            <button type="submit" class="btn">发送请求</button>
-        </form>
-        
-        <div id="api-result" class="result"></div>
-    </div>
-    
-    <div class="nav-links">
-        <a href="../index.html">返回首页</a>
-        <a href="closeNotebook.html">上一个接口: 关闭笔记本</a>
-        <a href="createNotebook.html">下一个接口: 创建笔记本</a>
-    </div>
-    
-    <script src="../api-tester.js"></script>
 
- </body></html>
+    <!-- <script src="../api-tester.js"></script> -->
+</body>
+</html>

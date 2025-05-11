@@ -101,4 +101,36 @@
   - **API 路径**: `/api/filetree/removeDocByID`
   - **主要功能**: 根据 ID 删除一个文档（移动到回收站）。
   - **参考源码**: `siyuan/kernel/api/router.go` (路由), `siyuan/kernel/api/filetree.go` (函数 `removeDocByID`), `siyuan/kernel/model/file.go` (函数 `RemoveDocByID`)。
-  - **备注**: 文档包含特别警告，提醒用户谨慎使用此 API 以避免数据丢失。 
+  - **备注**: 文档包含特别警告，提醒用户谨慎使用此 API 以避免数据丢失。
+
+## 2025-05-09 添加缺失的filetree API文档 (织)
+
+* **背景**: 运行 `scripts/check_docs.js` 检查发现多个 `filetree` 分类下的API缺少文档。
+* **操作**:
+  1. 创建了 `moveDocsByID.html` 文档:
+     * 添加了完整的API说明、参数表、响应体说明等
+     * 基于源码实现添加了实际的请求/响应示例和错误信息
+     * 添加了源码位置引用和在线测试表单
+  2. 创建了 `searchDocs.html` 文档:
+     * 完整描述了API用途、参数和响应格式
+     * 基于源码实现添加了请求/响应示例
+     * 添加了特有的响应数据结构说明
+  3. 创建了 `renameDocByID.html` 文档:
+     * 提供了API完整说明、参数和响应细节
+     * 区分了与renameDoc接口的差异
+     * 添加了错误码和源码定位信息
+* **结果**: 成功补充了3个常用filetree API的文档，提高了文档完整性。文档增加了标准的赞助链接和源码引用，符合项目规范。
+
+## 2025-05-09 更新searchDocs文档 (织)
+
+* **背景**: 发现之前创建的searchDocs.html文档缺少对`SearchDocsByKeyword`函数实现的详细描述。
+* **操作**:
+  1. 查看了`siyuan/kernel/model/file.go`中的`SearchDocsByKeyword`函数实现
+  2. 更新了searchDocs.html文档，加入了以下详细信息:
+     * 完善了接口描述，明确说明了多关键词使用空格分隔并执行AND逻辑
+     * 增加了对boxIcon字段的描述
+     * 详细说明了flashcard模式下的额外返回字段
+     * 添加了闪卡模式的响应示例
+     * 补充了实现细节部分，说明了算法逻辑和排序方式
+     * 更新了源码位置引用信息，包括行号
+* **结果**: 文档更加完整准确地描述了searchDocs API的参数、响应和内部实现细节，特别是对闪卡功能的支持和多关键词搜索逻辑。 

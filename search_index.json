@@ -802,12 +802,57 @@
   },
   {
     "category": "filetree",
+    "file": "filetree/getIDsByHPath.html",
+    "path": "/api/filetree/getIDsByHPath",
+    "name": "根据人类可读路径获取文档ID (getIDsByHPath)",
+    "description": "本接口用于根据人类可读路径（HPath）获取对应的文档ID列表。HPath 是文档在笔记本中的层级结构路径，以文档标题组成，例如 /笔记/子文件夹/文档标题。",
+    "pinyin_full": "/api/filetree/getidsbyhpath  ben jie kou yong yu gen ju ren lei ke du lu jing （hpath） huo qu dui ying de wen dang id lie biao 。hpath  shi wen dang zai bi ji ben zhong de ceng ji jie gou lu jing ， yi wen dang biao ti zu cheng ， li ru  / bi ji / zi wen jian jia / wen dang biao ti 。",
+    "pinyin_first": "/api/filetree/getidsbyhpath  b j k y y g j r l k d l j （hpath） h q d y d w d id l b 。hpath  s w d z b j b z d c j j g l j ， y w d b t z c ， l r  / b j / z w j j / w d b t 。"
+  },
+  {
+    "category": "filetree",
     "file": "filetree/getPathByID.html",
     "path": "/api/filetree/getPathByID",
     "name": "根据 ID 获取文档路径 (getPathByID)",
     "description": "本接口用于根据文档 ID 获取其物理存储路径和所属笔记本。物理路径是指文档在文件系统中的实际存储位置，由 ID 组成，例如 /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。",
     "pinyin_full": "/api/filetree/getpathbyid  ben jie kou yong yu gen ju wen dang  id  huo qu qi wu li cun chu lu jing he suo shu bi ji ben 。 wu li lu jing shi zhi wen dang zai wen jian xi tong zhong de shi ji cun chu wei zhi ， you  id  zu cheng ， li ru  /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。",
     "pinyin_first": "/api/filetree/getpathbyid  b j k y y g j w d  id  h q q w l c c l j h s s b j b 。 w l l j s z w d z w j x t z d s j c c w z ， y  id  z c ， l r  /20210808180117-czj9bvb/20200813125239-hbwpz87.sy。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/listDocsByPath.html",
+    "path": "/api/filetree/listDocsByPath",
+    "name": "列出指定路径下的文档 (listDocsByPath)",
+    "description": "本接口用于列出指定笔记本和路径下的所有文档。它返回路径下的文档和子文档的详细信息，包括文档ID、名称、图标、创建时间等。",
+    "pinyin_full": "/api/filetree/listdocsbypath  ben jie kou yong yu lie chu zhi ding bi ji ben he lu jing xia de suo you wen dang 。 ta fan hui lu jing xia de wen dang he zi wen dang de xiang xi xin xi ， bao kuo wen dang id、 ming cheng 、 tu biao 、 chuang jian shi jian deng 。",
+    "pinyin_first": "/api/filetree/listdocsbypath  b j k y y l c z d b j b h l j x d s y w d 。 t f h l j x d w d h z w d d x x x x ， b k w d id、 m c 、 t b 、 c j s j d 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/moveDocs.html",
+    "path": "/api/filetree/moveDocs",
+    "name": "移动多个文档 (moveDocs)",
+    "description": "本接口用于将指定路径的多个文档移动到目标位置。可以批量移动多个文档，支持跨笔记本移动。",
+    "pinyin_full": "/api/filetree/movedocs  ben jie kou yong yu jiang zhi ding lu jing de duo ge wen dang yi dong dao mu biao wei zhi 。 ke yi pi liang yi dong duo ge wen dang ， zhi chi kua bi ji ben yi dong 。",
+    "pinyin_first": "/api/filetree/movedocs  b j k y y j z d l j d d g w d y d d m b w z 。 k y p l y d d g w d ， z c k b j b y d 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/moveDocsByID.html",
+    "path": "/api/filetree/moveDocsByID",
+    "name": "根据ID移动多个文档 (moveDocsByID)",
+    "description": "本接口用于根据文档ID将多个文档移动到目标位置。与moveDocs接口不同，该接口使用文档ID来指定来源和目标，而不是路径。",
+    "pinyin_full": "/api/filetree/movedocsbyid  ben jie kou yong yu gen ju wen dang id jiang duo ge wen dang yi dong dao mu biao wei zhi 。 yu movedocs jie kou bu tong ， gai jie kou shi yong wen dang id lai zhi ding lai yuan he mu biao ， er bu shi lu jing 。",
+    "pinyin_first": "/api/filetree/movedocsbyid  b j k y y g j w d id j d g w d y d d m b w z 。 y movedocs j k b t ， g j k s y w d id l z d l y h m b ， e b s l j 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/moveLocalShorthands.html",
+    "path": "/api/filetree/moveLocalShorthands",
+    "name": "移动本地闪记 (moveLocalShorthands)",
+    "description": "本接口用于将本地闪记（速记）移动到指定笔记本的文档中。闪记是思源笔记中用于快速记录临时想法的功能，存储在特定目录下的Markdown文件。",
+    "pinyin_full": "/api/filetree/movelocalshorthands  ben jie kou yong yu jiang ben di shan ji （ su ji ） yi dong dao zhi ding bi ji ben de wen dang zhong 。 shan ji shi si yuan bi ji zhong yong yu kuai su ji lu lin shi xiang fa de gong neng ， cun chu zai te ding mu lu xia de markdown wen jian 。",
+    "pinyin_first": "/api/filetree/movelocalshorthands  b j k y y j b d s j （ s j ） y d d z d b j b d w d z 。 s j s s y b j z y y k s j l l s x f d g n ， c c z t d m l x d markdown w j 。"
   },
   {
     "category": "filetree",
@@ -820,12 +865,39 @@
   },
   {
     "category": "filetree",
+    "file": "filetree/removeDocByID.html",
+    "path": "/api/filetree/removeDocByID",
+    "name": "根据ID删除文档 (removeDocByID)",
+    "description": "本接口用于根据文档ID删除一个文档。删除操作会将文档移动到系统回收站，不是永久性删除。",
+    "pinyin_full": "/api/filetree/removedocbyid  ben jie kou yong yu gen ju wen dang id shan chu yi ge wen dang 。 shan chu cao zuo hui jiang wen dang yi dong dao xi tong hui shou zhan ， bu shi yong jiu xing shan chu 。",
+    "pinyin_first": "/api/filetree/removedocbyid  b j k y y g j w d id s c y g w d 。 s c c z h j w d y d d x t h s z ， b s y j x s c 。"
+  },
+  {
+    "category": "filetree",
     "file": "filetree/renameDoc.html",
     "path": "/api/filetree/renameDoc",
     "name": "重命名文档",
     "description": "重命名指定的文档。此接口会更新文档的名称和路径。",
     "pinyin_full": "/api/filetree/renamedoc  zhong ming ming zhi ding de wen dang 。 ci jie kou hui geng xin wen dang de ming cheng he lu jing 。",
     "pinyin_first": "/api/filetree/renamedoc  z m m z d d w d 。 c j k h g x w d d m c h l j 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/renameDocByID.html",
+    "path": "/api/filetree/renameDocByID",
+    "name": "根据ID重命名文档 (renameDocByID)",
+    "description": "本接口用于根据文档ID重命名文档。与renameDoc接口不同，该接口使用文档ID来指定要重命名的文档，而不是文档路径。",
+    "pinyin_full": "/api/filetree/renamedocbyid  ben jie kou yong yu gen ju wen dang id zhong ming ming wen dang 。 yu renamedoc jie kou bu tong ， gai jie kou shi yong wen dang id lai zhi ding yao zhong ming ming de wen dang ， er bu shi wen dang lu jing 。",
+    "pinyin_first": "/api/filetree/renamedocbyid  b j k y y g j w d id z m m w d 。 y renamedoc j k b t ， g j k s y w d id l z d y z m m d w d ， e b s w d l j 。"
+  },
+  {
+    "category": "filetree",
+    "file": "filetree/searchDocs.html",
+    "path": "/api/filetree/searchDocs",
+    "name": "搜索文档 (searchDocs)",
+    "description": "本接口用于通过关键词搜索文档。可以快速查找包含特定关键词的文档，返回文档的基本信息列表。",
+    "pinyin_full": "/api/filetree/searchdocs  ben jie kou yong yu tong guo guan jian ci sou suo wen dang 。 ke yi kuai su cha zhao bao han te ding guan jian ci de wen dang ， fan hui wen dang de ji ben xin xi lie biao 。",
+    "pinyin_first": "/api/filetree/searchdocs  b j k y y t g g j c s s w d 。 k y k s c z b h t d g j c d w d ， f h w d d j b x x l b 。"
   },
   {
     "category": "format",
@@ -936,6 +1008,42 @@
     "pinyin_first": "/api/history/searchhistory  g j t j s s l s j l ， f h a s j f z d k z l b 。"
   },
   {
+    "category": "icon",
+    "file": "icon/getDynamicIcon.html",
+    "path": "/api/icon/getDynamicIcon",
+    "name": "获取动态图标",
+    "description": "根据传入的参数动态生成一个 SVG 图标，并以 image/svg+xml 的形式返回。常用于文档标题、书签等处的个性化图标展示。该接口不进行缓存。",
+    "pinyin_full": "/api/icon/getdynamicicon  gen ju chuan ru de can shu dong tai sheng cheng yi ge  svg  tu biao ， bing yi  image/svg+xml  de xing shi fan hui 。 chang yong yu wen dang biao ti 、 shu qian deng chu de ge xing hua tu biao zhan shi 。 gai jie kou bu jin xing huan cun 。",
+    "pinyin_first": "/api/icon/getdynamicicon  g j c r d c s d t s c y g  svg  t b ， b y  image/svg+xml  d x s f h 。 c y y w d b t 、 s q d c d g x h t b z s 。 g j k b j x h c 。"
+  },
+  {
+    "category": "inbox",
+    "file": "inbox/getShorthand.html",
+    "path": "/api/inbox/getShorthand",
+    "name": "获取速记",
+    "description": "根据指定的 ID 获取单个云端速记 (Cloud Shorthand) 的详细信息。",
+    "pinyin_full": "/api/inbox/getshorthand  gen ju zhi ding de  id  huo qu dan ge yun duan su ji  (cloud shorthand)  de xiang xi xin xi 。",
+    "pinyin_first": "/api/inbox/getshorthand  g j z d d  id  h q d g y d s j  (cloud shorthand)  d x x x x 。"
+  },
+  {
+    "category": "inbox",
+    "file": "inbox/getShorthands.html",
+    "path": "/api/inbox/getShorthands",
+    "name": "获取速记列表",
+    "description": "分页获取云端速记 (Cloud Shorthand) 的列表。",
+    "pinyin_full": "/api/inbox/getshorthands  fen ye huo qu yun duan su ji  (cloud shorthand)  de lie biao 。",
+    "pinyin_first": "/api/inbox/getshorthands  f y h q y d s j  (cloud shorthand)  d l b 。"
+  },
+  {
+    "category": "inbox",
+    "file": "inbox/removeShorthands.html",
+    "path": "/api/inbox/removeShorthands",
+    "name": "删除速记",
+    "description": "根据提供的 ID 列表，批量删除速记。",
+    "pinyin_full": "/api/inbox/removeshorthands  gen ju ti gong de  id  lie biao ， pi liang shan chu su ji 。",
+    "pinyin_first": "/api/inbox/removeshorthands  g j t g d  id  l b ， p l s c s j 。"
+  },
+  {
     "category": "lute",
     "file": "lute/html2BlockDOM.html",
     "path": "/api/lute/html2BlockDOM",
@@ -945,22 +1053,112 @@
     "pinyin_first": "/api/lute/html2blockdom  j s r d html w b z h w s y b j n b s y d k dom（document object model） j g 。 z d y x y j w b html n r d r b j x w s y k j g d c j f c y y 。"
   },
   {
+    "category": "lute",
+    "file": "lute/spinBlockDOM.html",
+    "path": "/api/lute/spinBlockDOM",
+    "name": "处理块级 DOM (spinBlockDOM)",
+    "description": "接收一个块级 DOM 字符串，使用 Lute 引擎的 SpinBlockDOM 方法对其进行处理，并返回处理后的 DOM 字符串。",
+    "pinyin_full": "/api/lute/spinblockdom  jie shou yi ge kuai ji  dom  zi fu chuan ， shi yong  lute  yin qing de  spinblockdom  fang fa dui qi jin xing chu li ， bing fan hui chu li hou de  dom  zi fu chuan 。",
+    "pinyin_first": "/api/lute/spinblockdom  j s y g k j  dom  z f c ， s y  lute  y q d  spinblockdom  f f d q j x c l ， b f h c l h d  dom  z f c 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/changeSortNotebook.html",
+    "path": "/api/notebook/changeSortNotebook",
+    "name": "更改笔记本排序",
+    "description": "根据提供的笔记本 ID 列表的顺序，更改工作空间中笔记本的排序。",
+    "pinyin_full": "/api/notebook/changesortnotebook  gen ju ti gong de bi ji ben  id  lie biao de shun xu ， geng gai gong zuo kong jian zhong bi ji ben de pai xu 。",
+    "pinyin_first": "/api/notebook/changesortnotebook  g j t g d b j b  id  l b d s x ， g g g z k j z b j b d p x 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/closeNotebook.html",
+    "path": "/api/notebook/closeNotebook",
+    "name": "关闭笔记本",
+    "description": "关闭指定的笔记本。此操作会从当前工作空间卸载该笔记本，但不会删除笔记本的物理文件。",
+    "pinyin_full": "/api/notebook/closenotebook  guan bi zhi ding de bi ji ben 。 ci cao zuo hui cong dang qian gong zuo kong jian xie zai gai bi ji ben ， dan bu hui shan chu bi ji ben de wu li wen jian 。",
+    "pinyin_first": "/api/notebook/closenotebook  g b z d d b j b 。 c c z h c d q g z k j x z g b j b ， d b h s c b j b d w l w j 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/createNotebook.html",
+    "path": "/api/notebook/createNotebook",
+    "name": "创建笔记本 (createNotebook)",
+    "description": "本接口用于创建一个新的笔记本。",
+    "pinyin_full": "/api/notebook/createnotebook  ben jie kou yong yu chuang jian yi ge xin de bi ji ben 。",
+    "pinyin_first": "/api/notebook/createnotebook  b j k y y c j y g x d b j b 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/getNotebookConf.html",
+    "path": "/api/notebook/getNotebookConf",
+    "name": "获取笔记本配置",
+    "description": "获取指定笔记本的配置信息，包括笔记本的 ID、名称以及详细的配置对象 (BoxConf)。",
+    "pinyin_full": "/api/notebook/getnotebookconf  huo qu zhi ding bi ji ben de pei zhi xin xi ， bao kuo bi ji ben de  id、 ming cheng yi ji xiang xi de pei zhi dui xiang  (boxconf)。",
+    "pinyin_first": "/api/notebook/getnotebookconf  h q z d b j b d p z x x ， b k b j b d  id、 m c y j x x d p z d x  (boxconf)。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/getNotebookInfo.html",
+    "path": "/api/notebook/getNotebookInfo",
+    "name": "获取笔记本信息",
+    "description": "获取指定笔记本的基本信息，例如 ID、名称、文档数量、大小以及创建和修改时间等。",
+    "pinyin_full": "/api/notebook/getnotebookinfo  huo qu zhi ding bi ji ben de ji ben xin xi ， li ru  id、 ming cheng 、 wen dang shu liang 、 da xiao yi ji chuang jian he xiu gai shi jian deng 。",
+    "pinyin_first": "/api/notebook/getnotebookinfo  h q z d b j b d j b x x ， l r  id、 m c 、 w d s l 、 d x y j c j h x g s j d 。"
+  },
+  {
     "category": "notebook",
     "file": "notebook/lsNotebooks.html",
     "path": "/api/notebook/lsNotebooks",
     "name": "列出笔记本",
-    "description": "获取所有可用笔记本的列表，包括笔记本ID、名称、图标、排序和关闭状态等信息。",
-    "pinyin_full": "/api/notebook/lsnotebooks  huo qu suo you ke yong bi ji ben de lie biao ， bao kuo bi ji ben id、 ming cheng 、 tu biao 、 pai xu he guan bi zhuang tai deng xin xi 。",
-    "pinyin_first": "/api/notebook/lsnotebooks  h q s y k y b j b d l b ， b k b j b id、 m c 、 t b 、 p x h g b z t d x x 。"
+    "description": "列出当前工作空间中的所有笔记本。可以通过参数指定是否只列出包含闪卡功能的笔记本。",
+    "pinyin_full": "/api/notebook/lsnotebooks  lie chu dang qian gong zuo kong jian zhong de suo you bi ji ben 。 ke yi tong guo can shu zhi ding shi fou zhi lie chu bao han shan ka gong neng de bi ji ben 。",
+    "pinyin_first": "/api/notebook/lsnotebooks  l c d q g z k j z d s y b j b 。 k y t g c s z d s f z l c b h s k g n d b j b 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/openNotebook.html",
+    "path": "/api/notebook/openNotebook",
+    "name": "打开笔记本",
+    "description": "根据提供的笔记本 ID 打开（挂载）一个笔记本。如果笔记本已经是打开状态，此接口依然会尝试执行挂载操作并返回笔记本信息。",
+    "pinyin_full": "/api/notebook/opennotebook  gen ju ti gong de bi ji ben  id  da kai （ gua zai ） yi ge bi ji ben 。 ru guo bi ji ben yi jing shi da kai zhuang tai ， ci jie kou yi ran hui chang shi zhi xing gua zai cao zuo bing fan hui bi ji ben xin xi 。",
+    "pinyin_first": "/api/notebook/opennotebook  g j t g d b j b  id  d k （ g z ） y g b j b 。 r g b j b y j s d k z t ， c j k y r h c s z x g z c z b f h b j b x x 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/removeNotebook.html",
+    "path": "/api/notebook/removeNotebook",
+    "name": "移除笔记本",
+    "description": "根据提供的笔记本 ID 移除（删除）一个笔记本。请注意：此操作通常是不可逆的，会导致笔记本及其包含的所有数据被删除。",
+    "pinyin_full": "/api/notebook/removenotebook  gen ju ti gong de bi ji ben  id  yi chu （ shan chu ） yi ge bi ji ben 。 qing zhu yi ： ci cao zuo tong chang shi bu ke ni de ， hui dao zhi bi ji ben ji qi bao han de suo you shu ju bei shan chu 。",
+    "pinyin_first": "/api/notebook/removenotebook  g j t g d b j b  id  y c （ s c ） y g b j b 。 q z y ： c c z t c s b k n d ， h d z b j b j q b h d s y s j b s c 。"
   },
   {
     "category": "notebook",
     "file": "notebook/renameNotebook.html",
     "path": "/api/notebook/renameNotebook",
     "name": "重命名笔记本",
-    "description": "修改现有笔记本的名称。",
-    "pinyin_full": "/api/notebook/renamenotebook  xiu gai xian you bi ji ben de ming cheng 。",
-    "pinyin_first": "/api/notebook/renamenotebook  x g x y b j b d m c 。"
+    "description": "根据提供的笔记本 ID 和新名称，重命名一个已存在的笔记本。",
+    "pinyin_full": "/api/notebook/renamenotebook  gen ju ti gong de bi ji ben  id  he xin ming cheng ， zhong ming ming yi ge yi cun zai de bi ji ben 。",
+    "pinyin_first": "/api/notebook/renamenotebook  g j t g d b j b  id  h x m c ， z m m y g y c z d b j b 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/setNotebookConf.html",
+    "path": "/api/notebook/setNotebookConf",
+    "name": "设置笔记本配置",
+    "description": "修改指定笔记本的配置信息。可以更新笔记本的名称、图标、排序值、关闭状态等。",
+    "pinyin_full": "/api/notebook/setnotebookconf  xiu gai zhi ding bi ji ben de pei zhi xin xi 。 ke yi geng xin bi ji ben de ming cheng 、 tu biao 、 pai xu zhi 、 guan bi zhuang tai deng 。",
+    "pinyin_first": "/api/notebook/setnotebookconf  x g z d b j b d p z x x 。 k y g x b j b d m c 、 t b 、 p x z 、 g b z t d 。"
+  },
+  {
+    "category": "notebook",
+    "file": "notebook/setNotebookIcon.html",
+    "path": "/api/notebook/setNotebookIcon",
+    "name": "设置笔记本图标",
+    "description": "为指定的笔记本设置一个新的图标。图标通常是一个 Emoji 字符。",
+    "pinyin_full": "/api/notebook/setnotebookicon  wei zhi ding de bi ji ben she zhi yi ge xin de tu biao 。 tu biao tong chang shi yi ge  emoji  zi fu 。",
+    "pinyin_first": "/api/notebook/setnotebookicon  w z d d b j b s z y g x d t b 。 t b t c s y g  emoji  z f 。"
   },
   {
     "category": "outline",
@@ -988,6 +1186,15 @@
     "description": "获取指定块的反向链接（Backlinks）和提及（Mentions）。反向链接是指其他块中明确引用了该块的内容，提及是指其他块中提到了该块的名称或别名但未创建链接。",
     "pinyin_full": "/api/ref/getbacklink  huo qu zhi ding kuai de fan xiang lian jie （backlinks） he ti ji （mentions）。 fan xiang lian jie shi zhi qi ta kuai zhong ming que yin yong le gai kuai de nei rong ， ti ji shi zhi qi ta kuai zhong ti dao le gai kuai de ming cheng huo bie ming dan wei chuang jian lian jie 。",
     "pinyin_first": "/api/ref/getbacklink  h q z d k d f x l j （backlinks） h t j （mentions）。 f x l j s z q t k z m q y y l g k d n r ， t j s z q t k z t d l g k d m c h b m d w c j l j 。"
+  },
+  {
+    "category": "ref",
+    "file": "ref/getBacklink2.html",
+    "path": "/api/ref/getBacklink2",
+    "name": "获取反向链接与提及 (增强版)",
+    "description": "根据指定的块 ID，获取其反向链接和提及列表。此接口提供了对反向链接和提及的分别筛选和排序功能。",
+    "pinyin_full": "/api/ref/getbacklink2  gen ju zhi ding de kuai  id， huo qu qi fan xiang lian jie he ti ji lie biao 。 ci jie kou ti gong le dui fan xiang lian jie he ti ji de fen bie shai xuan he pai xu gong neng 。",
+    "pinyin_first": "/api/ref/getbacklink2  g j z d d k  id， h q q f x l j h t j l b 。 c j k t g l d f x l j h t j d f b s x h p x g n 。"
   },
   {
     "category": "ref",
