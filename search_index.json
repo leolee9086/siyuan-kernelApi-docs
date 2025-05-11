@@ -1206,6 +1206,150 @@
     "pinyin_first": "/api/ref/getbacklinkdoc  h q z d w d d f x l j w d l b 。 f h d j g s b h y y l g w d z r y k d q t w d l b ， y j z x w d z j t d y y w z （ k id）。"
   },
   {
+    "category": "ref",
+    "file": "ref/getBackmentionDoc.html",
+    "path": "/api/ref/getBackmentionDoc",
+    "name": "获取反向提及文档内容",
+    "description": "获取指定定义块（defID）在特定文档树（refTreeID）中的反向提及内容。可以根据关键词过滤，并控制是否包含子块内容以及是否高亮关键词。",
+    "pinyin_full": "/api/ref/getbackmentiondoc  huo qu zhi ding ding yi kuai （defid） zai te ding wen dang shu （reftreeid） zhong de fan xiang ti ji nei rong 。 ke yi gen ju guan jian ci guo lü ， bing kong zhi shi fou bao han zi kuai nei rong yi ji shi fou gao liang guan jian ci 。",
+    "pinyin_first": "/api/ref/getbackmentiondoc  h q z d d y k （defid） z t d w d s （reftreeid） z d f x t j n r 。 k y g j g j c g l ， b k z s f b h z k n r y j s f g l g j c 。"
+  },
+  {
+    "category": "ref",
+    "file": "ref/refreshBacklink.html",
+    "path": "/api/ref/refreshBacklink",
+    "name": "刷新反向链接",
+    "description": "根据提供的块 ID，刷新该块的反向链接信息，并刷新事务队列。此接口用于确保指定块的反链数据是最新的。",
+    "pinyin_full": "/api/ref/refreshbacklink  gen ju ti gong de kuai  id， shua xin gai kuai de fan xiang lian jie xin xi ， bing shua xin shi wu dui lie 。 ci jie kou yong yu que bao zhi ding kuai de fan lian shu ju shi zui xin de 。",
+    "pinyin_first": "/api/ref/refreshbacklink  g j t g d k  id， s x g k d f x l j x x ， b s x s w d l 。 c j k y y q b z d k d f l s j s z x d 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/getCloudRepoSnapshots.html",
+    "path": "/api/repo/getCloudRepoSnapshots",
+    "name": "获取云端仓库快照列表",
+    "description": "获取当前用户已登录的云端同步仓库的快照列表，支持分页。",
+    "pinyin_full": "/api/repo/getcloudreposnapshots  huo qu dang qian yong hu yi deng lu de yun duan tong bu cang ku de kuai zhao lie biao ， zhi chi fen ye 。",
+    "pinyin_first": "/api/repo/getcloudreposnapshots  h q d q y h y d l d y d t b c k d k z l b ， z c f y 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/getCloudRepoTagSnapshots.html",
+    "path": "/api/repo/getCloudRepoTagSnapshots",
+    "name": "获取云端仓库带标签快照列表",
+    "description": "获取当前云端仓库中所有带标签的快照信息列表。",
+    "pinyin_full": "/api/repo/getcloudrepotagsnapshots  huo qu dang qian yun duan cang ku zhong suo you dai biao qian de kuai zhao xin xi lie biao 。",
+    "pinyin_first": "/api/repo/getcloudrepotagsnapshots  h q d q y d c k z s y d b q d k z x x l b 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/importRepoKey.html",
+    "path": "/api/repo/importRepoKey",
+    "name": "导入仓库密钥",
+    "description": "导入一个 Base64 编码的仓库密钥（通常用于加密的仓库）。成功导入后，会返回处理（可能也是某种形式的编码或校验后）的密钥。",
+    "pinyin_full": "/api/repo/importrepokey  dao ru yi ge  base64  bian ma de cang ku mi yao （ tong chang yong yu jia mi de cang ku ）。 cheng gong dao ru hou ， hui fan hui chu li （ ke neng ye shi mou zhong xing shi de bian ma huo jiao yan hou ） de mi yao 。",
+    "pinyin_first": "/api/repo/importrepokey  d r y g  base64  b m d c k m y （ t c y y j m d c k ）。 c g d r h ， h f h c l （ k n y s m z x s d b m h j y h ） d m y 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/initRepoKey.html",
+    "path": "/api/repo/initRepoKey",
+    "name": "初始化仓库密钥",
+    "description": "初始化一个新的仓库密钥（如果当前仓库尚未设置密钥），或者返回当前已存在的仓库密钥。这个密钥通常用于仓库的加密功能。",
+    "pinyin_full": "/api/repo/initrepokey  chu shi hua yi ge xin de cang ku mi yao （ ru guo dang qian cang ku shang wei she zhi mi yao ）， huo zhe fan hui dang qian yi cun zai de cang ku mi yao 。 zhe ge mi yao tong chang yong yu cang ku de jia mi gong neng 。",
+    "pinyin_first": "/api/repo/initrepokey  c s h y g x d c k m y （ r g d q c k s w s z m y ）， h z f h d q y c z d c k m y 。 z g m y t c y y c k d j m g n 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/initRepoKeyFromPassphrase.html",
+    "path": "/api/repo/initRepoKeyFromPassphrase",
+    "name": "从口令初始化仓库密钥",
+    "description": "根据用户提供的口令（Passphrase），初始化一个新的仓库密钥。此接口用于通过一个易记的口令来生成和设置仓库的加密密钥。",
+    "pinyin_full": "/api/repo/initrepokeyfrompassphrase  gen ju yong hu ti gong de kou ling （passphrase）， chu shi hua yi ge xin de cang ku mi yao 。 ci jie kou yong yu tong guo yi ge yi ji de kou ling lai sheng cheng he she zhi cang ku de jia mi mi yao 。",
+    "pinyin_first": "/api/repo/initrepokeyfrompassphrase  g j y h t g d k l （passphrase）， c s h y g x d c k m y 。 c j k y y t g y g y j d k l l s c h s z c k d j m m y 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/openRepoSnapshotDoc.html",
+    "path": "/api/repo/openRepoSnapshotDoc",
+    "name": "打开仓库快照中的文档",
+    "description": "根据提供的历史快照中的文档 ID，获取该文档的详细内容，包括标题、正文内容、用于显示的文本以及更新时间。",
+    "pinyin_full": "/api/repo/openreposnapshotdoc  gen ju ti gong de li shi kuai zhao zhong de wen dang  id， huo qu gai wen dang de xiang xi nei rong ， bao kuo biao ti 、 zheng wen nei rong 、 yong yu xian shi de wen ben yi ji geng xin shi jian 。",
+    "pinyin_first": "/api/repo/openreposnapshotdoc  g j t g d l s k z z d w d  id， h q g w d d x x n r ， b k b t 、 z w n r 、 y y x s d w b y j g x s j 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/purgeRepo.html",
+    "path": "/api/repo/purgeRepo",
+    "name": "清理本地仓库历史",
+    "description": "警告：这是一个非常危险的操作！",
+    "pinyin_full": "/api/repo/purgerepo  jing gao ： zhe shi yi ge fei chang wei xian de cao zuo ！",
+    "pinyin_first": "/api/repo/purgerepo  j g ： z s y g f c w x d c z ！"
+  },
+  {
+    "category": "repo",
+    "file": "repo/removeCloudRepoTagSnapshot.html",
+    "path": "/api/repo/removeCloudRepoTagSnapshot",
+    "name": "移除云端仓库标签快照",
+    "description": "根据提供的标签名称，从当前用户已登录的云端同步仓库中移除（删除）指定的标签快照。",
+    "pinyin_full": "/api/repo/removecloudrepotagsnapshot  gen ju ti gong de biao qian ming cheng ， cong dang qian yong hu yi deng lu de yun duan tong bu cang ku zhong yi chu （ shan chu ） zhi ding de biao qian kuai zhao 。",
+    "pinyin_first": "/api/repo/removecloudrepotagsnapshot  g j t g d b q m c ， c d q y h y d l d y d t b c k z y c （ s c ） z d d b q k z 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/removeRepoTagSnapshot.html",
+    "path": "/api/repo/removeRepoTagSnapshot",
+    "name": "移除本地仓库标签快照",
+    "description": "根据提供的标签名称，从当前本地工作空间（仓库）中移除（删除）指定的标签快照。",
+    "pinyin_full": "/api/repo/removerepotagsnapshot  gen ju ti gong de biao qian ming cheng ， cong dang qian ben di gong zuo kong jian （ cang ku ） zhong yi chu （ shan chu ） zhi ding de biao qian kuai zhao 。",
+    "pinyin_first": "/api/repo/removerepotagsnapshot  g j t g d b q m c ， c d q b d g z k j （ c k ） z y c （ s c ） z d d b q k z 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/resetRepo.html",
+    "path": "/api/repo/resetRepo",
+    "name": "重置本地仓库密钥",
+    "description": "警告：这是一个非常危险的操作！",
+    "pinyin_full": "/api/repo/resetrepo  jing gao ： zhe shi yi ge fei chang wei xian de cao zuo ！",
+    "pinyin_first": "/api/repo/resetrepo  j g ： z s y g f c w x d c z ！"
+  },
+  {
+    "category": "repo",
+    "file": "repo/setRepoIndexRetentionDays.html",
+    "path": "/api/repo/setRepoIndexRetentionDays",
+    "name": "设置历史快照索引保留天数",
+    "description": "设置当前工作空间（仓库）的本地历史快照索引的保留天数。索引是用于快速访问和检索历史版本的数据。设置一个合理的保留天数有助于平衡历史追溯能力和磁盘空间占用。",
+    "pinyin_full": "/api/repo/setrepoindexretentiondays  she zhi dang qian gong zuo kong jian （ cang ku ） de ben di li shi kuai zhao suo yin de bao liu tian shu 。 suo yin shi yong yu kuai su fang wen he jian suo li shi ban ben de shu ju 。 she zhi yi ge he li de bao liu tian shu you zhu yu ping heng li shi zhui su neng li he ci pan kong jian zhan yong 。",
+    "pinyin_first": "/api/repo/setrepoindexretentiondays  s z d q g z k j （ c k ） d b d l s k z s y d b l t s 。 s y s y y k s f w h j s l s b b d s j 。 s z y g h l d b l t s y z y p h l s z s n l h c p k j z y 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/setRetentionIndexesDaily.html",
+    "path": "/api/repo/setRetentionIndexesDaily",
+    "name": "设置每日历史快照索引保留数量",
+    "description": "设置当前工作空间（仓库）每日自动生成的本地历史快照索引的最大保留数量。这指的是每天保留的索引文件的个数，用于控制每日快照的精细度和存储空间。",
+    "pinyin_full": "/api/repo/setretentionindexesdaily  she zhi dang qian gong zuo kong jian （ cang ku ） mei ri zi dong sheng cheng de ben di li shi kuai zhao suo yin de zui da bao liu shu liang 。 zhe zhi de shi mei tian bao liu de suo yin wen jian de ge shu ， yong yu kong zhi mei ri kuai zhao de jing xi du he cun chu kong jian 。",
+    "pinyin_first": "/api/repo/setretentionindexesdaily  s z d q g z k j （ c k ） m r z d s c d b d l s k z s y d z d b l s l 。 z z d s m t b l d s y w j d g s ， y y k z m r k z d j x d h c c k j 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/tagSnapshot.html",
+    "path": "/api/repo/tagSnapshot",
+    "name": "为快照打标签",
+    "description": "为指定的本地历史快照（通过其 ID 定位）创建一个标签（通过名称指定）。标签可以帮助用户快速定位到重要的历史版本。",
+    "pinyin_full": "/api/repo/tagsnapshot  wei zhi ding de ben di li shi kuai zhao （ tong guo qi  id  ding wei ） chuang jian yi ge biao qian （ tong guo ming cheng zhi ding ）。 biao qian ke yi bang zhu yong hu kuai su ding wei dao zhong yao de li shi ban ben 。",
+    "pinyin_first": "/api/repo/tagsnapshot  w z d d b d l s k z （ t g q  id  d w ） c j y g b q （ t g m c z d ）。 b q k y b z y h k s d w d z y d l s b b 。"
+  },
+  {
+    "category": "repo",
+    "file": "repo/uploadCloudSnapshot.html",
+    "path": "/api/repo/uploadCloudSnapshot",
+    "name": "上传本地快照至云端",
+    "description": "将指定的本地历史快照（通过其 ID 和关联的标签名定位）上传到当前配置的云端同步服务提供商。",
+    "pinyin_full": "/api/repo/uploadcloudsnapshot  jiang zhi ding de ben di li shi kuai zhao （ tong guo qi  id  he guan lian de biao qian ming ding wei ） shang chuan dao dang qian pei zhi de yun duan tong bu fu wu ti gong shang 。",
+    "pinyin_first": "/api/repo/uploadcloudsnapshot  j z d d b d l s k z （ t g q  id  h g l d b q m d w ） s c d d q p z d y d t b f w t g s 。"
+  },
+  {
     "category": "search",
     "file": "search/findReplace.html",
     "path": "/api/search/findReplace",
@@ -1333,12 +1477,93 @@
   },
   {
     "category": "setting",
+    "file": "setting/addVirtualBlockRefExclude.html",
+    "path": "/api/setting/addVirtualBlockRefExclude",
+    "name": "添加虚拟引用排除关键词",
+    "description": "添加一批关键词到虚拟块引用的排除列表中。当系统生成虚拟引用（例如，通过某些算法自动发现的潜在关联内容）时，如果目标块或其上下文包含了这些排除列表中的关键词，则这些虚拟引用可能不会被显示或建议。",
+    "pinyin_full": "/api/setting/addvirtualblockrefexclude  tian jia yi pi guan jian ci dao xu ni kuai yin yong de pai chu lie biao zhong 。 dang xi tong sheng cheng xu ni yin yong （ li ru ， tong guo mou xie suan fa zi dong fa xian de qian zai guan lian nei rong ） shi ， ru guo mu biao kuai huo qi shang xia wen bao han le zhe xie pai chu lie biao zhong de guan jian ci ， ze zhe xie xu ni yin yong ke neng bu hui bei xian shi huo jian yi 。",
+    "pinyin_first": "/api/setting/addvirtualblockrefexclude  t j y p g j c d x n k y y d p c l b z 。 d x t s c x n y y （ l r ， t g m x s f z d f x d q z g l n r ） s ， r g m b k h q s x w b h l z x p c l b z d g j c ， z z x x n y y k n b h b x s h j y 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/login2faCloudUser.html",
+    "path": "/api/setting/login2faCloudUser",
+    "name": "使用 2FA 登录云用户",
+    "description": "使用两步验证 (2FA) 代码登录云端用户。此操作需要在获取到临时 token 后进行，通常是 /api/setting/getCloudUser 在特定条件下返回2FA质询时，或类似场景。成功登录后会返回新的用户状态和认证信息。",
+    "pinyin_full": "/api/setting/login2faclouduser  shi yong liang bu yan zheng  (2fa)  dai ma deng lu yun duan yong hu 。 ci cao zuo xu yao zai huo qu dao lin shi  token  hou jin xing ， tong chang shi  /api/setting/getclouduser  zai te ding tiao jian xia fan hui 2fa zhi xun shi ， huo lei si chang jing 。 cheng gong deng lu hou hui fan hui xin de yong hu zhuang tai he ren zheng xin xi 。",
+    "pinyin_first": "/api/setting/login2faclouduser  s y l b y z  (2fa)  d m d l y d y h 。 c c z x y z h q d l s  token  h j x ， t c s  /api/setting/getclouduser  z t d t j x f h 2fa z x s ， h l s c j 。 c g d l h h f h x d y h z t h r z x x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/logoutCloudUser.html",
+    "path": "/api/setting/logoutCloudUser",
+    "name": "登出云用户",
+    "description": "登出当前已登录的云端账户。调用此接口后，当前的云端用户会话将失效。",
+    "pinyin_full": "/api/setting/logoutclouduser  deng chu dang qian yi deng lu de yun duan zhang hu 。 diao yong ci jie kou hou ， dang qian de yun duan yong hu hui hua jiang shi xiao 。",
+    "pinyin_first": "/api/setting/logoutclouduser  d c d q y d l d y d z h 。 d y c j k h ， d q d y d y h h h j s x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/refreshVirtualBlockRef.html",
+    "path": "/api/setting/refreshVirtualBlockRef",
+    "name": "刷新虚拟块引用缓存",
+    "description": "刷新（重置）虚拟块引用的缓存。当虚拟块引用的相关设置（例如，通过 /api/setting/addVirtualBlockRefInclude 或 /api/setting/addVirtualBlockRefExclude 修改了关键词列表，或者修改了虚拟引用的命名规则等）发生改变后，调用此接口可以清除旧的缓存，使得后续的虚拟引用查找能够基于最新的配置进行。操作成功后会广播一个 setConf 事件，通知前端配置已更新。",
+    "pinyin_full": "/api/setting/refreshvirtualblockref  shua xin （ zhong zhi ） xu ni kuai yin yong de huan cun 。 dang xu ni kuai yin yong de xiang guan she zhi （ li ru ， tong guo  /api/setting/addvirtualblockrefinclude  huo  /api/setting/addvirtualblockrefexclude  xiu gai le guan jian ci lie biao ， huo zhe xiu gai le xu ni yin yong de ming ming gui ze deng ） fa sheng gai bian hou ， diao yong ci jie kou ke yi qing chu jiu de huan cun ， shi de hou xu de xu ni yin yong cha zhao neng gou ji yu zui xin de pei zhi jin xing 。 cao zuo cheng gong hou hui guang bo yi ge  setconf  shi jian ， tong zhi qian duan pei zhi yi geng xin 。",
+    "pinyin_first": "/api/setting/refreshvirtualblockref  s x （ z z ） x n k y y d h c 。 d x n k y y d x g s z （ l r ， t g  /api/setting/addvirtualblockrefinclude  h  /api/setting/addvirtualblockrefexclude  x g l g j c l b ， h z x g l x n y y d m m g z d ） f s g b h ， d y c j k k y q c j d h c ， s d h x d x n y y c z n g j y z x d p z j x 。 c z c g h h g b y g  setconf  s j ， t z q d p z y g x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/setAccount.html",
+    "path": "/api/setting/setAccount",
+    "name": "设置账户显示选项",
+    "description": "更新用户账户相关的显示配置信息。此接口用于设置是否在界面上显示标题和VIP标识。",
+    "pinyin_full": "/api/setting/setaccount  geng xin yong hu zhang hu xiang guan de xian shi pei zhi xin xi 。 ci jie kou yong yu she zhi shi fou zai jie mian shang xian shi biao ti he vip biao shi 。",
+    "pinyin_first": "/api/setting/setaccount  g x y h z h x g d x s p z x x 。 c j k y y s z s f z j m s x s b t h vip b s 。"
+  },
+  {
+    "category": "setting",
     "file": "setting/setAI.html",
     "path": "/api/setting/setAI",
     "name": "配置 AI 设置",
     "description": "配置思源笔记的 AI 相关设置。你需要传入一个包含 AI 配置的对象。",
     "pinyin_full": "/api/setting/setai  pei zhi si yuan bi ji de  ai  xiang guan she zhi 。 ni xu yao chuan ru yi ge bao han  ai  pei zhi de dui xiang 。",
     "pinyin_first": "/api/setting/setai  p z s y b j d  ai  x g s z 。 n x y c r y g b h  ai  p z d d x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/setAppearance.html",
+    "path": "/api/setting/setAppearance",
+    "name": "设置外观",
+    "description": "更新思源笔记的整体外观配置。请求体应为一个完整的ในส่วน conf.Appearance 对象。",
+    "pinyin_full": "/api/setting/setappearance  geng xin si yuan bi ji de zheng ti wai guan pei zhi 。 qing qiu ti ying wei yi ge wan zheng de ในส่วน conf.appearance  dui xiang 。",
+    "pinyin_first": "/api/setting/setappearance  g x s y b j d z t w g p z 。 q q t y w y g w z d ในส่วน conf.appearance  d x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/setExport.html",
+    "path": "/api/setting/setExport",
+    "name": "设置导出配置",
+    "description": "更新导出相关的配置信息。这些配置项对应于思源笔记\"设置 - 导出\"面板中的选项。",
+    "pinyin_full": "/api/setting/setexport  geng xin dao chu xiang guan de pei zhi xin xi 。 zhe xie pei zhi xiang dui ying yu si yuan bi ji \" she zhi  -  dao chu \" mian ban zhong de xuan xiang 。",
+    "pinyin_first": "/api/setting/setexport  g x d c x g d p z x x 。 z x p z x d y y s y b j \" s z  -  d c \" m b z d x x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/setFiletree.html",
+    "path": "/api/setting/setFiletree",
+    "name": "设置文件树配置",
+    "description": "更新文件树（文档列表侧边栏）相关的配置信息。这些配置项对应于思源笔记\"设置 - 文件树\"面板中的选项。",
+    "pinyin_full": "/api/setting/setfiletree  geng xin wen jian shu （ wen dang lie biao ce bian lan ） xiang guan de pei zhi xin xi 。 zhe xie pei zhi xiang dui ying yu si yuan bi ji \" she zhi  -  wen jian shu \" mian ban zhong de xuan xiang 。",
+    "pinyin_first": "/api/setting/setfiletree  g x w j s （ w d l b c b l ） x g d p z x x 。 z x p z x d y y s y b j \" s z  -  w j s \" m b z d x x 。"
+  },
+  {
+    "category": "setting",
+    "file": "setting/setFlashcard.html",
+    "path": "/api/setting/setFlashcard",
+    "name": "设置闪卡配置",
+    "description": "更新闪卡（制卡和复习）相关的配置信息。这些配置项对应于思源笔记 \"设置 - 闪卡\" 面板中的选项。",
+    "pinyin_full": "/api/setting/setflashcard  geng xin shan ka （ zhi ka he fu xi ） xiang guan de pei zhi xin xi 。 zhe xie pei zhi xiang dui ying yu si yuan bi ji  \" she zhi  -  shan ka \"  mian ban zhong de xuan xiang 。",
+    "pinyin_first": "/api/setting/setflashcard  g x s k （ z k h f x ） x g d p z x x 。 z x p z x d y y s y b j  \" s z  -  s k \"  m b z d x x 。"
   },
   {
     "category": "storage",
