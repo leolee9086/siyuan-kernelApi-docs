@@ -562,3 +562,62 @@ PS D:\siyuan\siyuan-kernelApi-docs\scripts>
     *   Highlighted the `app` parameter's role in event broadcasting.
 
 **Next Step:** Run `check_docs.js` to identify the next missing API. 
+
+---
+## 2025-05-11 18:48 - API Doc: `/api/sync/createCloudSyncDir`
+
+**Timestamps:**
+- Start: 2025-05-11 18:46:40
+- End: 2025-05-11 18:48:06
+
+**API Processed:** `/api/sync/createCloudSyncDir`
+
+**Summary:** Created HTML documentation for the `/api/sync/createCloudSyncDir` API endpoint.
+
+**Details:**
+*   **API Endpoint:** `/api/sync/createCloudSyncDir`
+*   **HTTP Method:** `POST`
+*   **Authentication:** `model.CheckAuth`, `model.CheckAdminRole`, `model.CheckReadonly`.
+*   **Go Function:** `createCloudSyncDir` in `siyuan/kernel/api/sync.go` (handler), which calls `model.CreateCloudSyncDir(provider, path)` (internally, it uses `path` as the `name` for `dejavu.Repo.CreateRemoteDir`).
+*   **Request Parameters (JSON Body):** 
+    *   `provider` (string, required): Cloud service provider (e.g., "S3", "WebDAV").
+    *   `path` (string, required): The remote directory path to create.
+*   **Functionality:** Creates a new directory in the configured cloud storage provider at the specified remote path, relative to the sync root.
+*   **Response:** Standard API response (`{code, msg, data: null}`).
+*   **Action:** Created `siyuan-kernelApi-docs/sync/createCloudSyncDir.html`.
+    *   The documentation includes descriptions, examples, and an online test form.
+    *   Clarified that the `provider` parameter helps determine which cloud configuration to use, while `path` is the actual remote directory name for the sync engine.
+
+**Next Step:** Run `check_docs.js` to identify the next missing API. 
+
+---
+## 2025-05-11 18:49 - API Doc: `/api/sync/exportSyncProviderS3`
+
+**Timestamps:**
+- Start: 2025-05-11 18:48:54
+- End: 2025-05-11 18:49:59
+
+**API Processed:** `/api/sync/exportSyncProviderS3`
+
+**Summary:** Created HTML documentation for the `/api/sync/exportSyncProviderS3` API endpoint, which exports S3 sync configurations.
+
+**Details:**
+*   **API Endpoint:** `/api/sync/exportSyncProviderS3`
+*   **HTTP Method:** `POST`
+*   **Authentication:** `model.CheckAuth`, `model.CheckAdminRole`.
+*   **Go Function:** `exportSyncProviderS3` in `siyuan/kernel/api/sync.go`.
+*   **Request Parameters:** None (empty JSON object `{}`).
+*   **Functionality:** 
+    1.  Retrieves the current S3 sync configuration (`conf.S3`).
+    2.  Serializes it to JSON, then AES encrypts the JSON string.
+    3.  Saves the encrypted data to a temporary `.json` file.
+    4.  Packages this `.json` file into a `.zip` archive.
+    5.  Sends the `.zip` file to the client as a file download.
+*   **Response (Success):** HTTP 200, `Content-Type: application/octet-stream`, `Content-Disposition` header triggering download of `siyuan-s3-YYYYMMDDHHMMSS.json.zip`.
+*   **Response (Failure):** Standard JSON error object `{code, msg, data}`.
+*   **Action:** Created `siyuan-kernelApi-docs/sync/exportSyncProviderS3.html`.
+    *   The documentation emphasizes that this is a file download endpoint.
+    *   Provided JavaScript example for handling file download from fetch API.
+    *   Included cURL example with `-o` opção for saving the downloaded file.
+
+**Next Step:** Run `check_docs.js` to identify the next missing API. 
